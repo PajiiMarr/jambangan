@@ -14,16 +14,14 @@
 }
 
 @layer theme {
-    .dark {
+.dark {
         --color-accent: var(--color-red-500);
         --color-accent-content: var(--color-red-400);
         --color-accent-foreground: var(--color-white);
     }
 }
 
-
 @layer base {
-
     *,
     ::after,
     ::before,
@@ -38,15 +36,19 @@
 }
 
 [data-flux-label] {
-    @apply  !mb-0 !leading-tight;
+    @apply !mb-0 !leading-tight;
 }
 
+/* Apply focus styles globally to all input, textarea, and select elements */
+input:focus,
+textarea:focus,
+select:focus {
+    @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
+}
+
+/* Optional: Add focus styles for elements with [data-flux-control] if needed */
 input:focus[data-flux-control],
 textarea:focus[data-flux-control],
 select:focus[data-flux-control] {
     @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
 }
-
-/* \[:where(&)\]:size-4 {
-    @apply size-4;
-} */

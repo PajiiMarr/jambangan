@@ -9,12 +9,23 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('media', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->id('media_id');
+            $table->string('file_data');
+            $table->enum('type', ['image', 'video']);
+            
+            $table->unsignedBigInteger('post_id');
+            
+            $table->foreign('post_id')
+                ->references('post_id')
+                ->on('posts')
+                ->onDelete('cascade');
+        
+            $table->timestamp('uploaded_at')->useCurrent();
         });
+        
     }
 
     /**

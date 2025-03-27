@@ -16,11 +16,11 @@
                     {{ __('Dashboard') }}
                 </flux:navbar.item>
 
-                <flux:navbar.item icon="layout-grid" :href="route('posts')" :current="request()->routeIs('posts')" wire:navigate>
+                <flux:navbar.item icon="write-post" :href="route('posts')" :current="request()->routeIs('posts')" wire:navigate>
                     {{ __('Posts') }}
                 </flux:navbar.item>
 
-                <flux:navbar.item icon="layout-grid" :href="route('events')" :current="request()->routeIs('events')" wire:navigate>
+                <flux:navbar.item icon="event-calendar" :href="route('events')" :current="request()->routeIs('events')" wire:navigate>
                     {{ __('Events') }}
                 </flux:navbar.item>
             </flux:navbar>
@@ -86,6 +86,14 @@
                     <flux:navlist.item icon="layout-grid" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                     {{ __('Dashboard') }}
                     </flux:navlist.item>
+
+                    <flux:navlist.item icon="write-post" :href="route('posts')" :current="request()->routeIs('posts')" wire:navigate>
+                    {{ __('Posts') }}
+                    </flux:navlist.item>
+
+                    <flux:navlist.item icon="event-calendar" :href="route('events')" :current="request()->routeIs('events')" wire:navigate>
+                    {{ __('Events') }}
+                    </flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>
 
@@ -94,6 +102,15 @@
 
         {{ $slot }}
 
+        @vite(['resources/js/app.js'])
+        @livewireScripts
+
         @fluxScripts
+        <script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
+        <!-- add before </body> -->
+        <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+
+
+
     </body>
 </html>
