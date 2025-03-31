@@ -107,9 +107,7 @@
 
         @fluxScripts
         <script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
-        <!-- add before </body> -->
         <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
-
 
 
     </body>

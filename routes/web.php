@@ -5,10 +5,9 @@ use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Blade;
+use App\Http\Controllers\LandingPage;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::get('/', LandingPage::class)->name('home');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
@@ -22,7 +21,19 @@ Route::view('posts', 'posts')
     ->middleware(['auth', 'verified'])
     ->name('posts');
 
-// Route::get('/posts/{title}', \App\Http\Controllers\ViewPost::class)
+Route::view('pages', 'pages')
+    ->middleware(['auth', 'verified'])
+    ->name('pages');
+
+Route::view('contents', 'contents')
+->middleware(['auth', 'verified'])
+->name('contents');
+
+Route::view('manage', 'manage')
+->middleware(['auth', 'verified'])
+->name('manage');
+
+// Route::gcet('/posts/{title}', \App\Http\Controllers\ViewPost::class)
 //     ->middleware(['auth', 'verified'])
 //     ->name('view-post');
 

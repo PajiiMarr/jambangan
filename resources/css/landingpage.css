@@ -1,0 +1,88 @@
+
+@import 'tailwindcss';
+@import '../../vendor/livewire/flux/dist/flux.css';
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300&family=Playfair+Display:wght@700&family=Libre+Baskerville:wght@400&display=swap');
+
+@source "../views";
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../vendor/livewire/flux-pro/stubs/**/*.blade.php';
+@source '../../vendor/livewire/flux/stubs/**/*.blade.php';
+
+@custom-variant dark (&:where(.dark, .dark *));
+@theme {
+    --color-accent: var(--color-red-500);
+    --color-accent-content: var(--color-red-600);
+    --color-accent-foreground: var(--color-white);
+}
+
+.shadow-text {
+    text-shadow: 5px 3px 10px black;
+}
+
+@layer theme {
+.dark {
+        --color-accent: var(--color-red-500);
+        --color-accent-content: var(--color-red-400);
+        --color-accent-foreground: var(--color-white);
+    }
+}
+
+@layer base {
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-gray-200, currentColor);
+    }
+}
+
+[data-flux-field] {
+    @apply grid gap-2;
+}
+
+[data-flux-label] {
+    @apply !mb-0 !leading-tight;
+}
+
+/* Apply focus styles globally to all input, textarea, and select elements */
+input:focus,
+textarea:focus,
+select:focus {
+    @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
+}
+
+/* Optional: Add focus styles for elements with [data-flux-control] if needed */
+input:focus[data-flux-control],
+textarea:focus[data-flux-control],
+select:focus[data-flux-control] {
+    @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
+}
+/* Adjust Carousel Images */
+.hero-carousel img {
+    @apply w-full h-screen object-cover transition-opacity duration-1000;
+}
+
+/* Google Fonts Import */
+
+
+/* Font Styling */
+h1 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+}
+
+h2, h3, h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+}
+
+.navbar {
+    font-family: 'Libre Baskerville', serif;
+    font-weight: 400;
+}
+
+body, p {
+    font-family: serif; /* Default system serif (Georgia, Times New Roman) */
+    font-weight: normal;
+}

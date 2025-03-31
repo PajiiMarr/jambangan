@@ -12,22 +12,21 @@
             </a>
 
             <flux:navlist variant="outline">
-                <flux:navlist.group :heading="__('Platform')" class="grid">
-                    <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
+                <flux:navlist.group  class="grid">
+                    <flux:navlist.item icon="home-icon" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
                 </flux:navlist.group>
+
+                <flux:navlist.group class="grid">
+                    <flux:navlist.item icon="paper" :href="route('contents')" :current="request()->routeIs('contents')" wire:navigate>{{ __('Contents') }}</flux:navlist.item>
+                </flux:navlist.group>
+
+                <flux:navlist.group class="grid">
+                    <flux:navlist.item icon="manage" :href="route('manage')" :current="request()->routeIs('manage')" wire:navigate>{{ __('Manage Site') }}</flux:navlist.item>
+                </flux:navlist.group>
+
             </flux:navlist>
 
             <flux:spacer />
-
-            <flux:navlist variant="outline">
-                <flux:navlist.item icon="folder-git-2" href="https://github.com/laravel/livewire-starter-kit" target="_blank">
-                {{ __('Repository') }}
-                </flux:navlist.item>
-
-                <flux:navlist.item icon="book-open-text" href="https://laravel.com/docs/starter-kits" target="_blank">
-                {{ __('Documentation') }}
-                </flux:navlist.item>
-            </flux:navlist>
 
             <!-- Desktop User Menu -->
             <flux:dropdown position="bottom" align="start">
@@ -128,5 +127,8 @@
         {{ $slot }}
 
         @fluxScripts
+        <script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
+        <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+
     </body>
 </html>

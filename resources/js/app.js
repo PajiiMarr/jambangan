@@ -59,7 +59,7 @@ function chartComponent() {
                 data: {
                     labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
                     datasets: [{
-                        label: '# of Votes',
+                        label: '# of Visitors',
                         data: data,
                         backgroundColor: isDarkMode ? darkModeBarColor : barColor,
                         borderWidth: 1

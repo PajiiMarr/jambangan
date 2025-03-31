@@ -1,7 +1,7 @@
 <div class="w-full ">
     @foreach ($posts as $post)
         {{-- <a href="{{ route('view-post', ['title' => $post->title]) }}"> --}}
-            <div class="border cursor-pointer rounded-lg p-4 mb-4 hover:dark:bg-gray-600 hover:bg-gray-200 duration-100 ease-in-out">
+            <div class="border rounded-lg p-4 mb-4 duration-100 ease-in-out">
                 <h3 class="text-xl font-semibold">{{ $post->title }}</h3>
                 <p class="text-black dark:text-white">{{ $post->content }}</p>
 
