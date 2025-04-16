@@ -9,23 +9,38 @@
 @source '../../vendor/livewire/flux/stubs/**/*.blade.php';
 
 @custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
-    --color-accent: var(--color-red-500);
-    --color-accent-content: var(--color-red-600);
-    --color-accent-foreground: var(--color-white);
+    --vanilla: hsla(51, 55%, 82%, 1);
+    --black-olive: hsla(72, 5%, 21%, 1);
+    --forest-green: hsla(101, 48%, 37%, 1);
+    --alloy-orange: hsla(30, 96%, 38%, 1);
+    --red-ncs: hsla(347, 100%, 36%, 1);
+
+    --color-accent: var(--alloy-orange);
+    --color-accent-content: var(--red-ncs);
+    --color-accent-foreground: var(--vanilla);
 }
+
 
 .shadow-text {
     text-shadow: 5px 3px 10px black;
 }
 
 @layer theme {
-.dark {
-        --color-accent: var(--color-red-500);
-        --color-accent-content: var(--color-red-400);
-        --color-accent-foreground: var(--color-white);
+    .dark {
+      --vanilla: hsla(51, 55%, 82%, 1);
+      --black-olive: hsla(72, 5%, 21%, 1);
+      --forest-green: hsla(101, 48%, 37%, 1);
+      --alloy-orange: hsla(30, 96%, 38%, 1);
+      --red-ncs: hsla(347, 100%, 36%, 1);
+  
+      --color-accent: var(--alloy-orange);
+      --color-accent-content: var(--red-ncs);
+      --color-accent-foreground: var(--vanilla);
     }
-}
+  }
+  
 
 @layer base {
     *,
