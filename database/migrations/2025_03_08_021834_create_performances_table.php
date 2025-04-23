@@ -9,10 +9,10 @@ return new class extends Migration {
         Schema::create('performances', function (Blueprint $table) {
             $table->id('performance_id');
             $table->string('title');
-            $table->enum('category', ['Cultural Dance', 'Folk Dance', 'Special Performance']);
+            // $table->enum('category', ['Cultural Dance', 'Folk Dance', 'Special ']);
             $table->text('description')->nullable();
             $table->timestamp('created_at')->useCurrent();
-            $table->foreignId('admin_id')->constrained('users')->onDelete('cascade');
+            // $table->foreignId('admin_id')->constrained('users')->onDelete('cascade');
         });
     }
 

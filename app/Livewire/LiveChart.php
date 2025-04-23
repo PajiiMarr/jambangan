@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Livewire;
+namespace App\Livewire;
 
 use Livewire\Component;
 
@@ -9,6 +9,12 @@ class DynamicChart extends Component
     public $selectedYear = '2023';
     public $selectedMonth = '01';
     public $chartData = [];
+    // public $mockDashboardData = [
+    //     'page_views' => rand(500, 2000),  // Random page views count
+    //     'posts_uploaded' => rand(10, 50), // Random posts count
+    //     'events_created' => rand(5, 20),  // Random events count
+    // ];
+    
 
     public function mount()
     {
@@ -31,7 +37,7 @@ class DynamicChart extends Component
 
     public function render()
     {
-        // Render the Livewire view
+        // Render the Livewire vie
         return view('livewire.live-chart');
     }
 }

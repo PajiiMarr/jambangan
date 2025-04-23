@@ -15,7 +15,10 @@ class Media extends Model
         'file_data',    // Stores the file path or name
         'type',         // 'image' or 'video'
         'post_id',      // Foreign key reference to 'posts' table
-        'uploaded_at'   // Timestamp of upload
+        'uploaded_at',
+        'performance_id',
+        'event_id',     // Foreign key reference to 'events' table
+        'officer_id'    // Foreign key reference to 'officers' table
     ];
 
     protected $casts = [
@@ -28,9 +31,25 @@ class Media extends Model
     /**
      * Define relationship with the Posts model.
      */
+
+    public function performance(): BelongsTo
+    {
+        return $this->belongsTo(Performances::class, 'performance_id');
+    }
+
     public function post(): BelongsTo
     {
         return $this->belongsTo(Posts::class, 'post_id');
+    }
+
+    public function event(): BelongsTo
+    {
+        return $this->belongsTo(Events::class, 'event_id');
+    }
+    
+    public function officer(): BelongsTo
+    {
+        return $this->belongsTo(Officers::class, 'officer_id');
     }
 
     /**

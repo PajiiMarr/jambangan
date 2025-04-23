@@ -1,21 +1,29 @@
 <?php
 
+use App\Http\Controllers\BookingController;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Blade;
 use App\Http\Controllers\LandingPage;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\OfficerController;
+use App\Http\Controllers\PerformancesController;
 
 Route::get('/', LandingPage::class)->name('home');
 
-Route::view('dashboard', 'dashboard')
+Route::get('dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
 Route::view('events', 'events')
     ->middleware(['auth', 'verified'])
     ->name('events');
+
+Route::get('performances',[PerformancesController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('performances');
 
 Route::view('posts', 'posts')
     ->middleware(['auth', 'verified'])
@@ -32,6 +40,14 @@ Route::view('contents', 'contents')
 Route::view('manage', 'manage')
 ->middleware(['auth', 'verified'])
 ->name('manage');
+
+Route::get('officers',[OfficerController::class, 'index'])
+->middleware(['auth', 'verified'])
+->name('officers');
+
+Route::get('bookings',[BookingController::class, 'index'])
+->middleware(['auth', 'verified'])
+->name('bookings');
 
 // Route::gcet('/posts/{title}', \App\Http\Controllers\ViewPost::class)
 //     ->middleware(['auth', 'verified'])

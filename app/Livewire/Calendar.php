@@ -7,26 +7,74 @@ use Livewire\Attributes\On;
 use Livewire\Component;
 use App\Models\Events;
 use Illuminate\Support\Facades\Auth;
+// use App\Models\Events;
 use Exception;
+use Illuminate\Contracts\Pagination\Paginator;
+use Livewire\WithFileUploads;
+
 
 class Calendar extends Component
 {
+    use WithFileUploads;
+    
+    public $tab = 'Completed'; 
+    public $sortedEvents;
     public $events;
+
 
     public function mount()
     {
         $this->loadEvents();
+        $this->loadSortedEvents();
     }
 
-    public function loadEvents (){
-        $this->events = Events::select('event_id as id',
+    public function updatedTab()
+    {
+        $this->loadSortedEvents();
+    }
+
+    public function loadSortedEvents()
+    {
+        $query = Events::select('event_id as id',
             'event_name as title',
             'start_date as start',
             'end_date as end',
             'location',
-            'status',
-        )->get()->toArray();
+            'status'
+        )->where('status', $this->tab);
+
+        $this->sortedEvents = $query->get()->toArray();
     }
+
+    public function loadEvents()
+    {
+        $query = Events::select('event_id as id',
+            'event_name as title',
+            'start_date as start',
+            'end_date as end',
+            'location',
+            'status'
+        );
+
+        $this->events = $query->get()->toArray();
+    }
+
+    public function openEventModal($eventId)
+    {
+        $event = Events::select(
+            'event_id as id',
+            'event_name as title',
+            'start_date as start',
+            'end_date as end',
+            'location',
+            'status'
+        )->find($eventId);
+
+        if ($event) {
+            $this->dispatch('view-event-modal-trigger', $event);
+        }
+    }
+
 
     #[On('addEvent')]
     public function addEvent($title, $start, $end, $location){
@@ -43,6 +91,7 @@ class Calendar extends Component
                 ]);
 
             $this->loadEvents();
+            $this->loadSortedEvents();
             $this->dispatch('eventLoaded', events: $this->events);
             $this->modal('add-event')->close();
             } catch (Exception $e) {
