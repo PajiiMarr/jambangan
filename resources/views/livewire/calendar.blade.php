@@ -2,7 +2,7 @@
         use Illuminate\Support\Str;
 
     @endphp
-    <div class="w-full flex flex-col md:flex-row">
+    <div class="w-full h-full flex flex-col-reverse md:flex-row">
         <div class="w-full p-2 md:w-1/2">
             <div class="flex space-x-4 border-zinc-200 border-b dark:border-zinc-700">
                 <button
@@ -73,12 +73,56 @@
                     </flux:modal.trigger>
                 </div>
                 @endforeach
+
+
+                {{ $sortedEvents->links() }} <!-- Livewire will render pagination links -->
             </div>
         </div>
 
-        <div class="w-1/2">
-            <div id="calendar" class="p-2" wire:ignore></div>
-        </div>    
+        <div class="md:w-1/2 w-full h-[100vh] md:h-full p-2 ">
+            <div class="md:grid md:grid-cols-3 h-1/4">
+                <div class="swiper-container block md:hidden flex justify-center items-center">
+                    <div class="swiper-wrapper">
+                        @foreach ($statusCounts as $status => $count)
+                            <div class="swiper-slide " data-swiper-autoplay="2500">
+                                <div class="flex flex-col items-center justify-center border border-gray-200 dark:border-zinc-700 rounded-xl m-1 shadow-sm p-6 bg-white dark:bg-zinc-800 transition-all hover:shadow-md hover:-translate-y-0.5">
+                                    <span class="text-lg font-medium text-gray-700 dark:text-zinc-200 mb-1">{{ $count }} Events</span>
+                                    <span class="text-2xl font-bold text-gray-900 dark:text-white mb-2">{{ $status }}</span>
+                                    <div class="mt-2 text-center">
+                                        @if ($status === 'Upcoming')
+                                            <span class="text-sm px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-200">Plan ahead for these events!</span>
+                                        @elseif ($status === 'Ongoing')
+                                            <span class="text-sm px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-200">Happening now, don't miss out!</span>
+                                        @elseif ($status === 'Completed')
+                                            <span class="text-sm px-3 py-1 rounded-full bg-gray-100 dark:bg-zinc-700/50 text-gray-600 dark:text-gray-300">These events have concluded.</span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            
+                <!-- Grid layout for md and up -->
+                @foreach ($statusCounts as $status => $count)
+                    <div class="hidden md:flex flex-col items-center justify-center border border-gray-200 dark:border-zinc-700 rounded-xl m-1 shadow-sm p-6 bg-white dark:bg-zinc-800 transition-all hover:shadow-md hover:-translate-y-0.5">
+                        <span class="text-lg font-medium text-gray-700 dark:text-zinc-200 mb-1">{{ $count }} Events</span>
+                        <span class="text-2xl font-bold text-gray-900 dark:text-white mb-2">{{ $status }}</span>
+                        <div class="mt-2 text-center">
+                            @if ($status === 'Upcoming')
+                                <span class="text-sm px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-200">Plan ahead for these events!</span>
+                            @elseif ($status === 'Ongoing')
+                                <span class="text-sm px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-200">Happening now, don't miss out!</span>
+                            @elseif ($status === 'Completed')
+                                <span class="text-sm px-3 py-1 rounded-full bg-gray-100 dark:bg-zinc-700/50 text-gray-600 dark:text-gray-300">These events have concluded.</span>
+                            @endif
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+            <div id="calendar" class="p-2 h-3/4" wire:ignore></div>
+        </div>
+        {{-- <div id="calendar" class="p-2 h-3/4" wire:ignore></div> --}}
 
 
         {{-- Event Modal --}}
@@ -177,6 +221,8 @@
     @script
     <script type="text/javascript">
         document.addEventListener('livewire:navigated', () => {
+            initSwiper();
+
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
@@ -278,22 +324,6 @@
                 Livewire.dispatch('close-flux-modal', { name: 'view-event' });
             });
 
-
-            // Livewire.on('close-flux-modal', (name) => {
-            //     console.log('Event name:', name); // Should log "edit-event"
-            //     const modal = document.querySelector(`[data-modal-name="${name}"]`);
-            //     console.log('Modal:', modal); // Should not be null
-
-            //     if (modal) {
-            //         modal.dispatchEvent(new CustomEvent('close'));
-            //     } else {
-            //         console.error('Modal not found. Check if data-modal-name is correct.');
-            //     }
-            // });
-
-
-
-            // Add a global error handler for additional insights
             window.addEventListener('error', (event) => {
                 console.error('Global error caught:', event.error);
             });
@@ -315,51 +345,67 @@
                     document.getElementById('view-event-modal-trigger').click();
                 }
             });
+            FilePond.parse(document.body);
+        });
 
-                // Livewire.on('show-event-modal', event => {
-                //     window.selectedEventData = event;
-                //     window.selectedEventDataId = event.id;
-
-                //     // Fill the modal inputs
-                //     document.getElementById('view_event_name').value = event.title;
-                //     document.getElementById('view_location').value = event.location || 'N/A';
-                //     document.getElementById('view_startStr').value = event.start.split('T')[0];
-                //     document.getElementById('view_endStr').value = event.end.split('T')[0];
-                //     document.getElementById('view_status').value = event.status || 'Upcoming';
-
-                //     // Open the modal
-                //     document.getElementById('view-event-modal-trigger').click();
-                // });
-            });
-
-            document.addEventListener('click', function (e) {
-                const card = e.target.closest('[data-event-card]');
-                if (card) {
-                    openEventModal(card);
-                }
-            });
-
-
-            function openEventModal(el) {
-                const title = el.getAttribute('data-title');
-                const location = el.getAttribute('data-location');
-                const start = el.getAttribute('data-start');
-                const end = el.getAttribute('data-end');
-                const status = el.getAttribute('data-status');
-
-                document.getElementById('view_event_name').value = title;
-                document.getElementById('view_location').value = location;
-                document.getElementById('view_startStr').value = start;
-                document.getElementById('view_endStr').value = end;
-                document.getElementById('view_status').value = status;
-
-                document.getElementById('view-event-modal-trigger').click();
+        document.addEventListener('click', function (e) {
+            const card = e.target.closest('[data-event-card]');
+            if (card) {
+                openEventModal(card);
             }
+        });
 
+
+        function openEventModal(el) {
+            const title = el.getAttribute('data-title');
+            const location = el.getAttribute('data-location');
+            const start = el.getAttribute('data-start');
+            const end = el.getAttribute('data-end');
+            const status = el.getAttribute('data-status');
+
+            document.getElementById('view_event_name').value = title;
+            document.getElementById('view_location').value = location;
+            document.getElementById('view_startStr').value = start;
+            document.getElementById('view_endStr').value = end;
+            document.getElementById('view_status').value = status;
+
+            document.getElementById('view-event-modal-trigger').click();
+        }
+        let swiperInstance = null;
+
+        function initSwiper() {
+            const swiperContainer = document.querySelector('.swiper-container');
             
+            // Destroy existing swiper instance if it exists
+            if (swiperInstance) {
+                swiperInstance.destroy(true, true);
+                swiperInstance = null;
+            }
+            
+            if (swiperContainer) {
+                swiperInstance = new Swiper(swiperContainer, {
+                    slidesPerView: 1,
+                    spaceBetween: 10,
+                    autoplay: {
+                        delay: 2500,
+                        disableOnInteraction: false,
+                    },
+                    loop: true,
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true,
+                    },
+                    bulletActiveClass: 'swiper-pagination-bullet-active',
+                    bulletClass: 'swiper-pagination-bullet',
+                });
+            }
+        }
 
-            document.addEventListener('livewire:navigated', () => {
-                FilePond.parse(document.body);
-            });
-        </script>
-    @endscript
+        Livewire.hook('message.processed', (message, component) => {
+            // Only reinitialize if the tab was changed
+            if (message.updateQueue.some(update => update.method === 'syncInput' && update.name === 'tab')) {
+                initSwiper();
+            }
+        });
+    </script>
+@endscript
