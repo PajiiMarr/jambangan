@@ -7,26 +7,88 @@ use Livewire\Attributes\On;
 use Livewire\Component;
 use App\Models\Events;
 use Illuminate\Support\Facades\Auth;
+// use App\Models\Events;
 use Exception;
+use Livewire\WithFileUploads;
+use Livewire\WithPagination;
+
 
 class Calendar extends Component
 {
+    use WithFileUploads;
+    use WithPagination;
+    
+    public $tab = 'Completed'; 
+    // public $sortedEvents;
+    public $statusCounts = [
+        'Completed' => 0,
+        'Ongoing' => 0,
+        'Upcoming' => 0,
+    ];
     public $events;
+
 
     public function mount()
     {
         $this->loadEvents();
     }
 
-    public function loadEvents (){
-        $this->events = Events::select('event_id as id',
+    public function updatedTab()
+    {
+        $this->resetPage(); // resets to page 1 when switching tabs
+    }
+
+
+    public function getSortedEventsProperty()
+    {
+        return Events::select(
+                'event_id as id',
+                'event_name as title',
+                'start_date as start',
+                'end_date as end',
+                'location',
+                'status'
+            )
+            ->where('status', $this->tab)
+            ->orderBy('start_date', 'asc')
+            ->paginate(4);
+    }
+
+    public function loadEvents()
+    {
+        $query = Events::select('event_id as id',
             'event_name as title',
             'start_date as start',
             'end_date as end',
             'location',
-            'status',
-        )->get()->toArray();
+            'status'
+        );
+
+        $this->events = $query->get()->toArray();
+
+        $this->statusCounts = [
+            'Completed' => Events::where('status', 'Completed')->count(),
+            'Ongoing' => Events::where('status', 'Ongoing')->count(),
+            'Upcoming' => Events::where('status', 'Upcoming')->count(),
+        ];
     }
+
+    public function openEventModal($eventId)
+    {
+        $event = Events::select(
+            'event_id as id',
+            'event_name as title',
+            'start_date as start',
+            'end_date as end',
+            'location',
+            'status'
+        )->find($eventId);
+
+        if ($event) {
+            $this->dispatch('view-event-modal-trigger', $event);
+        }
+    }
+
 
     #[On('addEvent')]
     public function addEvent($title, $start, $end, $location){
@@ -43,6 +105,7 @@ class Calendar extends Component
                 ]);
 
             $this->loadEvents();
+            $this->loadSortedEvents();
             $this->dispatch('eventLoaded', events: $this->events);
             $this->modal('add-event')->close();
             } catch (Exception $e) {
@@ -107,7 +170,8 @@ class Calendar extends Component
     public function render()
     {
         return view('livewire.calendar',[
-            'events' => $this->events
+            'events' => $this->events,
+            'sortedEvents' => $this->getSortedEventsProperty(),
         ]);
     }
 }

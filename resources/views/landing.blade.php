@@ -20,7 +20,7 @@
         ? 'bg-[#0D0D0D] bg-opacity-95 backdrop-blur-sm shadow-md' 
         : 'bg-transparent'" 
     class="fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out"
->
+
     <div class="absolute inset-0 pointer-events-none" 
          :class="scrolled 
             ? '' 
@@ -260,4 +260,3 @@
     </script>
 </body>
 </html>
-

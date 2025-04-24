@@ -1,6 +1,9 @@
 <x-layouts.app title="Contents">
+    <div class="text-2xl font-bold mb-2">
+        <h2>Manage Contents</h2>
+    </div>
     <div class="flex flex-col h-full w-full flex-1 gap-4 md:flex-row">
-        <div class="w-full md:w-[48%] md:h-[100vh] flex flex-col overflow-scroll">
+        <div class=" w-full md:w-[48%] md:h-[100vh] flex flex-col">
             <div class="w-full m-2 md:flex md:align-middle md:justify-center">
                 @livewire('upload-media')
             </div>

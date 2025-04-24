@@ -7,12 +7,14 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
+use Livewire\Attributes\Reactive;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use App\Models\Events;
 use App\Models\Posts;
 use App\Models\Media;
+use App\Models\Performances;
 
 class UploadMedia extends Component
 {
@@ -40,6 +42,11 @@ class UploadMedia extends Component
     public $temporaryUploadedFiles = [];
 
     public $events;
+    public $performances;
+
+    // #[Reactive]
+    public $selectedEventName = 'Select Event';
+    public $selectedPerformanceName = 'Select Performance';
 
 
     protected $messages = [
@@ -52,6 +59,7 @@ class UploadMedia extends Component
     ];
 
     public $selectedEvent = null;
+    public $selectedPerformance = null;
 
     public function rules()
     {
@@ -72,8 +80,29 @@ class UploadMedia extends Component
         ];
     }
 
+    public function updatedSelectedEvent($value)
+    {
+        if ($value) {
+            $event = Events::find($value);
+            $this->selectedEventName = $event ? $event->event_name : 'Select Event';
+        } else {
+            $this->selectedEventName = 'Select Event';
+        }
+    }
+
+    public function updatedSelectedPerformance($value)
+    {
+        if ($value) {
+            $performance = Performances::find($value);
+            $this->selectedPerformanceName = $performance ? $performance->title : 'Select Performance';
+        } else {
+            $this->selectedPerformanceName = 'Select Performance';
+        }
+    }
+
     public function mount() {
         $this->events = Events::orderBy('start_date', 'asc')->get();
+        $this->performances = Performances::orderBy('created_at', 'asc')->get();
     }
 
     #[On('file-uploaded')]
@@ -132,6 +161,7 @@ class UploadMedia extends Component
         Log::debug('Title: ' . $this->title);
         Log::debug('Content: ' . $this->content);
         Log::debug('Selected Event: ' . print_r($this->selectedEvent, true));
+        Log::debug('Selected Performance: ' . print_r($this->selectedEvent, true));
 
         $this->validate([
             'title' => 'required|string|max:255',
@@ -146,6 +176,7 @@ class UploadMedia extends Component
                 'content' => $this->content,
                 'user_id' => Auth::id(),
                 'event_id' => $this->selectedEvent,
+                'performance_id' => $this->selectedPerformance,
             ]);
 
             if (!empty($this->uploadedFiles)) {
@@ -166,14 +197,14 @@ class UploadMedia extends Component
                         ]);
                     }
                 }
+                Log::debug('File processed: ' . $path);
             }
 
             DB::commit();
 
             Log::debug('Post created with ID: ' . $post->id);
-            Log::debug('File processed: ' . $path);
 
-            $this->reset(['title', 'content', 'selectedEvent']);
+            $this->reset(['title', 'content', 'selectedEvent', 'uploadedFiles', 'temporaryUploadedFiles']);
 
             $this->modal('create-post')->close();
             $this->dispatch('postUploaded');
@@ -209,6 +240,7 @@ class UploadMedia extends Component
     {
         return view('livewire.upload-media', [
             'events' => $this->events,
+            'performances' => $this->performances,
         ]);
     }
 }

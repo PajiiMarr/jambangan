@@ -22,6 +22,13 @@ return new class extends Migration
                 ->references('event_id')
                 ->on('events')
                 ->onDelete('set null');
+            
+            $table->unsignedBigInteger('performance_id')->nullable();
+        
+            $table->foreign('performance_id')
+                ->references('performance_id')
+                ->on('performances')
+                ->onDelete('set null');
         
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
         });        

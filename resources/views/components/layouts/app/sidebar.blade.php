@@ -16,12 +16,33 @@
                     <flux:navlist.item icon="home-icon" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
                 </flux:navlist.group>
 
+                {{-- <flux:navlist.group class="grid">
+                    <flux:navlist.item icon="paper" :href="route('contents')" :current="request()->routeIs('contents')" wire:navigate>{{ __('Manage Contents') }}</flux:navlist.item>
+                </flux:navlist.group> --}}
+                {{-- </flux:navlist.group> --}}
+
                 <flux:navlist.group class="grid">
-                    <flux:navlist.item icon="paper" :href="route('contents')" :current="request()->routeIs('contents')" wire:navigate>{{ __('Contents') }}</flux:navlist.item>
+                    <flux:navlist.item icon="sparkle" :href="route('performances')" :current="request()->routeIs('performances')" wire:navigate>{{ __('Performances') }}</flux:navlist.item>
+                </flux:navlist.group>
+
+                <flux:navlist.group class="grid">
+                    <flux:navlist.item icon="paper" :href="route('posts')" :current="request()->routeIs('posts')" wire:navigate>{{ __('Posts') }}</flux:navlist.item>
+                </flux:navlist.group>
+
+                <flux:navlist.group class="grid">
+                    <flux:navlist.item icon="event-calendar" :href="route('events')" :current="request()->routeIs('events')" wire:navigate>{{ __('Events') }}</flux:navlist.item>
                 </flux:navlist.group>
 
                 <flux:navlist.group class="grid">
                     <flux:navlist.item icon="manage" :href="route('manage')" :current="request()->routeIs('manage')" wire:navigate>{{ __('Manage Site') }}</flux:navlist.item>
+                </flux:navlist.group>
+
+                <flux:navlist.group class="grid">
+                    <flux:navlist.item icon="officers" :href="route('officers')" :current="request()->routeIs('officers')" wire:navigate>{{ __('Officers') }}</flux:navlist.item>
+                </flux:navlist.group>
+                
+                <flux:navlist.group class="grid">
+                    <flux:navlist.item icon="bookings" :href="route('bookings')" :current="request()->routeIs('bookings')" wire:navigate>{{ __('Bookings') }}</flux:navlist.item>
                 </flux:navlist.group>
 
             </flux:navlist>
@@ -129,6 +150,6 @@
         @fluxScripts
         <script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
         <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
-
+        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     </body>
 </html>
