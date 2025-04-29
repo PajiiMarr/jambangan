@@ -27,7 +27,7 @@ class Bookings extends Model
 
     public function performance(): BelongsTo
     {
-        return $this->belongsTo(Performances::class, 'performance_id');
+    return $this->belongsTo(Performances::class, 'performance_id');
     }
 
 }

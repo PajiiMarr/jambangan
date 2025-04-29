@@ -1,6 +1,5 @@
     @php
         use Illuminate\Support\Str;
-
     @endphp
     <div class="w-full h-full flex flex-col-reverse md:flex-row">
         <div class="w-full p-2 md:w-1/2">
@@ -26,52 +25,51 @@
             </div>
 
             <div class="mt-2 grid grid-cols-2 gap-4 md:max-h-[80vh] overflow-scroll">
-                @empty($sortedEvents)
-                    <div class="col-span-2 bg-gray-100 h-1/2 rounded-lg flex items-center justify-center">
+                @if ($sortedEvents->isEmpty())
+                    <div class="col-span-2 bg-gray-100 h-[40vh] rounded-lg flex items-center justify-center">
                         <span class="text-gray-500">No Events Available</span>
-
                     </div>
-                @endempty
+                @endif
 
                 @foreach ($sortedEvents as $event)
-                <div 
-                    class="col-span-2 md:col-span-1 border p-3 rounded-lg shadow-sm bg-white dark:bg-zinc-800 dark:border-neutral-700 cursor-pointer"
-                    data-event-card
-                    data-title="{{ $event['title'] }}"
-                    data-location="{{ $event['location'] }}"
-                    data-start="{{ \Carbon\Carbon::parse($event['start'])->format('Y-m-d') }}"
-                    data-end="{{ \Carbon\Carbon::parse($event['end'])->format('Y-m-d') }}"
-                    data-status="{{ $event['status'] }}"
-                    {{-- onclick="openEventModal(this)" --}}
-                >
-                    <flux:modal.trigger name="view-event" >
-                        
-                        <!-- Event Image or Placeholder -->
-                        <div class="w-full h-40 bg-gray-200 rounded-lg flex items-center justify-center">
-                            @if (!empty($event['cover_photo']))
-                                <img src="{{ $event['cover_photo'] }}" alt="Event Cover" class="w-full h-full object-cover rounded-lg">
-                            @else
-                                <span class="text-gray-500">No Image</span>
-                            @endif
-                        </div>
-        
-                        <!-- Event Details -->
-                        <div class="mt-4">
-                            <div class="flex items-center justify-between">
-                                <h3 class="text-lg font-semibold text-gray-800 dark:text-white">{{ Str::limit($event['title'], 20)}}</h3>
-                                <span class="text-sm px-3 py-1 rounded-full font-medium
-                                    {{ $event['status'] === 'Upcoming' ? 'bg-yellow-100 text-yellow-800' : 
-                                    ($event['status'] === 'Ongoing' ? 'bg-green-100 text-green-800' : 
-                                    'bg-gray-100 text-gray-800') }}">
-                                    {{ $event['status'] }}
-                                </span>
+                    <div 
+                        class="col-span-2 md:col-span-1 border p-3 rounded-lg shadow-sm bg-white dark:bg-zinc-800 dark:border-neutral-700 cursor-pointer"
+                        data-event-card
+                        data-title="{{ $event['title'] }}"
+                        data-location="{{ $event['location'] }}"
+                        data-start="{{ \Carbon\Carbon::parse($event['start'])->format('Y-m-d') }}"
+                        data-end="{{ \Carbon\Carbon::parse($event['end'])->format('Y-m-d') }}"
+                        data-status="{{ $event['status'] }}"
+                        {{-- onclick="openEventModal(this)" --}}
+                    >
+                        <flux:modal.trigger name="view-event" >
+                            
+                            <!-- Event Image or Placeholder -->
+                            <div class="w-full h-40 bg-gray-200 rounded-lg flex items-center justify-center">
+                                @if (!empty($event['cover_photo']))
+                                    <img src="{{ $event['cover_photo'] }}" alt="Event Cover" class="w-full h-full object-cover rounded-lg">
+                                @else
+                                    <span class="text-gray-500">No Image</span>
+                                @endif
                             </div>
-                            <p class="text-sm text-gray-500 mt-2 dark:text-white"> Location: {{ $event['location'] }}</p>
-                            <p class="text-sm text-gray-500 dark:text-white"> Start: {{ \Carbon\Carbon::parse($event['start'])->format('F j, Y') }}</p>
-                            <p class="text-sm text-gray-500 dark:text-white"> End: {{ \Carbon\Carbon::parse($event['end'])->format('F j, Y') }}</p>
-                        </div>
-                    </flux:modal.trigger>
-                </div>
+            
+                            <!-- Event Details -->
+                            <div class="mt-4">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white">{{ Str::limit($event['title'], 20)}}</h3>
+                                    <span class="text-sm px-3 py-1 rounded-full font-medium
+                                        {{ $event['status'] === 'Upcoming' ? 'bg-yellow-100 text-yellow-800' : 
+                                        ($event['status'] === 'Ongoing' ? 'bg-green-100 text-green-800' : 
+                                        'bg-gray-100 text-gray-800') }}">
+                                        {{ $event['status'] }}
+                                    </span>
+                                </div>
+                                <p class="text-sm text-gray-500 mt-2 dark:text-white"> Location: {{ $event['location'] }}</p>
+                                <p class="text-sm text-gray-500 dark:text-white"> Start: {{ \Carbon\Carbon::parse($event['start'])->format('F j, Y') }}</p>
+                                <p class="text-sm text-gray-500 dark:text-white"> End: {{ \Carbon\Carbon::parse($event['end'])->format('F j, Y') }}</p>
+                            </div>
+                        </flux:modal.trigger>
+                    </div>
                 @endforeach
 
 
@@ -122,7 +120,6 @@
             </div>
             <div id="calendar" class="p-2 h-3/4" wire:ignore></div>
         </div>
-        {{-- <div id="calendar" class="p-2 h-3/4" wire:ignore></div> --}}
 
 
         {{-- Event Modal --}}
@@ -252,7 +249,6 @@
                     document.getElementById('view_endStr').value = info.event.endStr.split('T')[0];
                     document.getElementById('view_status').value = info.event.extendedProps.status || 'Upcoming';
 
-                    // document.getElementById('view-event-modal-trigger').click();
                 },
                 eventContent: function(info) {
                     let bgColor;

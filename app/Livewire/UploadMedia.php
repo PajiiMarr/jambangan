@@ -82,6 +82,12 @@ class UploadMedia extends Component
 
     public function updatedSelectedEvent($value)
     {
+        if ($value == "none"){
+            $this->selectedEventName = "None";
+            $this->selectedEvent = null;
+            return;
+        }
+
         if ($value) {
             $event = Events::find($value);
             $this->selectedEventName = $event ? $event->event_name : 'Select Event';
@@ -138,6 +144,7 @@ class UploadMedia extends Component
             }
         }
     }
+    
     private function getMediaType($extension)
     {
         $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'tiff'];

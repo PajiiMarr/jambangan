@@ -34,10 +34,12 @@
         </div>
 
         <ul class="flex space-x-6 font-semibold">
-            <li><a href="#" class="hover:text-white transition duration-300">Home</a></li>
-            <li><a href="#aboutUs" class="hover:text-white transition duration-300">About Us</a></li>
-            <li><a href="#performances" class="hover:text-white transition duration-300">Performances</a></li>
-            <li><a href="#contact" class="hover:text-white transition duration-300">Contact</a></li>
+            <li><a href="#" class="text-lg hover:text-white transition duration-300">Home</a></li>
+            <li><a href="#aboutUs" class="text-lg hover:text-white transition duration-300">About Us</a></li>
+            <li><a href="#events" class="text-lg hover:text-white transition duration-300">Events</a></li>
+            <li><a href="#events" class="text-lg hover:text-white transition duration-300">Posts</a></li>
+            <li><a href="#performances" class="text-lg hover:text-white transition duration-300">Performances</a></li>
+            <li><a href="#contact" class="text-lg hover:text-white transition duration-300">Contact</a></li>
         </ul>
     </div>
 </nav>
@@ -238,7 +240,7 @@
     <!--Contact Section-->
     <section id="contact" data-aos="fade-right" class="py-12 px-6 bg-[#8B0000] text-white shadow-xl">
         <div class="max-w-4xl mx-auto text-center">
-            <h2 class="text-3xl font-bold mb-6 tracking-wide">Get in Touch</h2>
+            <h2 class="text-3xl font-bold mb-6 tracking-wide">Book us Now!</h2>
             <p class="text-lg">Interested in a performance? Contact us at <strong class="">jambangan@culture.ph</strong></p>
         </div>
     </section>

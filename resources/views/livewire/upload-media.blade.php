@@ -31,6 +31,9 @@
                         </flux:button>
                         <flux:menu>
                             <flux:menu.radio.group wire:model.live="selectedEvent">
+                                <flux:menu.radio value="none">
+                                    None
+                                </flux:menu.radio>
                                 @foreach($events as $event)
                                     <flux:menu.radio value="{{ $event->event_id }}">
                                         {{ $event->event_name }} | {{ \Carbon\Carbon::parse($event->start_date)->format('F j, Y') }}

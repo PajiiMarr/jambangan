@@ -43,6 +43,13 @@ return new class extends Migration
                 ->references('officer_id')
                 ->on('officers')
                 ->onDelete('cascade');
+
+            $table->unsignedBigInteger('slide_id')->nullable();
+            
+            $table->foreign('slide_id')
+                ->references('slide_id')
+                ->on('slides')
+                ->onDelete('cascade');
             
             $table->timestamp('uploaded_at')->useCurrent();
         });

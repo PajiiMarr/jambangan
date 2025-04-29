@@ -105,7 +105,7 @@ class Calendar extends Component
                 ]);
 
             $this->loadEvents();
-            $this->loadSortedEvents();
+            // $this->loadSortedEvents();
             $this->dispatch('eventLoaded', events: $this->events);
             $this->modal('add-event')->close();
             } catch (Exception $e) {

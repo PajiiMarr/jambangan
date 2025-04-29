@@ -29,7 +29,16 @@
                 }
             }
         });
-        FilePond.create($refs.input);
+    {{-- FilePond.create($refs.input); --}}
+        FilePond.create($refs.input, {
+            onprocessfile: (error, file) => {
+                if (!error) {
+                    // Force Livewire to refresh after upload
+                    @this.call('$refresh');
+                }
+            }
+        });
+
     " 
 >
     <input type="file" x-ref="input" />
