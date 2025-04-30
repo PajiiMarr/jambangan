@@ -18,7 +18,7 @@ class LandingPage extends Controller
     {
         $performances = Performances::with('media')
             ->orderBy('created_at', 'desc')
-            ->limit(3)
+            ->limit(10)
             ->get();
 
         $general_contents = General::latest()->first();
