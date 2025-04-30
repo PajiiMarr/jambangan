@@ -8,6 +8,9 @@ use App\Models\Events;
 use App\Models\Performances;
 use App\Models\Media;
 use App\Models\Posts;
+use App\Models\Slides;
+use Illuminate\Support\Facades\Storage;
+
 
 class LandingPage extends Controller
 {
@@ -15,27 +18,29 @@ class LandingPage extends Controller
     {
         $performances = Performances::with('media')
             ->orderBy('created_at', 'desc')
+            ->limit(3)
             ->get();
 
         $general_contents = General::latest()->first();
 
-        $events = Events::select(
-            'event_id as id',
-            'event_name as title',
-            'start_date as start',
-            'end_date as end',
-            'location',
-            'status'
-        )
-        ->orderBy('start_date', 'asc');
+        $events = Events::orderBy('start_date', 'asc')->limit(3)->get();
+
+        // ->orderBy('start_date', 'asc');
 
         $posts = Posts::with('media');
+
+
+        $cover_medias = Slides::join('media', 'slides.slide_id', '=', 'media.slide_id')
+            ->select('slides.title', 'slides.subtitle', 'media.file_data')
+            ->get();
+
 
         return view('landing', [
             'performances' => $performances,
             'posts' => $posts,
             'events' => $events,
             'general_contents' => $general_contents,
+            'cover_medias' => $cover_medias
         ]);
     }
 }

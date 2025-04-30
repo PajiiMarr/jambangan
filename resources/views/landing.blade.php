@@ -9,6 +9,10 @@
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js" defer></script>
     <link href="https://fonts.google.com/specimen/DM+Serif+Text?categoryFilters=Feeling:%2FExpressive%2FBusiness" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
 
 
 </head>
@@ -30,7 +34,7 @@
     <div class="relative container mx-auto flex justify-between items-center p-4">
         <div class="flex items-center gap-4">
             <img src="{{ asset('images/logo.svg') }}" alt="Jambangan Logo" class="h-12 w-auto">
-            <h1 class="text-xl font-bold tracking-widest uppercase">Jambangan Cultural Dance</h1>
+            <h1 class="text-xl font-bold tracking-widest uppercase">{{ $general_contents['site_title']}}</h1>
         </div>
 
         <ul class="flex space-x-6 font-semibold">
@@ -48,51 +52,43 @@
 
     <!-- 🎭 Hero Section with AOS Animation -->
     <section data-aos="fade-zoom-in" data-aos-easing="ease-in-back" data-aos-duration="1000" class="relative">
-        <div x-data="{
-            current: 0,
-            slides: [
-                { image: '{{ asset('images/best.png') }}', caption: 'Pangalay - A dance of the Tausug people' },
-                { image: '{{ asset('images/test2.png') }}', caption: 'Singkil - A royal dance of the Maranao' },
-                { image: '{{ asset('images/dance3.png') }}', caption: 'Tinikling - The famous bamboo dance of the Philippines' },
-            ]
-        }"
-        x-init="setInterval(() => current = (current + 1) % slides.length, 6000)"
-        class="relative w-full h-screen flex items-center justify-center text-white overflow-hidden">
+        <div class="relative w-full h-screen flex items-center justify-center text-white overflow-hidden">
     
             <!-- Background Slides -->
-            <template x-for="(slide, index) in slides" :key="index">
-                <div x-show="current === index"
-                    class="bg-gradient-to-b absolute inset-0 w-full h-full bg-cover bg-center transition-opacity duration-1000 ease-in-out"
-                    :style="'background-image: url(' + slide.image + ');'">
+            @foreach($cover_medias as $index => $item)
+                <div class="bg-gradient-to-b absolute inset-0 w-full h-full bg-cover bg-center transition-opacity duration-1000 ease-in-out"
+                    style="background-image: url('{{ isset($item['file_data']) ? 'http://127.0.0.1:9000/my-bucket/' . $item['file_data'] : asset('images/placeholder.png') }}');"
+                    @if ($index != 0) style="display: none;" @endif>
                 </div>
-            </template>
+            @endforeach
     
-            <div class="absolute inset-0 bg-[#121212]" x-show="!slides.length"></div>
+            <div class="absolute inset-0 bg-[#121212]" @if($cover_medias->isEmpty()) style="display: block;" @else style="display: none;" @endif></div>
     
             <!-- Text Overlay -->
             <div class="shadow-text relative z-10 text-center drop-shadow-2xl px-6">
                 <h1 class="text-5xl font-bold drop-shadow-2xl">Jambangan: the Dance Ambassador of WMSU</h1>
-                <p class="text-xl mt-4 drop-shadow-2xl" x-text="slides[current].caption"></p>
+                <p class="text-xl mt-4 drop-shadow-2xl" id="slide-caption"></p>
             </div>
     
             <!-- Navigation Buttons -->
-            <button @click="current = (current - 1 + slides.length) % slides.length"
-                    class="absolute left-4 bg-opacity-0 hover:bg-opacity-0 text-white px-4 py-2 rounded-full text-2xl">
+            <button onclick="prevSlide()" class="absolute left-4 bg-opacity-0 hover:bg-opacity-0 text-white px-4 py-2 rounded-full text-2xl">
                 &lt;
             </button>
-            <button @click="current = (current + 1) % slides.length"
-                    class="absolute right-4 bg-opacity-0 hover:bg-opacity-0 text-white px-4 py-2 rounded-full text-2xl">
+            <button onclick="nextSlide()" class="absolute right-4 bg-opacity-0 hover:bg-opacity-0 text-white px-4 py-2 rounded-full text-2xl">
                 &gt;
             </button>
+    
         </div>
     </section>
+    
+    
 
     <!-- ✨ About Section -->
     <section id="aboutUs" data-aos="fade-right" class="py-12 px-6 bg-[#121212] shadow-md">
         <div class="max-w-SxL mx-auto text-center">
             <h2 class="text-4xl font-extrabold mb-6">About Us</h2>
             <p class="text-lg text-gray-300 leading-relaxed">
-                Jambangan Cultural Dance is a celebration of the Filipino soul and the rich Spanish heritage that defines it. Our performances are a tribute to elegance, tradition, and artistry.
+                {{ $general_contents['about_us'] }}
             </p>
         </div>
     </section>
@@ -105,102 +101,51 @@
         </div>
         
         <div class="flex justify-center items-center max-w-6xl mx-auto space-x-6">
-            <!-- 🎭 Event Card 1 -->
-            <div class="relative w-[350px] h-[300px] bg-[#1D1D1D] rounded-lg shadow-2xl overflow-hidden transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
-                <!-- Image Placeholder with Gradient -->
-                <div class="h-40 bg-cover bg-center flex items-center justify-center text-white text-2xl font-semibold relative sm:text-xl md:text-2xl lg:text-3xl" style="background-image: url('your-image-url');">
-                    <div class="absolute inset-0 bg-gradient-to-r from-black opacity-50"></div> <!-- Gradient overlay -->
-                    <img src="{{ asset('images/placeholder.png') }}" alt="Image Placeholder" class="w-full h-full object-cover">
+            @foreach ($events as $event)
+                <div class="relative w-[350px] h-[300px] bg-[#1D1D1D] rounded-lg shadow-2xl overflow-hidden transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
+                    <!-- Image Placeholder with Gradient -->
+                    <div class="h-40 bg-cover bg-center flex items-center justify-center text-white text-2xl font-semibold relative sm:text-xl md:text-2xl lg:text-3xl" style="background-image: url('{{ asset('images/placeholder.png') }}');">
+                        <div class="absolute inset-0 bg-gradient-to-r from-black opacity-50"></div> <!-- Gradient overlay -->
+                        <img src="{{ asset('images/placeholder.png') }}" alt="Image Placeholder" class="w-full h-full object-cover">
+                    </div>
+                    <!-- Date with Gradient Background -->
+                    <div class="absolute top-4 left-4 font-bold text-5xl z-10 sm:text-4xl md:text-5xl lg:text-6xl">
+                        <span class="block">{{ \Carbon\Carbon::parse($event->start)->format('M') }}</span>
+                        <span class="block text-6xl sm:text-5xl md:text-6xl lg:text-7xl">{{ \Carbon\Carbon::parse($event->start)->format('d') }}</span>
+                    </div>
+                    <!-- Event Info with More Padding -->
+                    <div class="p-5">
+                        <h3 class="text-2xl font-semibold sm:text-xl md:text-2xl lg:text-3xl">{{ $event->title }}</h3>
+                        <p class="text-gray-300 text-sm mt-4 sm:text-xs md:text-sm lg:text-base">{{ $event->location }}</p>
+                    </div>
                 </div>
-                <!-- Date with Gradient Background -->
-                <div class="absolute top-4 left-4  font-bold text-5xl z-10 sm:text-4xl md:text-5xl lg:text-6xl">
-                    <span class="block">APR</span>
-                    <span class="block text-6xl sm:text-5xl md:text-6xl lg:text-7xl">15</span>
-                </div>
-                <!-- Event Info with More Padding -->
-                <div class="p-5"> <!-- Added more padding here -->
-                    <h3 class="text-2xl font-semibold  sm:text-xl md:text-2xl lg:text-3xl">Pangalay Showcase</h3>
-                    <p class="text-gray-300 text-sm mt-4 sm:text-xs md:text-sm lg:text-base">An elegant dance performance celebrating the heritage of the Tausug people.</p>
-                </div>
-            </div>
-    
-            <!-- 🎭 Event Card 2 -->
-            <div class="relative w-[350px] h-[300px] bg-[#1D1D1D] rounded-lg shadow-2xl overflow-hidden transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
-                <div class="h-40 bg-cover bg-center flex items-center justify-center text-white text-2xl font-semibold relative sm:text-xl md:text-2xl lg:text-3xl" style="background-image: url('your-image-url');">
-                    <div class="absolute inset-0 bg-gradient-to-r from-black opacity-50"></div> <!-- Gradient overlay -->
-                    <img src="{{ asset('images/placeholder.png') }}" alt="Image Placeholder" class="w-full h-full object-cover">
-                </div>
-                <div class="absolute top-4 left-4  font-bold text-5xl z-10 sm:text-4xl md:text-5xl lg:text-6xl">
-                    <span class="block">MAY</span>
-                    <span class="block text-6xl sm:text-5xl md:text-6xl lg:text-7xl">10</span>
-                </div>
-                <div class="p-5">
-                    <h3 class="text-2xl font-semibold  sm:text-xl md:text-2xl lg:text-3xl">Singkil Royal Dance</h3>
-                    <p class="text-gray-300 text-sm mt-4 sm:text-xs md:text-sm lg:text-base">A mesmerizing performance of the Maranao royal dance with intricate footwork.</p>
-                </div>
-            </div>
-    
-            <!-- 🎭 Event Card 3 -->
-            <div class="relative w-[350px] h-[300px] bg-[#1D1D1D] rounded-lg shadow-2xl overflow-hidden transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
-                <div class="h-40 bg-cover bg-center flex items-center justify-center text-white text-2xl font-semibold relative sm:text-xl md:text-2xl lg:text-3xl" style="background-image: url('your-image-url');">
-                    <div class="absolute inset-0 bg-gradient-to-r from-black opacity-50"></div> <!-- Gradient overlay -->
-                    <img src="{{ asset('images/placeholder.png') }}" alt="Image Placeholder" class="w-full h-full object-cover">
-                </div>
-                <div class="absolute top-4 left-4  font-bold text-5xl z-10 sm:text-4xl md:text-5xl lg:text-6xl">
-                    <span class="block">JUN</span>
-                    <span class="block text-6xl sm:text-5xl md:text-6xl lg:text-7xl">05</span>
-                </div>
-                <div class="p-5">
-                    <h3 class="text-2xl font-semibold  sm:text-xl md:text-2xl lg:text-3xl">Tinikling Festival</h3>
-                    <p class="text-gray-300 text-sm mt-4 sm:text-xs md:text-sm lg:text-base">Experience the thrill of the Philippine bamboo dance at its finest.</p>
-                </div>
-            </div>
+            @endforeach
+            <a href="">See More</a>
         </div>
+        
     </section>
 
     <!-- 🕊 Performances Showcase -->
     <section id="performances" data-aos="fade-right" class="py-16 bg-[#121212]">
-    <div class="container mx-auto px-6">
-        <h2 class="text-4xl font-bold text-center mb-12 tracking-wide text-white">Our Performances</h2>
-        <div class="flex flex-wrap justify-center gap-8">
-            <!-- Card 1 -->
-            <div class="relative w-[300px] sm:w-[340px] md:w-[350px] h-[420px] bg-[#1E1E1E] rounded-lg shadow-2xl overflow-hidden transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
-                <div class="h-64 bg-cover bg-center relative">
-                    <img src="/images/dance1.png" alt="Tinikling" class="w-full h-full object-cover rounded-t-lg">
-                    <div class="absolute inset-0 bg-gradient-to-r from-black opacity-40"></div>
-                </div>
-                <div class="p-4">
-                    <h3 class="text-xl font-semibold text-[#FFD700] mb-2">Tinikling</h3>
-                    <p class="text-gray-300 text-sm">The national dance of the Philippines, showcasing grace and agility.</p>
-                </div>
-            </div>
-
-            <!-- Card 2 -->
-            <div class="relative w-[300px] sm:w-[340px] md:w-[350px] h-[420px] bg-[#1E1E1E] rounded-lg shadow-2xl overflow-hidden transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
-                <div class="h-64 bg-cover bg-center relative">
-                    <img src="/images/dance2.png" alt="Pandanggo sa Ilaw" class="w-full h-full object-cover rounded-t-lg">
-                    <div class="absolute inset-0 bg-gradient-to-r from-black opacity-40"></div>
-                </div>
-                <div class="p-4">
-                    <h3 class="text-xl font-semibold text-[#FFD700] mb-2">Pandanggo sa Ilaw</h3>
-                    <p class="text-gray-300 text-sm">A dance of flickering lights, representing balance and elegance.</p>
-                </div>
-            </div>
-
-            <!-- Card 3 -->
-            <div class="relative w-[300px] sm:w-[340px] md:w-[350px] h-[420px] bg-[#1E1E1E] rounded-lg shadow-2xl overflow-hidden transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
-                <div class="h-64 bg-cover bg-center relative">
-                    <img src="/images/dance3.png" alt="Singkil" class="w-full h-full object-cover rounded-t-lg">
-                    <div class="absolute inset-0 bg-gradient-to-r from-black opacity-40"></div>
-                </div>
-                <div class="p-4">
-                    <h3 class="text-xl font-semibold text-[#FFD700] mb-2">Singkil</h3>
-                    <p class="text-gray-300 text-sm">A royal dance of the Maranao people, showcasing precision and poise.</p>
-                </div>
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-12 tracking-wide text-white">Our Performances</h2>
+            <div class="flex flex-wrap justify-center gap-8">
+                @foreach ($performances as $performance)
+                <img src="{{ 'http://localhost:9000/my-bucket/' . $performance->media->file_data }}" alt="{{ $performance->title }}" class="w-50 h-50 object-cover rounded-t-lg">
+                    <div class="relative w-[300px] sm:w-[340px] md:w-[350px] h-[420px] bg-[#1E1E1E] rounded-lg shadow-2xl overflow-hidden transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
+                        <div class="h-64 bg-cover bg-center relative">
+                            <div class="absolute inset-0 bg-gradient-to-r from-black opacity-40"></div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-xl font-semibold text-[#FFD700] mb-2">{{ $performance->title }}</h3>
+                            <p class="text-gray-300 text-sm">{{ $performance->description }}</p>
+                        </div>
+                    </div>
+                @endforeach
             </div>
         </div>
-    </div>
     </section>
+    
 
 
     <!-- 👑 Leadership Section -->
@@ -240,7 +185,7 @@
     <!--Contact Section-->
     <section id="contact" data-aos="fade-right" class="py-12 px-6 bg-[#8B0000] text-white shadow-xl">
         <div class="max-w-4xl mx-auto text-center">
-            <h2 class="text-3xl font-bold mb-6 tracking-wide">Book us Now!</h2>
+            <h2 class="text-3xl font-bold mb-6 tracking-wide">Book us</h2>
             <p class="text-lg">Interested in a performance? Contact us at <strong class="">jambangan@culture.ph</strong></p>
         </div>
     </section>
@@ -253,6 +198,37 @@
 
     <!-- AOS JS -->
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        let currentSlide = 0;
+        const slides = @json($cover_medias);
+        const captions = slides.map(slide => `${slide.title ?? ''} - ${slide.subtitle ?? ''}`);
+        const slideElements = document.querySelectorAll('.bg-cover');
+    
+        function updateSlide() {
+            slideElements.forEach((slide, index) => {
+                slide.style.display = index === currentSlide ? 'block' : 'none';
+            });
+            document.getElementById('slide-caption').textContent = captions[currentSlide];
+        }
+    
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            updateSlide();
+        }
+    
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            updateSlide();
+        }
+    
+        // Initialize the first slide
+        updateSlide();
+    
+        // Auto-rotate slides every 6 seconds
+        setInterval(nextSlide, 6000);
+    </script>
     <script>
         AOS.init({
             once: true,
