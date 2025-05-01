@@ -5,9 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Events extends Model
 {
+    use HasFactory;
+
     // Specify primary key since it's not the default 'id'
     protected $primaryKey = 'event_id';
 
@@ -48,5 +53,15 @@ class Events extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function media(): HasOne
+    {
+        return $this->hasOne(Media::class, 'event_id');
+    }
+
+    public function posts(): HasMany
+    {
+        return $this->hasMany(Posts::class, 'event_id');
     }
 }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Performances - Jambangan Cultural Dance</title>
+    <title>{{ $event->title }} - Jambangan Cultural Dance</title>
     
     <!-- Stylesheets -->
     @vite(['resources/css/landingpage.css', 'resources/js/app.js'])
@@ -17,9 +17,7 @@
 </head>
 
 <body class="bg-black">
-    <!-- ==================== -->
-    <!-- NAVIGATION SECTION -->
-    <!-- ==================== -->
+    <!-- Navigation Section -->
     <nav x-data="{ 
         scrolled: false,
         lastScroll: 0,
@@ -29,7 +27,6 @@
                 const currentScroll = window.scrollY;
                 this.scrolled = currentScroll > window.innerHeight - 400;
                 
-                // Show nav when scrolling up or at the top
                 if (currentScroll < this.lastScroll || currentScroll < 100) {
                     this.isVisible = true;
                 } else {
@@ -49,130 +46,118 @@
         </div>
 
         <div class="relative container mx-auto flex justify-between items-center p-4">
-            <!-- Logo and Main Navigation -->
             <div class="flex items-center gap-8">
                 <div class="flex items-center gap-4">
-                    <a href="#" class="group">
+                    <a href="/" class="group">
                         <img src="{{ $general_contents->logo_path ? $general_contents->logo_path : asset('images/LogoColored.png') }}" alt="Jambangan Logo" class="h-25 w-auto transition-transform duration-300 group-hover:scale-105">
                     </a>
                 </div>
                 <ul class="flex space-x-6 font-thin">
-                    <li><a href="{{ route('about') }}" class="relative text-lg text-white hover:text-yellow-400 transition duration-300 group">
+                    <li><a href="/about" class="relative text-lg text-white hover:text-yellow-400 transition duration-300 group">
                         ABOUT US<span class="absolute left-0 bottom-0 w-0 h-0.5 bg-yellow-400 transition-all duration-300 group-hover:w-full"></span>
                     </a></li>
-                    <li><a href="{{ route('performances') }}" class="relative text-lg text-white hover:text-red-500 transition duration-300 group">
+                    <li><a href="/performances" class="relative text-lg text-white hover:text-red-500 transition duration-300 group">
                         PERFORMANCES<span class="absolute left-0 bottom-0 w-0 h-0.5 bg-red-500 transition-all duration-300 group-hover:w-full"></span>
                     </a></li>
-                    <li><a href="{{ route('events') }}" class="relative text-lg text-white hover:text-red-500 transition duration-300 group">
+                    <li><a href="/events" class="relative text-lg text-white hover:text-red-500 transition duration-300 group">
                         EVENTS<span class="absolute left-0 bottom-0 w-0 h-0.5 bg-red-500 transition-all duration-300 group-hover:w-full"></span>
                     </a></li>
                     <li><a href="/posts" class="relative text-lg text-white hover:text-yellow-400 transition duration-300 group">
                         POSTS<span class="absolute left-0 bottom-0 w-0 h-0.5 bg-yellow-400 transition-all duration-300 group-hover:w-full"></span>
                     </a></li>
+                    <li><a href="#contact" class="relative text-lg text-white hover:text-yellow-400 transition duration-300 group">
+                        CONTACT<span class="absolute left-0 bottom-0 w-0 h-0.5 bg-yellow-400 transition-all duration-300 group-hover:w-full"></span>
+                    </a></li>
                 </ul>
             </div>
-
-            <!-- Utility Buttons -->
-            <x-search-booking-icons />
         </div>
     </nav>
 
-    <!-- ==================== -->
-    <!-- HERO SECTION -->
-    <!-- ==================== -->
+    <!-- Hero Section -->
     <section class="relative h-[60vh] flex items-center justify-center overflow-hidden"
         data-aos="fade-zoom-in"
         data-aos-easing="ease-in-back"
         data-aos-duration="1000">
         <div class="absolute inset-0 bg-gradient-to-b from-black/40 to-transparent z-10"></div>
-        <div class="absolute inset-0 bg-[url('images/best2.png')] bg-cover bg-center transform scale-110"></div>
+        @if($event->media)
+            <div class="absolute inset-0 bg-cover bg-center transform scale-110" 
+                 style="background-image: url('{{ 'http://localhost:9000/my-bucket/' . $event->media->file_data }}');"></div>
+        @else
+            <div class="absolute inset-0 bg-[url('images/best2.png')] bg-cover bg-center transform scale-110"></div>
+        @endif
         <div class="relative z-20 text-center px-4">
             <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white mb-4">
                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-red-500 to-yellow-400 animate-text-gradient">
-                    Our Performances
+                    {{ $event->title }}
                 </span>
             </h1>
-            <p class="text-xl sm:text-2xl text-gray-200">Experience the Rich Cultural Heritage</p>
+            <p class="text-xl sm:text-2xl text-gray-200">{{ $event->location }}</p>
         </div>
     </section>
 
-    <!-- ==================== -->
-    <!-- PERFORMANCES SECTION -->
-    <!-- ==================== -->
-    <section id="performances" class="py-12 sm:py-24 bg-black relative overflow-hidden"
+    <!-- Event Details Section -->
+    <section class="py-12 sm:py-24 bg-black relative overflow-hidden"
         data-aos="fade-up"
         data-aos-duration="1000">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                @foreach($performances as $performance)
-                    <div class="group bg-[#121212] rounded-lg shadow-xl overflow-hidden transform transition-all duration-300 hover:scale-105"
-                        data-aos="fade-up"
-                        data-aos-delay="{{ $loop->index * 100 }}">
-                        <!-- Performance Image -->
-                        <div class="relative h-64 overflow-hidden">
-                            @if($performance->media)
-                                <img src="{{ 'http://localhost:9000/my-bucket/' . $performance->media->file_data }}" 
-                                     alt="{{ $performance->title }}"
-                                     class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                            @else
-                                <div class="w-full h-full bg-gradient-to-br from-[#EAB308] to-[#EF4444] flex items-center justify-center">
-                                    <span class="text-white text-2xl font-bold">Jambangan</span>
-                                </div>
-                            @endif
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+            <!-- Back Button -->
+            <div class="mb-8">
+                <a href="{{ route('events') }}" class="inline-flex items-center text-white hover:text-yellow-400 transition-colors duration-300 group">
+                    <svg class="w-5 h-5 mr-2 transform group-hover:-translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                    Back to Events
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Main Content -->
+                <div class="lg:col-span-2">
+                    <div class="bg-[#121212] rounded-lg shadow-xl p-6">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="text-sm text-[#EAB308]">{{ \Carbon\Carbon::parse($event->start_date)->format('M d, Y') }}</span>
+                            <span class="text-sm text-gray-400">•</span>
+                            <span class="text-sm text-gray-400">{{ $event->location }}</span>
                         </div>
-
-                        <!-- Performance Info -->
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold text-white mb-2 group-hover:text-[#EAB308] transition-colors duration-300">
-                                {{ $performance->title }}
-                            </h3>
-                            <p class="text-[#EAB308] font-semibold mb-4">
-                                {{ $performance->type }}
-                            </p>
-                            <p class="text-gray-300 mb-4 line-clamp-2">
-                                {{ $performance->description }}
-                            </p>
-                            
-                            <!-- Related Posts Preview -->
-                            @if($performance->posts->count() > 0)
-                                <div class="mt-4 border-t border-gray-800 pt-4">
-                                    <h4 class="text-sm font-semibold text-gray-400 mb-2">Related Posts</h4>
-                                    <div class="space-y-2">
-                                        @foreach($performance->posts->take(2) as $post)
-                                            <div class="flex items-center gap-2">
-                                                @if($post->media->isNotEmpty())
-                                                    <img src="{{ 'http://localhost:9000/my-bucket/' . $post->media->first()->file_data }}" 
-                                                         alt="{{ $post->title }}"
-                                                         class="w-8 h-8 rounded-full object-cover">
-                                                @endif
-                                                <span class="text-sm text-gray-300 truncate">{{ $post->title }}</span>
-                                            </div>
-                                        @endforeach
-                                        @if($performance->posts->count() > 2)
-                                            <p class="text-sm text-gray-400">+{{ $performance->posts->count() - 2 }} more posts</p>
-                                        @endif
-                                    </div>
-                                </div>
-                            @endif
-
-                            <a href="{{ route('performances.show', $performance->performance_id) }}" 
-                               class="mt-4 inline-flex items-center px-4 py-2 bg-gradient-to-r from-yellow-400 to-red-500 text-black rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
-                                View Details
-                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                                </svg>
-                            </a>
+                        
+                        <div class="prose prose-invert max-w-none">
+                            {!! nl2br(e($event->description)) !!}
                         </div>
                     </div>
-                @endforeach
+                </div>
+
+                <!-- Related Posts Sidebar -->
+                <div class="lg:col-span-1">
+                    <div class="bg-[#121212] rounded-lg shadow-xl p-6">
+                        <h3 class="text-xl font-bold text-white mb-4">Related Posts</h3>
+                        <div class="space-y-4">
+                            @foreach($event->posts as $post)
+                                <div class="group">
+                                    <div class="flex items-center gap-3">
+                                        @if($post->media->isNotEmpty())
+                                            <img src="{{ 'http://localhost:9000/my-bucket/' . $post->media->first()->file_data }}" 
+                                                 alt="{{ $post->title }}"
+                                                 class="w-12 h-12 rounded-lg object-cover">
+                                        @endif
+                                        <div>
+                                            <h4 class="text-white group-hover:text-[#EAB308] transition-colors duration-300">
+                                                {{ $post->title }}
+                                            </h4>
+                                            <p class="text-sm text-gray-400 line-clamp-2">
+                                                {{ $post->content }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- ==================== -->
-    <!-- FOOTER SECTION -->
-    <!-- ==================== -->
+    <!-- Footer Section -->
     <footer class="p-4 sm:p-6 shadow-inner text-white bg-[#121212] text-sm sm:text-base">
         <div class="container mx-auto flex justify-between items-center">
             <div class="text-left">
@@ -208,9 +193,7 @@
         </div>
     </footer>
 
-    <!-- ==================== -->
-    <!-- SCRIPTS -->
-    <!-- ==================== -->
+    <!-- Scripts -->
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     
@@ -243,4 +226,4 @@
         }
     </style>
 </body>
-</html>
+</html> 

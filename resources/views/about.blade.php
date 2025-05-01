@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Performances - Jambangan Cultural Dance</title>
+    <title>About Us - Jambangan Cultural Dance</title>
     
     <!-- Stylesheets -->
     @vite(['resources/css/landingpage.css', 'resources/js/app.js'])
@@ -89,30 +89,121 @@
         <div class="relative z-20 text-center px-4">
             <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white mb-4">
                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-red-500 to-yellow-400 animate-text-gradient">
-                    Our Performances
+                    About Jambangan
                 </span>
             </h1>
-            <p class="text-xl sm:text-2xl text-gray-200">Experience the Rich Cultural Heritage</p>
+            <p class="text-xl sm:text-2xl text-gray-200">The Dance Ambassador of WMSU</p>
         </div>
     </section>
 
     <!-- ==================== -->
-    <!-- PERFORMANCES SECTION -->
+    <!-- MISSION & VISION SECTION -->
     <!-- ==================== -->
-    <section id="performances" class="py-12 sm:py-24 bg-black relative overflow-hidden"
+    <section class="py-12 sm:py-24 bg-black relative overflow-hidden"
         data-aos="fade-up"
         data-aos-duration="1000">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                @foreach($performances as $performance)
-                    <div class="group bg-[#121212] rounded-lg shadow-xl overflow-hidden transform transition-all duration-300 hover:scale-105"
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <!-- Mission -->
+                <div class="relative z-10">
+                    <h2 class="text-xl sm:text-2xl text-white font-extrabold mb-4 sm:mb-6 relative pl-6 ml-4 sm:ml-10 before:content-['|'] before:absolute before:left-0 before:text-[#EAB308] before:text-2xl sm:before:text-3xl">
+                        OUR MISSION
+                    </h2>
+                    <p class="text-lg sm:text-xl text-gray-300 leading-relaxed">
+                        {{ $general_contents['mission'] ?? 'To preserve and promote the rich cultural heritage of the Philippines through traditional dance performances, while fostering unity and pride among our members and audiences.' }}
+                    </p>
+                </div>
+
+                <!-- Vision -->
+                <div class="relative z-10">
+                    <h2 class="text-xl sm:text-2xl text-white font-extrabold mb-4 sm:mb-6 relative pl-6 ml-4 sm:ml-10 before:content-['|'] before:absolute before:left-0 before:text-[#EAB308] before:text-2xl sm:before:text-3xl">
+                        OUR VISION
+                    </h2>
+                    <p class="text-lg sm:text-xl text-gray-300 leading-relaxed">
+                        {{ $general_contents['vision'] ?? 'To be recognized as the premier cultural dance group in the region, inspiring future generations to appreciate and continue our cultural traditions.' }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== -->
+    <!-- OUR STORY SECTION -->
+    <!-- ==================== -->
+    <section id="aboutUs" 
+        class="py-12 sm:py-24 bg-[#121212] shadow-md relative" 
+        style="background-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.9) 3%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.9) 97%, rgba(0, 0, 0, 1) 100%), url('images/best2.png'); background-size: cover; background-position: center;"
+        data-aos="fade-up"
+        data-aos-duration="1000">
+        
+        <div class="absolute inset-0 bg-black opacity-80"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-5xl mx-auto text-base relative z-10">
+                <h2 class="text-xl sm:text-2xl text-white font-extrabold mb-4 sm:mb-6 relative pl-6 ml-4 sm:ml-10 before:content-['|'] before:absolute before:left-0 before:text-[#EAB308] before:text-2xl sm:before:text-3xl">
+                    OUR STORY
+                </h2>
+                <div class="my-12 sm:my-24 max-w-4xl">
+                    <p class="text-xl sm:text-2xl md:text-3xl font-thin text-gray-300 leading-relaxed">
+                        {{ $general_contents['about_us'] }}
+                    </p>
+                </div>
+            </div>  
+        </div>
+    </section>
+
+    <!-- ==================== -->
+    <!-- VALUES SECTION -->
+    <!-- ==================== -->
+    <section class="py-12 sm:py-24 bg-black relative overflow-hidden"
+        data-aos="fade-up"
+        data-aos-duration="1000">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-xl sm:text-2xl text-white font-extrabold mb-12 sm:mb-16 relative pl-6 ml-4 sm:ml-10 before:content-['|'] before:absolute before:left-0 before:text-[#EAB308] before:text-2xl sm:before:text-3xl">
+                OUR CORE VALUES
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-[#121212] p-6 rounded-lg transform transition-all duration-300 hover:scale-105">
+                    <div class="text-yellow-400 text-4xl mb-4">🎭</div>
+                    <h3 class="text-xl font-bold text-white mb-4">Cultural Preservation</h3>
+                    <p class="text-gray-300">We are committed to preserving and promoting the rich cultural heritage of the Philippines through traditional dance.</p>
+                </div>
+                <div class="bg-[#121212] p-6 rounded-lg transform transition-all duration-300 hover:scale-105">
+                    <div class="text-yellow-400 text-4xl mb-4">🤝</div>
+                    <h3 class="text-xl font-bold text-white mb-4">Unity & Community</h3>
+                    <p class="text-gray-300">We foster a strong sense of community and unity among our members and audiences.</p>
+                </div>
+                <div class="bg-[#121212] p-6 rounded-lg transform transition-all duration-300 hover:scale-105">
+                    <div class="text-yellow-400 text-4xl mb-4">🌟</div>
+                    <h3 class="text-xl font-bold text-white mb-4">Excellence</h3>
+                    <p class="text-gray-300">We strive for excellence in every performance, maintaining the highest standards of artistic expression.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== -->
+    <!-- LEADERSHIP TEAM SECTION -->
+    <!-- ==================== -->
+    <section class="py-12 sm:py-24 bg-[#121212] relative overflow-hidden"
+        data-aos="fade-up"
+        data-aos-duration="1000">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-xl sm:text-2xl text-white font-extrabold mb-12 sm:mb-16 relative pl-6 ml-4 sm:ml-10 before:content-['|'] before:absolute before:left-0 before:text-[#EAB308] before:text-2xl sm:before:text-3xl">
+                OUR LEADERSHIP TEAM
+            </h2>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                @foreach($officers as $officer)
+                    <div class="group bg-black rounded-lg shadow-xl overflow-hidden transform transition-all duration-300 hover:scale-105"
                         data-aos="fade-up"
                         data-aos-delay="{{ $loop->index * 100 }}">
-                        <!-- Performance Image -->
+                        <!-- Officer Image -->
                         <div class="relative h-64 overflow-hidden">
-                            @if($performance->media)
-                                <img src="{{ 'http://localhost:9000/my-bucket/' . $performance->media->file_data }}" 
-                                     alt="{{ $performance->title }}"
+                            @if($officer->media)
+                                <img src="{{ 'http://localhost:9000/my-bucket/' . $officer->media->file_data }}" 
+                                     alt="{{ $officer->name }}"
                                      class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                             @else
                                 <div class="w-full h-full bg-gradient-to-br from-[#EAB308] to-[#EF4444] flex items-center justify-center">
@@ -122,50 +213,67 @@
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                         </div>
 
-                        <!-- Performance Info -->
+                        <!-- Officer Info -->
                         <div class="p-6">
                             <h3 class="text-xl font-bold text-white mb-2 group-hover:text-[#EAB308] transition-colors duration-300">
-                                {{ $performance->title }}
+                                {{ $officer->name }}
                             </h3>
                             <p class="text-[#EAB308] font-semibold mb-4">
-                                {{ $performance->type }}
+                                {{ $officer->position }}
                             </p>
-                            <p class="text-gray-300 mb-4 line-clamp-2">
-                                {{ $performance->description }}
-                            </p>
-                            
-                            <!-- Related Posts Preview -->
-                            @if($performance->posts->count() > 0)
-                                <div class="mt-4 border-t border-gray-800 pt-4">
-                                    <h4 class="text-sm font-semibold text-gray-400 mb-2">Related Posts</h4>
-                                    <div class="space-y-2">
-                                        @foreach($performance->posts->take(2) as $post)
-                                            <div class="flex items-center gap-2">
-                                                @if($post->media->isNotEmpty())
-                                                    <img src="{{ 'http://localhost:9000/my-bucket/' . $post->media->first()->file_data }}" 
-                                                         alt="{{ $post->title }}"
-                                                         class="w-8 h-8 rounded-full object-cover">
-                                                @endif
-                                                <span class="text-sm text-gray-300 truncate">{{ $post->title }}</span>
-                                            </div>
-                                        @endforeach
-                                        @if($performance->posts->count() > 2)
-                                            <p class="text-sm text-gray-400">+{{ $performance->posts->count() - 2 }} more posts</p>
-                                        @endif
-                                    </div>
-                                </div>
-                            @endif
-
-                            <a href="{{ route('performances.show', $performance->performance_id) }}" 
-                               class="mt-4 inline-flex items-center px-4 py-2 bg-gradient-to-r from-yellow-400 to-red-500 text-black rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
-                                View Details
-                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                                </svg>
-                            </a>
+                            <div class="space-y-2 text-gray-300">
+                                @if($officer->email)
+                                    <p class="flex items-center">
+                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                        </svg>
+                                        {{ $officer->email }}
+                                    </p>
+                                @endif
+                                @if($officer->phone)
+                                    <p class="flex items-center">
+                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                                        </svg>
+                                        {{ $officer->phone }}
+                                    </p>
+                                @endif
+                            </div>
                         </div>
                     </div>
                 @endforeach
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== -->
+    <!-- CONTACT SECTION -->
+    <!-- ==================== -->
+    <section id="contact" 
+        class="py-12 sm:py-20 bg-[#121212] text-white shadow-inner relative overflow-hidden"
+        data-aos="fade-up"
+        data-aos-duration="1000">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Red gradient glow at top and bottom for style -->
+            <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-yellow-400 via-red-600 to-yellow-400 opacity-25 animate-pulse"></div>
+            <div class="absolute bottom-0 left-0 w-full h-2 bg-gradient-to-r from-yellow-400 via-red-600 to-yellow-400 opacity-25 animate-pulse"></div>
+
+            <div class="max-w-3xl mx-auto text-center relative z-10">
+                <h2 class="text-3xl sm:text-4xl font-extrabold mb-4 text-yellow-400 tracking-widest drop-shadow-lg">CONTACT US</h2>
+                <p class="text-base sm:text-lg text-gray-200 mb-6 sm:mb-8">
+                    Interested in a performance or event collaboration?<br>
+                    Reach out to us at <strong class="text-yellow-400">jambangan@culture.ph</strong>
+                </p>
+
+                <div class="max-w-md mx-auto mt-12">
+                    <div class="bg-black/50 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-yellow-400 mb-4">Visit Us</h3>
+                        <p class="text-gray-300">
+                            Western Mindanao State University<br>
+                            Zamboanga City, Philippines
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -243,4 +351,4 @@
         }
     </style>
 </body>
-</html>
+</html> 

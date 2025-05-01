@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Performances - Jambangan Cultural Dance</title>
+    <title>{{ $post->title }} - Jambangan Cultural Dance</title>
     
     <!-- Stylesheets -->
     @vite(['resources/css/landingpage.css', 'resources/js/app.js'])
@@ -17,9 +17,7 @@
 </head>
 
 <body class="bg-black">
-    <!-- ==================== -->
-    <!-- NAVIGATION SECTION -->
-    <!-- ==================== -->
+    <!-- Navigation Section -->
     <nav x-data="{ 
         scrolled: false,
         lastScroll: 0,
@@ -29,7 +27,6 @@
                 const currentScroll = window.scrollY;
                 this.scrolled = currentScroll > window.innerHeight - 400;
                 
-                // Show nav when scrolling up or at the top
                 if (currentScroll < this.lastScroll || currentScroll < 100) {
                     this.isVisible = true;
                 } else {
@@ -49,21 +46,20 @@
         </div>
 
         <div class="relative container mx-auto flex justify-between items-center p-4">
-            <!-- Logo and Main Navigation -->
             <div class="flex items-center gap-8">
                 <div class="flex items-center gap-4">
-                    <a href="#" class="group">
+                    <a href="/" class="group">
                         <img src="{{ $general_contents->logo_path ? $general_contents->logo_path : asset('images/LogoColored.png') }}" alt="Jambangan Logo" class="h-25 w-auto transition-transform duration-300 group-hover:scale-105">
                     </a>
                 </div>
                 <ul class="flex space-x-6 font-thin">
-                    <li><a href="{{ route('about') }}" class="relative text-lg text-white hover:text-yellow-400 transition duration-300 group">
+                    <li><a href="/about" class="relative text-lg text-white hover:text-yellow-400 transition duration-300 group">
                         ABOUT US<span class="absolute left-0 bottom-0 w-0 h-0.5 bg-yellow-400 transition-all duration-300 group-hover:w-full"></span>
                     </a></li>
-                    <li><a href="{{ route('performances') }}" class="relative text-lg text-white hover:text-red-500 transition duration-300 group">
+                    <li><a href="/performances" class="relative text-lg text-white hover:text-red-500 transition duration-300 group">
                         PERFORMANCES<span class="absolute left-0 bottom-0 w-0 h-0.5 bg-red-500 transition-all duration-300 group-hover:w-full"></span>
                     </a></li>
-                    <li><a href="{{ route('events') }}" class="relative text-lg text-white hover:text-red-500 transition duration-300 group">
+                    <li><a href="/events" class="relative text-lg text-white hover:text-red-500 transition duration-300 group">
                         EVENTS<span class="absolute left-0 bottom-0 w-0 h-0.5 bg-red-500 transition-all duration-300 group-hover:w-full"></span>
                     </a></li>
                     <li><a href="/posts" class="relative text-lg text-white hover:text-yellow-400 transition duration-300 group">
@@ -71,108 +67,81 @@
                     </a></li>
                 </ul>
             </div>
-
-            <!-- Utility Buttons -->
-            <x-search-booking-icons />
         </div>
     </nav>
 
-    <!-- ==================== -->
-    <!-- HERO SECTION -->
-    <!-- ==================== -->
-    <section class="relative h-[60vh] flex items-center justify-center overflow-hidden"
-        data-aos="fade-zoom-in"
-        data-aos-easing="ease-in-back"
-        data-aos-duration="1000">
-        <div class="absolute inset-0 bg-gradient-to-b from-black/40 to-transparent z-10"></div>
-        <div class="absolute inset-0 bg-[url('images/best2.png')] bg-cover bg-center transform scale-110"></div>
-        <div class="relative z-20 text-center px-4">
-            <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white mb-4">
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-red-500 to-yellow-400 animate-text-gradient">
-                    Our Performances
-                </span>
-            </h1>
-            <p class="text-xl sm:text-2xl text-gray-200">Experience the Rich Cultural Heritage</p>
-        </div>
-    </section>
+    <!-- Back Button -->
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 mt-32">
+        <a href="{{ route('posts') }}" class="inline-flex items-center text-white hover:text-yellow-400 transition-colors duration-300">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Back to Posts
+        </a>
+    </div>
 
-    <!-- ==================== -->
-    <!-- PERFORMANCES SECTION -->
-    <!-- ==================== -->
-    <section id="performances" class="py-12 sm:py-24 bg-black relative overflow-hidden"
+    <!-- Post Content -->
+    <section class="py-12 sm:py-24 bg-black relative overflow-hidden"
         data-aos="fade-up"
         data-aos-duration="1000">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                @foreach($performances as $performance)
-                    <div class="group bg-[#121212] rounded-lg shadow-xl overflow-hidden transform transition-all duration-300 hover:scale-105"
-                        data-aos="fade-up"
-                        data-aos-delay="{{ $loop->index * 100 }}">
-                        <!-- Performance Image -->
-                        <div class="relative h-64 overflow-hidden">
-                            @if($performance->media)
-                                <img src="{{ 'http://localhost:9000/my-bucket/' . $performance->media->file_data }}" 
-                                     alt="{{ $performance->title }}"
-                                     class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                            @else
-                                <div class="w-full h-full bg-gradient-to-br from-[#EAB308] to-[#EF4444] flex items-center justify-center">
-                                    <span class="text-white text-2xl font-bold">Jambangan</span>
-                                </div>
-                            @endif
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-[#121212] rounded-lg shadow-xl overflow-hidden">
+                <!-- Post Header -->
+                <div class="p-6 border-b border-gray-800">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-r from-yellow-400 to-red-500 flex items-center justify-center">
+                            <span class="text-xl font-bold text-black">J</span>
                         </div>
-
-                        <!-- Performance Info -->
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold text-white mb-2 group-hover:text-[#EAB308] transition-colors duration-300">
-                                {{ $performance->title }}
-                            </h3>
-                            <p class="text-[#EAB308] font-semibold mb-4">
-                                {{ $performance->type }}
-                            </p>
-                            <p class="text-gray-300 mb-4 line-clamp-2">
-                                {{ $performance->description }}
-                            </p>
-                            
-                            <!-- Related Posts Preview -->
-                            @if($performance->posts->count() > 0)
-                                <div class="mt-4 border-t border-gray-800 pt-4">
-                                    <h4 class="text-sm font-semibold text-gray-400 mb-2">Related Posts</h4>
-                                    <div class="space-y-2">
-                                        @foreach($performance->posts->take(2) as $post)
-                                            <div class="flex items-center gap-2">
-                                                @if($post->media->isNotEmpty())
-                                                    <img src="{{ 'http://localhost:9000/my-bucket/' . $post->media->first()->file_data }}" 
-                                                         alt="{{ $post->title }}"
-                                                         class="w-8 h-8 rounded-full object-cover">
-                                                @endif
-                                                <span class="text-sm text-gray-300 truncate">{{ $post->title }}</span>
-                                            </div>
-                                        @endforeach
-                                        @if($performance->posts->count() > 2)
-                                            <p class="text-sm text-gray-400">+{{ $performance->posts->count() - 2 }} more posts</p>
-                                        @endif
-                                    </div>
-                                </div>
-                            @endif
-
-                            <a href="{{ route('performances.show', $performance->performance_id) }}" 
-                               class="mt-4 inline-flex items-center px-4 py-2 bg-gradient-to-r from-yellow-400 to-red-500 text-black rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
-                                View Details
-                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                                </svg>
-                            </a>
+                        <div>
+                            <h3 class="text-lg font-semibold text-white">Jambangan Cultural Dance</h3>
+                            <p class="text-sm text-gray-400">{{ \Carbon\Carbon::parse($post->created_at)->format('M d, Y • h:i A') }}</p>
                         </div>
                     </div>
-                @endforeach
+                </div>
+
+                <!-- Post Content -->
+                <div class="p-6">
+                    <h2 class="text-3xl font-bold text-white mb-6">{{ $post->title }}</h2>
+                    <p class="text-gray-300 mb-8 text-lg">{{ $post->content }}</p>
+                    
+                    @if($post->media->isNotEmpty())
+                        <div class="relative h-96 overflow-hidden rounded-lg mb-8">
+                            <img src="{{ 'http://localhost:9000/my-bucket/' . $post->media->first()->file_data }}" 
+                                 alt="{{ $post->title }}"
+                                 class="w-full h-full object-cover">
+                        </div>
+                    @endif
+
+                    <!-- Related Event or Performance -->
+                    @if($post->event_id)
+                        <div class="mt-8 p-4 bg-[#1a1a1a] rounded-lg">
+                            <h4 class="text-lg font-semibold text-white mb-2">Related Event</h4>
+                            <p class="text-gray-300">{{ $post->events->event_name }}</p>
+                        </div>
+                    @endif
+
+                    @if($post->performance_id)
+                        <div class="mt-8 p-4 bg-[#1a1a1a] rounded-lg">
+                            <h4 class="text-lg font-semibold text-white mb-2">Related Performance</h4>
+                            <p class="text-gray-300">{{ $post->performances->title }}</p>
+                        </div>
+                    @endif
+
+                    <!-- Post Actions -->
+                    <div class="flex items-center gap-6 text-gray-400 mt-8">
+                        <button class="flex items-center gap-2 hover:text-yellow-400 transition-colors duration-300">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                            </svg>
+                            <span>Share</span>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- ==================== -->
-    <!-- FOOTER SECTION -->
-    <!-- ==================== -->
+    <!-- Footer Section -->
     <footer class="p-4 sm:p-6 shadow-inner text-white bg-[#121212] text-sm sm:text-base">
         <div class="container mx-auto flex justify-between items-center">
             <div class="text-left">
@@ -208,9 +177,7 @@
         </div>
     </footer>
 
-    <!-- ==================== -->
-    <!-- SCRIPTS -->
-    <!-- ==================== -->
+    <!-- Scripts -->
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     
@@ -243,4 +210,4 @@
         }
     </style>
 </body>
-</html>
+</html> 
