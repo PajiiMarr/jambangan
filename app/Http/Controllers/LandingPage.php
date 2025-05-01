@@ -18,22 +18,19 @@ class LandingPage extends Controller
     {
         $performances = Performances::with('media')
             ->orderBy('created_at', 'desc')
-            ->limit(10)
             ->get();
 
         $general_contents = General::latest()->first();
 
         $events = Events::orderBy('start_date', 'asc')->limit(3)->get();
 
-        // ->orderBy('start_date', 'asc');
-
-        $posts = Posts::with('media');
-
+        $posts = Posts::with('media')
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         $cover_medias = Slides::join('media', 'slides.slide_id', '=', 'media.slide_id')
             ->select('slides.title', 'slides.subtitle', 'media.file_data')
             ->get();
-
 
         return view('landing', [
             'performances' => $performances,
