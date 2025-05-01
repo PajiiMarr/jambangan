@@ -147,7 +147,7 @@
 
                                 <div class="md:w-1/2">
                                     <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">{{ __('Logo Preview') }}</label>
-                                    <img src="{{ $general_contents->logo_path }}" alt="Logo" class="w-full h-48 object-cover rounded-lg mb-4">
+                                    <img src="{{ $general_contents && $general_contents->logo_path ? $general_contents->logo_path : asset('images/LogoColored.png') }}" alt="Logo" class="w-full h-48 object-cover rounded-lg mb-4">
                                 </div>
                             </div>                        
                         </div>

@@ -1,9 +1,4 @@
-<<<<<<< HEAD
-<x-layouts.app title="Performances">
-    <h1 class="text-2xl font-bold">Performances</h1>
-    @livewire('performances-ui')
-</x-layouts.app>
-=======
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -250,4 +245,3 @@
     </style>
 </body>
 </html>
->>>>>>> d8f6815115400387eaee60e73e006d5ed25b8f09
