@@ -10,20 +10,24 @@ use App\Http\Controllers\LandingPage;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OfficerController;
 use App\Http\Controllers\PerformancesController;
+use App\Http\Controllers\AboutController;
+use App\Http\Controllers\PerformanceController;
+use App\Http\Controllers\EventsController;
+use App\Http\Controllers\PostController;
 
 Route::get('/', LandingPage::class)->name('home');
+
+Route::get('/about', [AboutController::class, 'index'])->name('about');
+
+Route::get('/events', [EventsController::class, 'index'])->name('events');
+Route::get('/events/{id}', [EventsController::class, 'show'])->name('events.show');
+
+Route::get('/performances', [PerformanceController::class, 'index'])->name('performances');
+Route::get('/performances/{id}', [PerformanceController::class, 'show'])->name('performances.show');
 
 Route::get('dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
-
-Route::view('events', 'events')
-    ->middleware(['auth', 'verified'])
-    ->name('events');
-
-Route::get('performances',[PerformancesController::class, 'index'])
-    ->middleware(['auth', 'verified'])
-    ->name('performances');
 
 Route::view('posts', 'posts')
     ->middleware(['auth', 'verified'])
@@ -49,9 +53,8 @@ Route::get('bookings',[BookingController::class, 'index'])
 ->middleware(['auth', 'verified'])
 ->name('bookings');
 
-// Route::gcet('/posts/{title}', \App\Http\Controllers\ViewPost::class)
-//     ->middleware(['auth', 'verified'])
-//     ->name('view-post');
+Route::get('/posts', [PostController::class, 'index'])->name('posts');
+Route::get('/posts/{id}', [PostController::class, 'show'])->name('post.details');
 
 Route::get('/favicon.svg', function () {
     $svgContent = Blade::render('<x-app-logo-icon />');

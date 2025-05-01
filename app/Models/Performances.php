@@ -43,4 +43,9 @@ class Performances extends Model
     {
         return $this->hasMany(Bookings::class, 'performance_id');
     }
+
+    public function posts(): HasMany
+    {
+        return $this->hasMany(Posts::class, 'performance_id');
+    }
 }

@@ -53,27 +53,21 @@
             <div class="flex items-center gap-8">
                 <div class="flex items-center gap-4">
                     <a href="#" class="group">
-                        <img src="{{ asset('images/LogoColored.png') }}" alt="Jambangan Logo" class="h-25 w-auto transition-transform duration-300 group-hover:scale-105">
+                        <img src="{{ $general_contents->logo_path ? $general_contents->logo_path : asset('images/LogoColored.png') }}" alt="Jambangan Logo" class="h-25 w-auto transition-transform duration-300 group-hover:scale-105">
                     </a>
                 </div>
                 <ul class="flex space-x-6 font-thin">
-                    <li><a href="#" class="relative text-lg text-white hover:text-yellow-400 transition duration-300 group">
-                        HOME<span class="absolute left-0 bottom-0 w-0 h-0.5 bg-yellow-400 transition-all duration-300 group-hover:w-full"></span>
-                    </a></li>
-                    <li><a href="#aboutUs" class="relative text-lg text-white hover:text-yellow-400 transition duration-300 group">
+                    <li><a href="{{ route('about') }}" class="relative text-lg text-white hover:text-yellow-400 transition duration-300 group">
                         ABOUT US<span class="absolute left-0 bottom-0 w-0 h-0.5 bg-yellow-400 transition-all duration-300 group-hover:w-full"></span>
                     </a></li>
-                    <li><a href="#performances" class="relative text-lg text-white hover:text-red-500 transition duration-300 group">
+                    <li><a href="{{ route('performances') }}" class="relative text-lg text-white hover:text-red-500 transition duration-300 group">
                         PERFORMANCES<span class="absolute left-0 bottom-0 w-0 h-0.5 bg-red-500 transition-all duration-300 group-hover:w-full"></span>
                     </a></li>
-                    <li><a href="#upcoming-events" class="relative text-lg text-white hover:text-red-500 transition duration-300 group">
+                    <li><a href="{{ route('events') }}" class="relative text-lg text-white hover:text-red-500 transition duration-300 group">
                         EVENTS<span class="absolute left-0 bottom-0 w-0 h-0.5 bg-red-500 transition-all duration-300 group-hover:w-full"></span>
                     </a></li>
-                    <li><a href="#posts" class="relative text-lg text-white hover:text-yellow-400 transition duration-300 group">
+                    <li><a href="/posts" class="relative text-lg text-white hover:text-yellow-400 transition duration-300 group">
                         POSTS<span class="absolute left-0 bottom-0 w-0 h-0.5 bg-yellow-400 transition-all duration-300 group-hover:w-full"></span>
-                    </a></li>
-                    <li><a href="#contact" class="relative text-lg text-white hover:text-yellow-400 transition duration-300 group">
-                        CONTACT<span class="absolute left-0 bottom-0 w-0 h-0.5 bg-yellow-400 transition-all duration-300 group-hover:w-full"></span>
                     </a></li>
                 </ul>
             </div>
@@ -323,7 +317,7 @@
                                     {{ $event->location }}
                                 </p>
                                 <div class="mt-4">
-                                    <a href="#" class="inline-block bg-black text-white px-3 sm:px-4 py-2 rounded-lg border border-gray-800 hover:border-[#8B0000] transition-all duration-300 text-sm sm:text-base group">
+                                    <a href="{{ route('events.show', $event->event_id) }}" class="inline-block bg-black text-white px-3 sm:px-4 py-2 rounded-lg border border-gray-800 hover:border-[#8B0000] transition-all duration-300 text-sm sm:text-base group">
                                         Learn More 
                                         <span class="inline-block transform translate-x-0 group-hover:translate-x-1 transition-transform duration-300">→</span>
                                     </a>
