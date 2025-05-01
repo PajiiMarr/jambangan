@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('officers', function (Blueprint $table) {
-            $table->id('officer_id');
-            $table->string('name')->nullable();
+        Schema::create('org_units', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
             $table->string('position')->nullable();
-            $table->string('email')->nullable()->unique();
-            $table->string('phone')->nullable();
-            $table->string('address')->nullable();
-            $table->integer('parent_id')->nullable();
+            $table->foreignId('parent_id')->nullable()->constrained('org_units')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('officers');
+        Schema::dropIfExists('org_units');
     }
 };

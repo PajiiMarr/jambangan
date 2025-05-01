@@ -25,5 +25,5 @@
         }
 
     </style>
-   @livewire('officers')
+   @livewire('officer-component')
 </x-layouts.app>

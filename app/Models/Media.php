@@ -58,6 +58,11 @@ class Media extends Model
         return $this->belongsTo(Slides::class, 'slide_id');
     }
 
+    public function general(): BelongsTo
+    {
+        return $this->belongsTo(General::class, 'general_id');
+    }
+
     /**
      * Scope to filter only images.
      */

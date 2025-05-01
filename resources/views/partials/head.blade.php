@@ -27,11 +27,14 @@
   href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
 />
 <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales-all.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/timegrid/main.min.js"></script>
-<script src="https://cdn.balkan.app/orgchart.js"></script>
-
+<!-- OrgChart core and plugin (both from the same domain) -->
+<script src="https://balkan.app/js/OrgChart.js"></script>
+<script src="https://balkan.app/js/OrgChart.editUI.js"></script>
 
 
 @vite(['resources/css/app.css', 'resources/js/app.js'])
