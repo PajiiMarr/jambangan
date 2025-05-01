@@ -40,16 +40,19 @@
                         data-start="{{ \Carbon\Carbon::parse($event['start'])->format('Y-m-d') }}"
                         data-end="{{ \Carbon\Carbon::parse($event['end'])->format('Y-m-d') }}"
                         data-status="{{ $event['status'] }}"
-                        {{-- onclick="openEventModal(this)" --}}
+                        data-image="{{ $event['file_data'] ?? '' }}"
                     >
                         <flux:modal.trigger name="view-event" >
-                            
-                            <!-- Event Image or Placeholder -->
-                            <div class="w-full h-40 bg-gray-200 rounded-lg flex items-center justify-center">
-                                @if (!empty($event['cover_photo']))
-                                    <img src="{{ $event['cover_photo'] }}" alt="Event Cover" class="w-full h-full object-cover rounded-lg">
+                            <div class="w-full h-40 bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden">
+                                @if (!empty($event['file_data']))
+                                    <img src=" {{ Storage::url($event['file_data']) }} " alt="Event Cover" class="w-full h-full object-cover">
                                 @else
-                                    <span class="text-gray-500">No Image</span>
+                                    <div class="flex flex-col items-center justify-center text-gray-500">
+                                        <svg class="w-12 h-12 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                        </svg>
+                                        <span>No Image</span>
+                                    </div>
                                 @endif
                             </div>
             
@@ -158,18 +161,20 @@
                     <flux:heading size="lg">Event Details</flux:heading>
                     <flux:text class="mt-2">View the details of the selected event.</flux:text>
                     <flux:dropdown class="absolute top-0 right-4 sm:right-1">
-
                         <flux:button icon="dots-horizontal" class="border-none"></flux:button>
                         <flux:menu>
                             <flux:menu.item icon="pen" data-edit-event>Edit</flux:menu.item>
-
                             <flux:menu.separator />
-
                             <flux:menu.item variant="danger" icon="trash">Delete</flux:menu.item>
-
                         </flux:menu>
                     </flux:dropdown>
                 </div>
+
+                <!-- Event Image -->
+                <div class="w-full h-48 bg-gray-200 rounded-lg overflow-hidden">
+                    <img id="view_event_image" src="" alt="Event Cover" class="w-full h-full object-cover">
+                </div>
+
                 <flux:input id="view_event_name" label="Event Title" value="" disabled />
                 <flux:input id="view_location" label="Venue" value="" disabled />
                 <flux:input id="view_startStr" label="Start Date" value="" disabled />
@@ -248,7 +253,15 @@
                     document.getElementById('view_startStr').value = info.event.startStr.split('T')[0];
                     document.getElementById('view_endStr').value = info.event.endStr.split('T')[0];
                     document.getElementById('view_status').value = info.event.extendedProps.status || 'Upcoming';
-
+                    
+                    // Set the event image
+                    const eventImage = document.getElementById('view_event_image');
+                    if (info.event.extendedProps.cover_photo) {
+                        eventImage.src = info.event.extendedProps.cover_photo;
+                        eventImage.style.display = 'block';
+                    } else {
+                        eventImage.style.display = 'none';
+                    }
                 },
                 eventContent: function(info) {
                     let bgColor;
@@ -358,12 +371,22 @@
             const start = el.getAttribute('data-start');
             const end = el.getAttribute('data-end');
             const status = el.getAttribute('data-status');
+            const image = el.getAttribute('data-image');
 
             document.getElementById('view_event_name').value = title;
             document.getElementById('view_location').value = location;
             document.getElementById('view_startStr').value = start;
             document.getElementById('view_endStr').value = end;
             document.getElementById('view_status').value = status;
+
+            // Set the event image
+            const eventImage = document.getElementById('view_event_image');
+            if (image) {
+                eventImage.src = image;
+                eventImage.style.display = 'block';
+            } else {
+                eventImage.style.display = 'none';
+            }
 
             document.getElementById('view-event-modal-trigger').click();
         }
@@ -403,5 +426,8 @@
                 initSwiper();
             }
         });
+        
     </script>
+
+    
 @endscript

@@ -16,7 +16,7 @@ class PostController extends Controller
             
         $general_contents = General::latest()->first();
 
-        return view('posts', compact('posts', 'general_contents'));
+        return view('post-user', compact('posts', 'general_contents'));
     }
 
     public function show($id)

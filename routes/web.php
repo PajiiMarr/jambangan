@@ -17,13 +17,13 @@ use App\Http\Controllers\EventsController;
 use App\Http\Controllers\PostController;
 
 // Public Routes
-Route::get('/', LandingPage::class)->name('home');
-Route::get('/about', [AboutController::class, 'index'])->name('about');
-Route::get('/events', [EventsController::class, 'index'])->name('events');
+Route::get('/', LandingPage::class)->name('home-public');
+Route::get('/about', [AboutController::class, 'index'])->name('about-public');
+Route::get('/events', [EventsController::class, 'index'])->name('events-public');
 Route::get('/events/{id}', [EventsController::class, 'show'])->name('events.show');
-Route::get('/performances', [PerformanceController::class, 'index'])->name('performances-user');
+Route::get('/performances', [PerformanceController::class, 'index'])->name('performances-public');
 Route::get('/performances/{id}', [PerformanceController::class, 'show'])->name('performances.show');
-Route::get('/posts', [PostController::class, 'index'])->name('posts');
+Route::get('/posts', [PostController::class, 'index'])->name('posts-public');
 Route::get('/posts/{id}', [PostController::class, 'show'])->name('post.details');
 
 // Admin Routes
