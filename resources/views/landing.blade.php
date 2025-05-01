@@ -291,8 +291,16 @@
                              data-aos="fade-up" 
                              data-aos-delay="{{ $loop->index * 100 }}">
                             <!-- Image Container -->
-                            <div class="h-40 sm:h-48 bg-gray-900 relative">
-                                <img src="{{ asset('images/placeholder.png') }}" alt="Event Image" class="w-full h-full object-cover opacity-50 group-hover:opacity-70 transition-opacity duration-300">
+                            <div class="h-40 sm:h-48 relative overflow-hidden">
+                                @if($event->media)
+                                    <img src="{{ 'http://localhost:9000/my-bucket/' . $event->media->file_data }}" 
+                                         alt="{{ $event->title }}"
+                                         class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                @else
+                                    <div class="w-full h-full bg-gradient-to-br from-[#EAB308] to-[#EF4444] flex items-center justify-center">
+                                        <span class="text-white text-2xl font-bold">Jambangan</span>
+                                    </div>
+                                @endif
                                 <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
                             </div>
 
@@ -408,13 +416,9 @@
                 <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-yellow-400 via-red-600 to-yellow-400 opacity-25 animate-pulse"></div>
                 <div class="absolute bottom-0 left-0 w-full h-2 bg-gradient-to-r from-yellow-400 via-red-600 to-yellow-400 opacity-25 animate-pulse"></div>
 
-                <div class="max-w-3xl mx-auto text-center relative z-10">
-                    <h2 class="text-3xl sm:text-4xl font-extrabold mb-4 text-yellow-400 tracking-widest drop-shadow-lg">BOOK US</h2>
-                    <p class="text-base sm:text-lg text-gray-200 mb-6 sm:mb-8">
-                        Interested in a performance or event collaboration?<br>
-                        Reach out to us at <strong class="text-yellow-400">jambangan@culture.ph</strong>
-                    </p>
-
+                <x-contact-info title="BOOK US" :general_contents="$general_contents" />
+                
+                <div class="mt-8 text-center">
                     <a href="{{ route('bookings-public') }}"
                        class="inline-block bg-red-600 hover:bg-yellow-400 text-white hover:text-black font-semibold py-2 sm:py-3 px-6 sm:px-8 rounded-full shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 ring-2 ring-yellow-400 text-sm sm:text-base">
                         Go to Bookings →

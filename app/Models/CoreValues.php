@@ -8,6 +8,6 @@ class CoreValues extends Model
 {
     protected $table = 'core_values';
     protected $primaryKey = 'id';
-    protected $fillable = ['core_value_title', 'core_value_description'];
+    protected $fillable = ['core_value_title', 'core_value_description', 'emoji'];
     public $timestamps = false; 
 }

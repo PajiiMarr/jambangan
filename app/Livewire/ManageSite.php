@@ -25,7 +25,7 @@ class ManageSite extends Component
 
     #[Validate([
         'site_title' => 'required|string|max:255',
-        'about_us' => 'required|string|max:255',
+        'about_us' => 'required|string|max:1000',
         'contact_email' => 'required|email|max:255',
         'contact_number' => 'required|string|max:15',
         'address' => 'required|string|max:255',
@@ -33,10 +33,11 @@ class ManageSite extends Component
         'title' => 'nullable|string|max:255',
         'subtitle' => 'nullable|string|max:255',
         'file_path' => 'nullable|file|mimes:jpeg,png,jpg,gif,mp4,mov,avi,wmv|max:10240',
-        'mission' => 'nullable|string|max:255',
-        'vision' => 'nullable|string|max:255',
+        'mission' => 'required|string|max:1000',
+        'vision' => 'required|string|max:1000',
         'core_value_title' => 'nullable|string|max:255',
-        'core_value_description' => 'nullable|string|max:255',
+        'core_value_description' => 'nullable|string|max:1000',
+        'emoji' => 'nullable|string|max:10',
     ])]
 
     public $editValues = [];
@@ -58,6 +59,7 @@ class ManageSite extends Component
     public $file_path;
     public $core_value_title;
     public $core_value_description;
+    public $emoji;
 
     public $core_values = [];
 
@@ -107,6 +109,7 @@ class ManageSite extends Component
             $this->editValues[$core->id] = [
                 'title' => $core->core_value_title,
                 'description' => $core->core_value_description,
+                'emoji' => $core->emoji,
             ];
         }
     }
@@ -196,6 +199,7 @@ class ManageSite extends Component
                 CoreValues::create([
                     'core_value_title' => $this->core_value_title,
                     'core_value_description' => $this->core_value_description,
+                    'emoji' => $this->emoji,
                 ]);
             }
 
@@ -282,11 +286,13 @@ class ManageSite extends Component
     {
         $title = $this->editValues[$id]['title'] ?? null;
         $description = $this->editValues[$id]['description'] ?? null;
+        $emoji = $this->editValues[$id]['emoji'] ?? null;
     
         if ($title && $description) {
             $coreValue = CoreValues::findOrFail($id);
             $coreValue->core_value_title = $title;
             $coreValue->core_value_description = $description;
+            $coreValue->emoji = $emoji;
             $coreValue->save();
             
             $this->modal('edit-core-value-' . $id)->close();
@@ -432,6 +438,7 @@ class ManageSite extends Component
                 CoreValues::create([
                     'core_value_title' => $this->core_value_title,
                     'core_value_description' => $this->core_value_description,
+                    'emoji' => $this->emoji,
                 ]);
             }
             
@@ -439,6 +446,7 @@ class ManageSite extends Component
             $this->coreValues();
             $this->core_value_title = '';
             $this->core_value_description = '';
+            $this->emoji = '';
             session()->flash('message', 'Core value added successfully!');
         } catch (\Exception $e) {
             DB::rollBack();

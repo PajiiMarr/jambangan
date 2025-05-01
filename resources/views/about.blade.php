@@ -164,21 +164,17 @@
             </h2>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-[#121212] p-6 rounded-lg transform transition-all duration-300 hover:scale-105">
-                    <div class="text-yellow-400 text-4xl mb-4">🎭</div>
-                    <h3 class="text-xl font-bold text-white mb-4">Cultural Preservation</h3>
-                    <p class="text-gray-300">We are committed to preserving and promoting the rich cultural heritage of the Philippines through traditional dance.</p>
-                </div>
-                <div class="bg-[#121212] p-6 rounded-lg transform transition-all duration-300 hover:scale-105">
-                    <div class="text-yellow-400 text-4xl mb-4">🤝</div>
-                    <h3 class="text-xl font-bold text-white mb-4">Unity & Community</h3>
-                    <p class="text-gray-300">We foster a strong sense of community and unity among our members and audiences.</p>
-                </div>
-                <div class="bg-[#121212] p-6 rounded-lg transform transition-all duration-300 hover:scale-105">
-                    <div class="text-yellow-400 text-4xl mb-4">🌟</div>
-                    <h3 class="text-xl font-bold text-white mb-4">Excellence</h3>
-                    <p class="text-gray-300">We strive for excellence in every performance, maintaining the highest standards of artistic expression.</p>
-                </div>
+                @forelse($core_values as $core_value)
+                    <div class="bg-[#121212] p-6 rounded-lg transform transition-all duration-300 hover:scale-105">
+                        <div class="text-yellow-400 text-4xl mb-4">{{ $core_value->emoji ?? '🎭' }}</div>
+                        <h3 class="text-xl font-bold text-white mb-4">{{ $core_value->core_value_title }}</h3>
+                        <p class="text-gray-300">{{ $core_value->core_value_description }}</p>
+                    </div>
+                @empty
+                    <div class="col-span-3 text-center text-gray-400">
+                        No core values have been set yet.
+                    </div>
+                @endforelse
             </div>
         </div>
     </section>
@@ -250,31 +246,13 @@
     <!-- CONTACT SECTION -->
     <!-- ==================== -->
     <section id="contact" 
-        class="py-12 sm:py-20 bg-[#121212] text-white shadow-inner relative overflow-hidden"
-        data-aos="fade-up"
-        data-aos-duration="1000">
+        class="py-12 sm:py-20 bg-[#121212] text-white shadow-inner relative overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Red gradient glow at top and bottom for style -->
             <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-yellow-400 via-red-600 to-yellow-400 opacity-25 animate-pulse"></div>
             <div class="absolute bottom-0 left-0 w-full h-2 bg-gradient-to-r from-yellow-400 via-red-600 to-yellow-400 opacity-25 animate-pulse"></div>
 
-            <div class="max-w-3xl mx-auto text-center relative z-10">
-                <h2 class="text-3xl sm:text-4xl font-extrabold mb-4 text-yellow-400 tracking-widest drop-shadow-lg">CONTACT US</h2>
-                <p class="text-base sm:text-lg text-gray-200 mb-6 sm:mb-8">
-                    Interested in a performance or event collaboration?<br>
-                    Reach out to us at <strong class="text-yellow-400">jambangan@culture.ph</strong>
-                </p>
-
-                <div class="max-w-md mx-auto mt-12">
-                    <div class="bg-black/50 p-6 rounded-lg">
-                        <h3 class="text-xl font-bold text-yellow-400 mb-4">Visit Us</h3>
-                        <p class="text-gray-300">
-                            Western Mindanao State University<br>
-                            Zamboanga City, Philippines
-                        </p>
-                    </div>
-                </div>
-            </div>
+            <x-contact-info title="CONTACT US" :general_contents="$general_contents" :showVisitUs="true" />
         </div>
     </section>
 

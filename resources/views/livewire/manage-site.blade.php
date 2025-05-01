@@ -28,124 +28,164 @@
                         <input type="text" wire:model="site_title" placeholder="{{ __('Site Title') }}"
                             class="w-full rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                     </div>
+                </div>
+            </form>
 
+            <!-- About Page Content -->
+            <div class="bg-white dark:bg-zinc-900 shadow rounded-2xl p-6 border border-zinc-200 dark:border-zinc-700">
+                <h2 class="text-lg font-semibold text-zinc-800 dark:text-zinc-100 mb-6">{{ __('About Page Content') }}</h2>
+                
+                <!-- Our Story -->
+                <form wire:submit.prevent="saveSiteIdentity" class="mb-8">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-md font-semibold text-zinc-700 dark:text-zinc-200">{{ __('Our Story') }}</h3>
+                        <flux:button type="submit" variant="primary" size="sm">
+                            {{ __('Save Changes') }}
+                        </flux:button>
+                    </div>
                     <div>
-                        <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">{{ __('About Us') }}</label>
-                        <flux:textarea type="text" wire:model="about_us" placeholder="{{ __('About Us') }}"
-                            class="w-full rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <p class="text-xs text-zinc-500 dark:text-zinc-400 mb-2">{{ __('This content will appear in the "Our Story" section of the About page.') }}</p>
+                        <flux:textarea type="text" wire:model="about_us" placeholder="{{ __('Write your story here...') }}"
+                            class="w-full h-48 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </flux:textarea>
                     </div>
-                </div>
-            </form>
+                </form>
 
-            <!-- Mission and Vision -->
-            <form wire:submit.prevent="saveMissionVision" class="bg-white dark:bg-zinc-900 shadow rounded-2xl p-6 border border-zinc-200 dark:border-zinc-700">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-lg font-semibold text-zinc-800 dark:text-zinc-100">{{ __('Mission and Vision') }}</h2>
-                    <flux:button type="submit" variant="primary" size="sm">
-                        {{ __('Save Changes') }}
-                    </flux:button>
-                </div>
-                <div class="grid gap-6">
-                    <div>
-                        <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">{{ __('Mission') }}</label>
-                        <input type="text" wire:model="mission" placeholder="{{ __('Input for mission...') }}"
-                            class="w-full rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                <!-- Mission and Vision -->
+                <form wire:submit.prevent="saveMissionVision" class="mb-8">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-md font-semibold text-zinc-700 dark:text-zinc-200">{{ __('Mission and Vision') }}</h3>
+                        <flux:button type="submit" variant="primary" size="sm">
+                            {{ __('Save Changes') }}
+                        </flux:button>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">{{ __('Vision') }}</label>
-                        <input type="text" wire:model="vision" placeholder="{{ __('Input for vision...') }}"
-                            class="w-full rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <div class="grid gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">{{ __('Mission') }}</label>
+                            <p class="text-xs text-zinc-500 dark:text-zinc-400 mb-2">{{ __('This content will appear in the "Mission" section of the About page.') }}</p>
+                            <flux:textarea type="text" wire:model="mission" placeholder="{{ __('Write your mission statement here...') }}"
+                                class="w-full h-32 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </flux:textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">{{ __('Vision') }}</label>
+                            <p class="text-xs text-zinc-500 dark:text-zinc-400 mb-2">{{ __('This content will appear in the "Vision" section of the About page.') }}</p>
+                            <flux:textarea type="text" wire:model="vision" placeholder="{{ __('Write your vision statement here...') }}"
+                                class="w-full h-32 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </flux:textarea>
+                        </div>
                     </div>
-                </div>
-            </form>
+                </form>
 
-            <!-- Core Values -->
-            <form wire:submit.prevent="saveCoreValue" class="bg-white dark:bg-zinc-900 shadow rounded-2xl p-6 border border-zinc-200 dark:border-zinc-700">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-lg font-semibold text-zinc-800 dark:text-zinc-100">{{ __('Core Values') }}</h2>
-                    <flux:button type="submit" variant="primary" size="sm">
-                        {{ __('Save Changes') }}
-                    </flux:button>
-                </div>
-                <div class="grid gap-6">
-                    @forelse ($core_values as $core_value)
-                        <div class="p-4 bg-zinc-100 dark:bg-zinc-800 rounded-xl relative">
-                            <h3 class="text-md font-bold text-zinc-800 dark:text-zinc-100">{{ $core_value->core_value_title }}</h3>
-                            <p class="text-sm text-zinc-600 dark:text-zinc-300">{{ $core_value->core_value_description }}</p>
+                <!-- Core Values -->
+                <form wire:submit.prevent="saveCoreValue" class="mb-8">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-md font-semibold text-zinc-700 dark:text-zinc-200">{{ __('Core Values') }}</h3>
+                        <flux:button type="submit" variant="primary" size="sm">
+                            {{ __('Save Changes') }}
+                        </flux:button>
+                    </div>
+                    <div class="grid gap-6">
+                        @forelse ($core_values as $core_value)
+                            <div class="p-6 bg-zinc-100 dark:bg-zinc-800 rounded-xl relative transform transition-all duration-300 hover:scale-105 hover:shadow-lg">
+                                <div class="flex items-start gap-4">
+                                    <div class="text-4xl">{{ $core_value->emoji }}</div>
+                                    <div class="flex-1">
+                                        <h3 class="text-lg font-bold text-zinc-800 dark:text-zinc-100">{{ $core_value->core_value_title }}</h3>
+                                        <p class="text-sm text-zinc-600 dark:text-zinc-300 mt-2">{{ $core_value->core_value_description }}</p>
+                                    </div>
+                                </div>
 
-                            <div class="flex justify-end gap-2 mt-3">
-                                {{-- Edit Button --}}
-                                <flux:modal.trigger name="edit-core-value-{{ $core_value->id }}">
-                                    <flux:button size="sm">Edit</flux:button>
-                                </flux:modal.trigger>
+                                <div class="flex justify-end gap-2 mt-4">
+                                    {{-- Edit Button --}}
+                                    <flux:modal.trigger name="edit-core-value-{{ $core_value->id }}">
+                                        <flux:button size="sm">Edit</flux:button>
+                                    </flux:modal.trigger>
 
-                                {{-- Delete Button --}}
-                                <flux:modal.trigger name="delete-core-value-{{ $core_value->id }}">
-                                    <flux:button size="sm">Delete</flux:button>
-                                </flux:modal.trigger>
+                                    {{-- Delete Button --}}
+                                    <flux:modal.trigger name="delete-core-value-{{ $core_value->id }}">
+                                        <flux:button size="sm">Delete</flux:button>
+                                    </flux:modal.trigger>
+                                </div>
+                            </div>
+
+                            {{-- Modal for editing --}}
+                            <flux:modal name="edit-core-value-{{ $core_value->id }}" class="md:w-96">
+                                <div class="space-y-6">
+                                    <div>
+                                        <flux:heading size="lg">Edit Core Value</flux:heading>
+                                        <flux:text class="mt-2">Update the core value details.</flux:text>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">{{ __('Emoji') }}</label>
+                                        <input type="text" wire:model.defer="editValues.{{ $core_value->id }}.emoji" placeholder="🎭"
+                                            class="w-full rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                                    </div>
+
+                                    <flux:input label="Title" wire:model.defer="editValues.{{ $core_value->id }}.title" />
+                                    <flux:input label="Description" wire:model.defer="editValues.{{ $core_value->id }}.description" />
+
+                                    <div class="flex">
+                                        <flux:spacer />
+                                        <flux:button type="button" variant="primary" wire:click="updateCoreValue({{ $core_value->id }})">
+                                            Save Changes
+                                        </flux:button>
+                                    </div>
+                                </div>
+                            </flux:modal>
+
+                            {{-- Modal for deleting core value --}}
+                            <flux:modal name="delete-core-value-{{ $core_value->id }}" class="md:w-96">
+                                <div class="space-y-6">
+                                    <div>
+                                        <flux:heading size="lg">Delete Core Value</flux:heading>
+                                        <flux:text class="mt-2">Are you sure you want to delete this core value?</flux:text>
+                                    </div>
+                                    <div class="flex">
+                                        <flux:spacer />
+                                        <flux:button 
+                                            type="button" 
+                                            variant="danger" 
+                                            wire:click="deleteCoreValue({{ $core_value->id }})"
+                                            wire:loading.attr="disabled">
+                                            Delete
+                                        </flux:button>
+                                    </div>
+                                </div>
+                            </flux:modal>
+                        @empty
+                            <div class="mb-4 border-b pb-4">
+                                <p class="text-md text-zinc-500 dark:text-zinc-400">{{ __('No core values available.') }}</p>
+                            </div>
+                        @endforelse
+
+                        <div class="mt-6">
+                            <h4 class="text-md font-semibold text-zinc-700 dark:text-zinc-200 mb-4">{{ __('Add New Core Value') }}</h4>
+                            <div class="grid gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">{{ __('Emoji') }}</label>
+                                    <input type="text" wire:model="emoji" placeholder="🎭"
+                                        class="w-full rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">{{ __('Core Value') }}</label>
+                                    <input type="text" wire:model="core_value_title" placeholder="{{ __('Input for core value...') }}"
+                                        class="w-full rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">{{ __('Core Value Description') }}</label>
+                                    <flux:textarea type="text" wire:model="core_value_description" placeholder="{{ __('Input for core value description...') }}"
+                                        class="w-full h-32 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    </flux:textarea>
+                                </div>
                             </div>
                         </div>
-
-                        {{-- Modal for editing --}}
-                        <flux:modal name="edit-core-value-{{ $core_value->id }}" class="md:w-96">
-                            <div class="space-y-6">
-                                <div>
-                                    <flux:heading size="lg">Edit Core Value</flux:heading>
-                                    <flux:text class="mt-2">Update the core value details.</flux:text>
-                                </div>
-
-                                <flux:input label="Title" wire:model.defer="editValues.{{ $core_value->id }}.title" />
-                                <flux:input label="Description" wire:model.defer="editValues.{{ $core_value->id }}.description" />
-
-                                <div class="flex">
-                                    <flux:spacer />
-                                    <flux:button type="button" variant="primary" wire:click="updateCoreValue({{ $core_value->id }})">
-                                        Save Changes
-                                    </flux:button>
-                                </div>
-                            </div>
-                        </flux:modal>
-
-                        {{-- Modal for deleting core value --}}
-                        <flux:modal name="delete-core-value-{{ $core_value->id }}" class="md:w-96">
-                            <div class="space-y-6">
-                                <div>
-                                    <flux:heading size="lg">Delete Core Value</flux:heading>
-                                    <flux:text class="mt-2">Are you sure you want to delete this core value?</flux:text>
-                                </div>
-                                <div class="flex">
-                                    <flux:spacer />
-                                    <flux:button 
-                                        type="button" 
-                                        variant="danger" 
-                                        wire:click="deleteCoreValue({{ $core_value->id }})"
-                                        wire:loading.attr="disabled">
-                                        Delete
-                                    </flux:button>
-                                </div>
-                            </div>
-                        </flux:modal>
-
-                    @empty
-                    <div class="mb-4 border-b pb-4">
-                            <p class="text-md text-zinc-500 dark:text-zinc-400">{{ __('No core values available.') }}</p>
-                        </div>
-                    @endforelse
-
-                    <div>
-                        <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">{{ __('Core Value') }}</label>
-                        <input type="text" wire:model="core_value_title" placeholder="{{ __('Input for core value...') }}"
-                            class="w-full rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                     </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">{{ __('Core Value Description') }}</label>
-                        <input type="text" wire:model="core_value_description" placeholder="{{ __('Input for core value description...') }}"
-                            class="w-full rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
 
             <!-- Contact Details -->
             <form wire:submit.prevent="saveContactDetails" class="bg-white dark:bg-zinc-900 shadow rounded-2xl p-6 border border-zinc-200 dark:border-zinc-700">

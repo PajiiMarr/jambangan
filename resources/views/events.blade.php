@@ -166,6 +166,18 @@
         </div>
     </section>
 
+    <!-- Contact Section -->
+    <section id="contact" 
+        class="py-12 sm:py-20 bg-[#121212] text-white shadow-inner relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Red gradient glow at top and bottom for style -->
+            <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-yellow-400 via-red-600 to-yellow-400 opacity-25 animate-pulse"></div>
+            <div class="absolute bottom-0 left-0 w-full h-2 bg-gradient-to-r from-yellow-400 via-red-600 to-yellow-400 opacity-25 animate-pulse"></div>
+
+            <x-contact-info title="BOOK US" :general_contents="$general_contents" />
+        </div>
+    </section>
+
     <!-- Footer Section -->
     <footer class="p-4 sm:p-6 shadow-inner text-white bg-[#121212] text-sm sm:text-base">
         <div class="container mx-auto flex justify-between items-center">

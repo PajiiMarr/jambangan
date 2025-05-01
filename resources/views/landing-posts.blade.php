@@ -197,7 +197,9 @@
     <section class="py-12 px-6 bg-[#8B0000] text-white border-t-4 border-[#FFD700] shadow-xl">
         <div class="max-w-4xl mx-auto text-center">
             <h2 class="text-3xl font-bold mb-6 tracking-wide">Get in Touch</h2>
-            <p class="text-lg">Interested in a performance? Contact us at <strong class="text-[#FFD700]">jambangan@culture.ph</strong></p>
+            <p class="text-lg">Interested in a performance? Contact us at <strong class="text-[#FFD700]">{{ $general_contents && $general_contents->contact_email ? $general_contents->contact_email : 'jambangan@culture.ph' }}</strong></p>
+            <p class="text-lg mt-2">Or call us at <strong class="text-[#FFD700]">{{ $general_contents && $general_contents->contact_number ? $general_contents->contact_number : '09-1234-5678' }}</strong></p>
+            <p class="text-lg mt-2">Visit us at <strong class="text-[#FFD700]">{{ $general_contents && $general_contents->address ? $general_contents->address : 'Western Mindanao State University' }}</strong></p>
         </div>
     </section>
 
