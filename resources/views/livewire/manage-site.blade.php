@@ -137,6 +137,20 @@
     
                             </div>                        
                         </div>
+
+                        <div class="grid gap-6">
+                            <div class="w-full flex flex-col md:flex-row gap-4">
+                                <div class="md:w-1/2">
+                                    <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">{{ __('Input Logo') }}</label>
+                                    <x-inputs.filepond wire:model="logo_path"/>
+                                </div>
+
+                                <div class="md:w-1/2">
+                                    <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">{{ __('Logo Preview') }}</label>
+                                    <img src="{{ $general_contents->logo_path }}" alt="Logo" class="w-full h-48 object-cover rounded-lg mb-4">
+                                </div>
+                            </div>                        
+                        </div>
                     </div>
                 </div>
             </div>

@@ -23,9 +23,6 @@
 }
 
 
-.shadow-text {
-    text-shadow: 5px 3px 10px black;
-}
 
 @layer theme {
     .dark {
@@ -83,21 +80,21 @@ select:focus[data-flux-control] {
 
 /* Font Styling */
 h1 {
-    font-family: 'Playfair Display', serif;
-    font-weight: 700;
+    font-family: Arial, Helvetica, sans-serif;
+    /* font-weight: 700; */
 }
 
 h2, h3, h4 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: Arial, Helvetica, sans-serif;
     font-weight: 300;
 }
 
 .navbar {
-    font-family: 'Libre Baskerville', serif;
+    font-family: Arial, Helvetica, sans-serif;
     font-weight: 400;
 }
 
 body, p {
-    font-family: serif; /* Default system serif (Georgia, Times New Roman) */
+    font-family: Arial, Helvetica, sans-serif; /* Default system serif (Georgia, Times New Roman) */
     font-weight: normal;
 }

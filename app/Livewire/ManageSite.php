@@ -139,6 +139,14 @@ class ManageSite extends Component
         Log::debug('Cover Sub-title: ' . $this->subtitle);
         try {
             DB::beginTransaction();
+
+            if ($this->logo_path) {
+                // Store the file and get the path (relative to disk root)
+                $logoPath = $this->logo_path->store('logos', 's3');
+                
+                // Get the public URL if needed
+                $logoUrl = Storage::disk('s3')->url($logoPath);
+            }
     
             // Save general settings
             $general = General::updateOrCreate(
@@ -148,6 +156,7 @@ class ManageSite extends Component
                     'about_us' => $this->about_us,
                     'contact_email' => $this->contact_email,
                     'contact_number' => $this->contact_number,
+                    'logo_path' => $logoUrl ?? '',
                 ]
             );
     
@@ -175,6 +184,8 @@ class ManageSite extends Component
             }
     
             DB::commit();
+
+            Log::debug('Saved successfully' . $this->general_contents);   
     
             // Refresh data without resetting
             $this->generalContents();
