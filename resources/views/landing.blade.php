@@ -52,7 +52,7 @@
             <!-- Logo and Main Navigation -->
             <div class="flex items-center gap-8">
                 <div class="flex items-center gap-4">
-                    <a href="#" class="group">
+                    <a href="/" class="group">
                         <img src="{{ $general_contents->logo_path ? $general_contents->logo_path : asset('images/LogoColored.png') }}" alt="Jambangan Logo" class="h-25 w-auto transition-transform duration-300 group-hover:scale-105">
                     </a>
                 </div>
