@@ -25,6 +25,8 @@ Route::get('/performances', [PerformanceController::class, 'index'])->name('perf
 Route::get('/performances/{id}', [PerformanceController::class, 'show'])->name('performances.show');
 Route::get('/posts', [PostController::class, 'index'])->name('posts-public');
 Route::get('/posts/{id}', [PostController::class, 'show'])->name('post.details');
+Route::get('/bookings', [BookingController::class, 'publicIndex'])->name('bookings-public');
+Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
 
 // Admin Routes
 Route::middleware(['auth', 'verified'])->group(function () {

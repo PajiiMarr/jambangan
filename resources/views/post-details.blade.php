@@ -70,16 +70,6 @@
         </div>
     </nav>
 
-    <!-- Back Button -->
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 mt-32">
-        <a href="{{ route('posts') }}" class="inline-flex items-center text-white hover:text-yellow-400 transition-colors duration-300">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            Back to Posts
-        </a>
-    </div>
-
     <!-- Post Content -->
     <section class="py-12 sm:py-24 bg-black relative overflow-hidden"
         data-aos="fade-up"
@@ -97,6 +87,16 @@
                             <p class="text-sm text-gray-400">{{ \Carbon\Carbon::parse($post->created_at)->format('M d, Y • h:i A') }}</p>
                         </div>
                     </div>
+                </div>
+
+                <!-- Back Button -->
+                <div class="p-6 border-b border-gray-800">
+                    <a href="{{ route('posts-public') }}" class="inline-flex items-center text-white hover:text-yellow-400 transition-colors duration-300 group">
+                        <svg class="w-5 h-5 mr-2 transform group-hover:-translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                        Back to Posts
+                    </a>
                 </div>
 
                 <!-- Post Content -->

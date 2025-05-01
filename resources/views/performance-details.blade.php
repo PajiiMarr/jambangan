@@ -65,9 +65,6 @@
                     <li><a href="/posts" class="relative text-lg text-white hover:text-yellow-400 transition duration-300 group">
                         POSTS<span class="absolute left-0 bottom-0 w-0 h-0.5 bg-yellow-400 transition-all duration-300 group-hover:w-full"></span>
                     </a></li>
-                    <li><a href="#contact" class="relative text-lg text-white hover:text-yellow-400 transition duration-300 group">
-                        CONTACT<span class="absolute left-0 bottom-0 w-0 h-0.5 bg-yellow-400 transition-all duration-300 group-hover:w-full"></span>
-                    </a></li>
                 </ul>
             </div>
         </div>
@@ -103,7 +100,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Back Button -->
             <div class="mb-8">
-                <a href="{{ route('performances') }}" class="inline-flex items-center text-white hover:text-yellow-400 transition-colors duration-300 group">
+                <a href="{{ route('performances-public') }}" class="inline-flex items-center text-white hover:text-yellow-400 transition-colors duration-300 group">
                     <svg class="w-5 h-5 mr-2 transform group-hover:-translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                     </svg>

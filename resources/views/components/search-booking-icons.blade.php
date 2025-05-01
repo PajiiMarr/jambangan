@@ -33,7 +33,7 @@
             </div>
         </div>
     </div>
-    <a href="#booking" class="group relative">
+    <a href="{{ route('bookings-public') }}" class="group relative">
         <img src="{{ asset('images/bookings.svg') }}" alt="Booking" class="h-8 w-8 transition-all duration-300 group-hover:scale-110 group-hover:-rotate-12">
         <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-yellow-400 to-red-500 transition-all duration-300 group-hover:w-full"></span>
     </a>
