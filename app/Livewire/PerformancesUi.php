@@ -7,32 +7,87 @@ use App\Models\Performances;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\On;
 use Livewire\WithPagination;
+use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Storage;
 
 class PerformancesUi extends Component
 {
-
     use WithPagination;
-    public $title;
-    public $description;
+    use WithFileUploads;
+
+    // Add performance variables
+    public $add_title;
+    public $add_description;
+    public $add_performance_file;
+
+    // Edit performance variables
+    public $edit_title;
+    public $edit_description;
+    public $edit_performance_file;
+
     public $perPage = 10;
     public $selectedPerformance;
+    public $editingPerformance;
+    public $isEditing = false;
 
+    // Sorting and filtering properties
+    public $search = '';
+    public $sortBy = 'created_at';
+    public $sortDirection = 'desc';
+    public $statusFilter = '';
+
+    protected $rules = [
+        'add_title' => 'required|min:3',
+        'add_description' => 'required|min:10',
+        'add_performance_file' => 'nullable|image|max:10240', // 10MB Max
+        'edit_title' => 'required|min:3',
+        'edit_description' => 'required|min:10',
+        'edit_performance_file' => 'nullable|image|max:10240', // 10MB Max
+    ];
+    
 
     public function mount() {
-        $this->title = '';
-        $this->description = '';
+        $this->add_title = '';
+        $this->add_description = '';
+        $this->edit_title = '';
+        $this->edit_description = '';
     }
 
     #[On('performance-added')]
     public function handlePerformanceAdded($performance = null)
     {
-        // This will make sure the list is refreshed on the next render
-        $this->resetPage(); // If you're using pagination
+        $this->resetPage();
         
-        // Optionally set the newly added performance as selected
         if ($performance) {
             $this->showPerformance($performance['performance_id']);
         }
+    }
+
+    public function save()
+    {
+        $this->validate([
+            'add_title' => 'required|min:3',
+            'add_description' => 'required|min:10',
+            'add_performance_file' => 'nullable|image|max:10240',
+        ]);
+
+        $performance = Performances::create([
+            'title' => $this->add_title,
+            'description' => $this->add_description,
+        ]);
+
+        if ($this->add_performance_file) {
+            $path = $this->add_performance_file->store('uploads', 's3');
+            $url = Storage::url($path); 
+            $performance->media()->create([
+                'performance_id' => $performance->performance_id,
+                'file_data' => $path,
+                'type' => 'image',
+            ]);
+        }
+        $this->modal('add-performance')->close();
+        $this->reset(['add_title', 'add_description', 'add_performance_file']);
+        $this->dispatch('performance-added');
     }
 
     public function showPerformance($id = null)
@@ -44,20 +99,155 @@ class PerformancesUi extends Component
         Log::debug('Selected Performance:', ['performance' => $this->selectedPerformance]);
     }
 
+    public function editPerformance($id)
+    {
+        $this->editingPerformance = Performances::with('media')->find($id);
+        $this->edit_title = $this->editingPerformance->title;
+        $this->edit_description = $this->editingPerformance->description;
+        $this->isEditing = true;
+    }
+
+    public function updatePerformance()
+    {
+        $this->validate([
+            'edit_title' => 'required|min:3',
+            'edit_description' => 'required|min:10',
+            'edit_performance_file' => 'nullable|image|max:10240',
+        ]);
+
+        try {
+            $this->editingPerformance->update([
+                'title' => $this->edit_title,
+                'description' => $this->edit_description,
+            ]);
+
+            if ($this->edit_performance_file) {
+                // Delete old media if exists
+                if ($this->editingPerformance->media) {
+                    $this->editingPerformance->media->delete();
+                }
+
+                // Store new media
+                $path = $this->edit_performance_file->store('uploads', 's3');
+                $url = Storage::url($path);
+                $this->editingPerformance->media()->create([
+                    'performance_id' => $this->editingPerformance->performance_id,
+                    'file_data' => $path,
+                    'type' => 'image',
+                ]);
+            }
+
+            // Store the ID before resetting
+            $performanceId = $this->editingPerformance->performance_id;
+            
+            // Reset the properties
+            $this->reset(['edit_title', 'edit_description', 'edit_performance_file', 'isEditing', 'editingPerformance']);
+            
+            // Close the modal using the stored ID
+            $this->modal('edit-performance-' . $performanceId)->close();
+            
+            $this->dispatch('performance-updated');
+            session()->flash('message', 'Performance updated successfully!');
+        } catch (\Exception $e) {
+            Log::error('Error updating performance:', ['error' => $e->getMessage()]);
+            session()->flash('error', 'Failed to update performance. Please try again.');
+        }
+    }
+
+    public function deletePerformance($id)
+    {
+        try {
+            $performance = Performances::find($id);
+            
+            if ($performance) {
+                // Delete associated media
+                if ($performance->media) {
+                    $performance->media->delete();
+                }
+                
+                // Soft delete the performance
+                $performance->delete();
+                
+                $this->dispatch('performance-deleted');
+                session()->flash('message', 'Performance deleted successfully!');
+            }
+        } catch (\Exception $e) {
+            Log::error('Error deleting performance:', ['error' => $e->getMessage()]);
+            session()->flash('error', 'Failed to delete performance. Please try again.');
+        }
+    }
+
+    public function cancelEdit()
+    {
+        $this->reset(['edit_title', 'edit_description', 'edit_performance_file', 'isEditing', 'editingPerformance']);
+    }
+
+    public function updatedSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedSortBy()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedSortDirection()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedStatusFilter()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedPerPage()
+    {
+        $this->resetPage();
+    }
+
+    public function closeModal($modalName)
+    {
+        $this->modal($modalName)->close();
+    }
 
     public function render()
     {
+        $query = Performances::with('media')
+            ->when($this->search, function ($query) {
+                $query->where(function ($q) {
+                    $q->where('title', 'like', '%' . $this->search . '%')
+                      ->orWhere('description', 'like', '%' . $this->search . '%');
+                });
+            })
+            ->when($this->statusFilter, function ($query) {
+                $query->where('status', $this->statusFilter);
+            })
+            ->orderBy($this->sortBy, $this->sortDirection);
 
-        $performances = Performances::with('media')->orderBy('created_at', 'desc')->paginate($this->perPage);
+        $performances = $query->paginate($this->perPage);
 
         if (!$this->selectedPerformance && $performances->isNotEmpty()) {
             $this->selectedPerformance = $performances->first();
         }
 
+        // Get statistics
+        $totalPerformances = Performances::count();
+        $activePerformances = Performances::where('status', 'active')->count();
+        $inactivePerformances = Performances::where('status', 'inactive')->count();
+        $upcomingShows = Performances::where('status', 'active')->count(); // For now, using active performances as upcoming shows
+        $totalBookings = Performances::withCount('bookings')->get()->sum('bookings_count');
+
         return view('livewire.performances-ui',
             [
                 'performances' => $performances,
                 'selectedPerformance' => $this->selectedPerformance,
+                'totalPerformances' => $totalPerformances,
+                'activePerformances' => $activePerformances,
+                'inactivePerformances' => $inactivePerformances,
+                'upcomingShows' => $upcomingShows,
+                'totalBookings' => $totalBookings,
             ]
         );
     }

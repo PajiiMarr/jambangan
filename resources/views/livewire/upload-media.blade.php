@@ -1,4 +1,4 @@
-<div class="h-25 w-full md:w-150 rounded-xl border-neutral-200">
+<div class="h-25 w-full rounded-xl border-neutral-200">
     <flux:modal.trigger name="create-post" class="w-full h-full flex rounded-xl p-1.5 cursor-pointer border-2 border-neutral-200 dark:hover:bg-gray-600 hover:bg-gray-100 duration-100 ease-in-out">
         Write a post...
     </flux:modal.trigger>
@@ -45,11 +45,15 @@
 
                     <flux:dropdown class="me-2 w-[48%]   ">
                         <flux:label>Performance</flux:label><br>
+                        
                         <flux:button icon-trailing="chevron-down" class="mt-1">
                             {{ $selectedPerformanceName }}
                         </flux:button>
                         <flux:menu>
                             <flux:menu.radio.group wire:model.live="selectedPerformance">
+                                <flux:menu.radio value="none">
+                                    None
+                                </flux:menu.radio>
                                 @foreach($performances as $performance)
                                     <flux:menu.radio value="{{ $performance->performance_id }}">
                                         {{ $performance->title }}

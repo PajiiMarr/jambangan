@@ -5,6 +5,8 @@ namespace App\Livewire;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Posts;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class PostList extends Component
 {
@@ -21,6 +23,13 @@ class PostList extends Component
     // Searching and Filtering
     public $search = '';
     public $filter = 'all';
+    public $selectedEvent = null;
+    public $selectedPerformance = null;
+
+    // Edit properties
+    public $editingPost = null;
+    public $edit_title = '';
+    public $edit_content = '';
 
     // Reset page when filter/search changes
     public function updatedSearch()
@@ -29,6 +38,16 @@ class PostList extends Component
     }
 
     public function updatedFilter()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedSelectedEvent()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedSelectedPerformance()
     {
         $this->resetPage();
     }
@@ -49,9 +68,120 @@ class PostList extends Component
         $this->filter = $type;
     }
 
+    public function editPost($postId)
+    {
+        $this->editingPost = Posts::find($postId);
+        $this->edit_title = $this->editingPost->title;
+        $this->edit_content = $this->editingPost->content;
+    }
+
+    public function updatePost()
+    {
+        $this->validate([
+            'edit_title' => 'required|min:3',
+            'edit_content' => 'required|min:10',
+        ]);
+
+        try {
+            $this->editingPost->update([
+                'title' => $this->edit_title,
+                'content' => $this->edit_content,
+            ]);
+
+            // Store the ID before resetting
+            $postId = $this->editingPost->post_id;
+            
+            // Reset the properties
+            $this->reset(['edit_title', 'edit_content', 'editingPost']);
+            
+            // Close the modal using the stored ID
+            $this->modal('edit-post-' . $postId)->close();
+            
+            $this->dispatch('post-updated');
+            session()->flash('message', 'Post updated successfully!');
+        } catch (\Exception $e) {
+            Log::error('Error updating post:', ['error' => $e->getMessage()]);
+            session()->flash('error', 'Failed to update post. Please try again.');
+        }
+    }
+
+    public function deletePost($id)
+    {
+        try {
+            $post = Posts::find($id);
+            
+            if ($post) {
+                // Soft delete the post
+                $post->delete();
+                
+                $this->dispatch('post-deleted');
+                $this->modal('delete-post-' . $id)->close();
+                session()->flash('message', 'Post deleted successfully!');
+            }
+        } catch (\Exception $e) {
+            Log::error('Error deleting post:', ['error' => $e->getMessage()]);
+            session()->flash('error', 'Failed to delete post. Please try again.');
+        }
+    }
+
+    public function cancelEdit()
+    {
+        $this->reset(['edit_title', 'edit_content', 'editingPost']);
+    }
+
+    public function deleteMedia($mediaId)
+    {
+        try {
+            Log::debug('Attempting to delete media', ['mediaId' => $mediaId]);
+            
+            if (empty($mediaId)) {
+                throw new \Exception("Media ID is empty");
+            }
+            
+            $media = \App\Models\Media::where('media_id', $mediaId)->first();
+            
+            if (!$media) {
+                throw new \Exception("Media not found with ID: {$mediaId}");
+            }
+            
+            Log::debug('Found media to delete', ['media' => $media->toArray()]);
+            
+            // Soft delete the media record
+            $media->delete();
+            
+            // Get the post's remaining media count
+            $remainingMedia = \App\Models\Media::where('post_id', $media->post_id)
+                ->whereNull('deleted_at')
+                ->count();
+            
+            Log::debug('Media deleted successfully', [
+                'mediaId' => $mediaId,
+                'remainingCount' => $remainingMedia
+            ]);
+
+            $this->modal('delete-media-confirmation')->close();
+            
+            // Dispatch the media-deleted event with the media ID
+            $this->dispatch('media-deleted', [
+                'mediaId' => $mediaId
+            ]);
+            
+            session()->flash('message', 'Media deleted successfully!');
+        } catch (\Exception $e) {
+            Log::error('Error deleting media:', [
+                'error' => $e->getMessage(),
+                'mediaId' => $mediaId,
+                'trace' => $e->getTraceAsString()
+            ]);
+            session()->flash('error', 'Failed to delete media. Please try again.');
+        }
+    }
+
     public function getPostsProperty()
     {
-        return Posts::with('media')
+        return Posts::with(['media' => function($query) {
+                $query->whereNull('deleted_at');
+            }, 'events', 'performances'])
             ->when($this->search, function ($query) {
                 $query->where(function ($q) {
                     $q->where('title', 'like', '%' . $this->search . '%')
@@ -64,6 +194,12 @@ class PostList extends Component
             ->when($this->filter === 'text_only', function ($query) {
                 $query->doesntHave('media');
             })
+            ->when($this->selectedEvent, function ($query) {
+                $query->where('event_id', $this->selectedEvent);
+            })
+            ->when($this->selectedPerformance, function ($query) {
+                $query->where('performance_id', $this->selectedPerformance);
+            })
             ->orderBy($this->sortBy, $this->sortDirection)
             ->paginate($this->perPage);
     }
@@ -72,6 +208,8 @@ class PostList extends Component
     {
         return view('livewire.post-list', [
             'posts' => $this->posts,
+            'events' => \App\Models\Events::orderBy('event_name')->get(),
+            'performances' => \App\Models\Performances::orderBy('title')->get(),
         ]);
     }
 }

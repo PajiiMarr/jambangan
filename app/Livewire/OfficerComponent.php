@@ -152,13 +152,13 @@ class OfficerComponent extends Component
                         'type' => 'image',
                     ]);
                 } else {
-                    Media::create([
-                        'officer_id' => $officer->officer_id,
-                        'file_data' => $path,
-                        'type' => 'image',
-                    ]);
+                        Media::create([
+                            'officer_id' => $officer->officer_id,
+                            'file_data' => $path,
+                            'type' => 'image',
+                        ]);
+                    }
                 }
-            }
 
             $this->modal('edit-officer')->close();
             $this->js('window.chart.load(' . json_encode($this->getChartData()) . ')');

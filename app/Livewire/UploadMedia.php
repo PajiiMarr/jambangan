@@ -15,6 +15,8 @@ use App\Models\Events;
 use App\Models\Posts;
 use App\Models\Media;
 use App\Models\Performances;
+use FFMpeg\FFMpeg;
+use FFMpeg\Coordinate\TimeCode;
 
 class UploadMedia extends Component
 {
@@ -48,6 +50,9 @@ class UploadMedia extends Component
     public $selectedEventName = 'Select Event';
     public $selectedPerformanceName = 'Select Performance';
 
+    // Add filter properties
+    public $eventFilter = '';
+    public $performanceFilter = '';
 
     protected $messages = [
         'title.required' => 'Please enter a title for your post.',
@@ -98,6 +103,12 @@ class UploadMedia extends Component
 
     public function updatedSelectedPerformance($value)
     {
+        if ($value == "none"){
+            $this->selectedPerformanceName = "None";
+            $this->selectedPerformance = null;
+            return;
+        }
+
         if ($value) {
             $performance = Performances::find($value);
             $this->selectedPerformanceName = $performance ? $performance->title : 'Select Performance';
@@ -109,6 +120,19 @@ class UploadMedia extends Component
     public function mount() {
         $this->events = Events::orderBy('start_date', 'asc')->get();
         $this->performances = Performances::orderBy('created_at', 'asc')->get();
+    }
+
+    // Add filter methods
+    public function updatedEventFilter($value)
+    {
+        $this->selectedEvent = $value;
+        $this->updatedSelectedEvent($value);
+    }
+
+    public function updatedPerformanceFilter($value)
+    {
+        $this->selectedPerformance = $value;
+        $this->updatedSelectedPerformance($value);
     }
 
     #[On('file-uploaded')]
@@ -196,11 +220,50 @@ class UploadMedia extends Component
 
                         // Get the full public URL
                         $url = Storage::url($path);
+                        $mediaType = $this->getMediaType($file->extension());
+                        $thumbnailUrl = null;
+
+                        // Generate thumbnail for videos
+                        if ($mediaType === 'video') {
+                            try {
+                                // Create a temporary file for the video
+                                $tempVideoPath = storage_path('app/temp/' . basename($path));
+                                Storage::disk('s3')->get($path, $tempVideoPath);
+
+                                // Configure FFmpeg
+                                $ffmpeg = FFMpeg::create([
+                                    'ffmpeg.binaries' => '/usr/local/bin/ffmpeg',
+                                    'ffprobe.binaries' => '/usr/local/bin/ffprobe',
+                                    'timeout' => 3600,
+                                    'ffmpeg.threads' => 12,
+                                ]);
+
+                                // Open the video and get the first frame
+                                $video = $ffmpeg->open($tempVideoPath);
+                                $thumbnailPath = storage_path('app/temp/' . basename($path) . '_thumb.jpg');
+                                $video->frame(TimeCode::fromSeconds(0))  // Get frame at 0 seconds
+                                    ->save($thumbnailPath);
+
+                                // Upload thumbnail to S3
+                                $thumbnailS3Path = 'thumbnails/' . basename($path) . '_thumb.jpg';
+                                Storage::disk('s3')->put($thumbnailS3Path, file_get_contents($thumbnailPath));
+
+                                // Get the thumbnail URL
+                                $thumbnailUrl = Storage::url($thumbnailS3Path);
+
+                                // Clean up temporary files
+                                unlink($tempVideoPath);
+                                unlink($thumbnailPath);
+                            } catch (\Exception $e) {
+                                Log::error('Failed to generate video thumbnail: ' . $e->getMessage());
+                            }
+                        }
 
                         Media::create([
                             'post_id' => $post->post_id,
-                            'file_data' => $path, // Corrected column
-                            'type' => $this->getMediaType($file->extension()),
+                            'file_data' => $path,
+                            'type' => $mediaType,
+                            'thumbnail_url' => $thumbnailUrl,
                         ]);
                     }
                 }

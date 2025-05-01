@@ -12,6 +12,8 @@ return new class extends Migration {
             // $table->enum('category', ['Cultural Dance', 'Folk Dance', 'Special ']);
             $table->text('description')->nullable();
             $table->timestamp('created_at')->useCurrent();
+            $table->string('status')->default('active');
+            $table->softDeletes();
             // $table->foreignId('admin_id')->constrained('users')->onDelete('cascade');
         });
     }

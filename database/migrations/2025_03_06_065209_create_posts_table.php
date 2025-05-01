@@ -31,6 +31,7 @@ return new class extends Migration
                 ->onDelete('set null');
         
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->softDeletes();
         });        
     }
 

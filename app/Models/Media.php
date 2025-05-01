@@ -5,9 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Media extends Model
 {
+    use SoftDeletes;
+
     protected $primaryKey = 'media_id';
     public $timestamps = false; // Disable automatic timestamps
     
@@ -19,7 +22,10 @@ class Media extends Model
         'performance_id',
         'event_id',     // Foreign key reference to 'events' table
         'officer_id',
-        'slide_id'    // Foreign key reference to 'officers' table
+        'slide_id',     // Foreign key reference to 'officers' table
+        'file_path',
+        'file_url',
+        'thumbnail_url'
     ];
 
     protected $casts = [
