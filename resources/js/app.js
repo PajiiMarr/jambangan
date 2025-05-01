@@ -21,16 +21,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-function chartComponent() {
+function chartComponent(chartData) {
+    // Convert Proxy to plain object to safely access the data
+    const plainData = JSON.parse(JSON.stringify(chartData));
+    console.log('Chart Data (plain):', plainData);
+
     return {
-        selectedYear: '2023',
-        selectedMonth: '01',
-        chartData: {
-            '2023': {
-                '01': [12, 19, 3, 5, 2, 3]
-            },
-        },
+        selectedYear: '2025',
+        selectedMonth: '05',
+        chartData: plainData,
         init() {
+            console.log('Initial Chart Data:', this.chartData);
             this.$nextTick(() => {
                 this.renderChart();
             });
@@ -38,12 +39,11 @@ function chartComponent() {
         renderChart() {
             const ctx = document.getElementById('myChart');
             if (!ctx) return;
-
+        
             if (window.myChart instanceof Chart) {
                 window.myChart.destroy();
             }
-
-            // Render new chart
+        
             const isDarkMode = document.documentElement.classList.contains('dark');
             const barColor = getComputedStyle(document.documentElement)
                 .getPropertyValue('--color-accent')
@@ -51,16 +51,31 @@ function chartComponent() {
             const darkModeBarColor = getComputedStyle(document.documentElement)
                 .getPropertyValue('--color-red-400')
                 .trim() || '#F87171';
+        
+            // Get the total views for the selected month
+            const monthTotal = this.chartData[this.selectedYear]?.[this.selectedMonth] || 0;
+            
+            // Since you only have monthly totals (not daily), we'll distribute it evenly for visualization
+            const daysInMonth = 31;
+            const averageDailyViews = Math.round(monthTotal / daysInMonth);
+            
+            const labels = Array.from({length: daysInMonth}, (_, i) => `Day ${i + 1}`);
+            const dataPoints = Array(daysInMonth).fill(averageDailyViews);
 
-            const data = this.chartData[this.selectedYear][this.selectedMonth];
-
+            console.log('Processed Chart Data:', {
+                monthTotal,
+                averageDailyViews,
+                labels,
+                dataPoints
+            });
+        
             window.myChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                    labels: labels,
                     datasets: [{
                         label: '# of Visitors',
-                        data: data,
+                        data: dataPoints,
                         backgroundColor: isDarkMode ? darkModeBarColor : barColor,
                         borderWidth: 1
                     }],
@@ -70,18 +85,35 @@ function chartComponent() {
                     maintainAspectRatio: false,
                     scales: {
                         y: {
-                            beginAtZero: true
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Number of Visitors'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Days of the Month'
+                            }
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: `Monthly Visitors for ${this.selectedMonth}/${this.selectedYear} (Total: ${monthTotal})`
                         }
                     }
                 }
             });
-
-            window.initializedComponents.chartInstances.set(ctx.id, window.myChart);
         },
         updateChart() {
+            console.log('Updating chart with:', {
+                year: this.selectedYear,
+                month: this.selectedMonth
+            });
             this.renderChart();
         }
     };
 }
-
 window.chartComponent = chartComponent;

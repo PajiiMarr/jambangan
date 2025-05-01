@@ -10,6 +10,7 @@ class EventsController extends Controller
 {
     public function index()
     {
+        track_page_view('events-public');
         $events = Events::with(['media', 'posts.media'])->get();
         $general_contents = General::latest()->first();
 

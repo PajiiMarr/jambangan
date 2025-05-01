@@ -278,59 +278,71 @@ class ManageSite extends Component
         }
     }
 
-    public function updateCoverMedia($id)
+    public function updateCoverMedia($mediaId)  // Now expects media ID
     {
         try {
-            // Find the media record first
-            $mediaRecord = Media::findOrFail($id);
+            DB::beginTransaction();
             
-            // Find the related slide
-            $slide = Slides::findOrFail($mediaRecord->slide_id);
-
+            // Find the media record
+            $media = Media::findOrFail($mediaId);
             
-            // Update slide details
-            $slide->title = $this->coverEditValues[$id]['title'] ?? $slide->title;
-            $slide->subtitle = $this->coverEditValues[$id]['subtitle'] ?? $slide->subtitle;
-            $slide->save();
-        
+            // Find and update the related slide
+            $slide = Slides::findOrFail($media->slide_id);
+            $slide->update([
+                'title' => $this->coverEditValues[$mediaId]['title'],
+                'subtitle' => $this->coverEditValues[$mediaId]['subtitle']
+            ]);
+    
             // Update media file if new file was uploaded
             if ($this->file_path) {
+                // Delete old file from storage
+                Storage::disk('s3')->delete($media->file_data);
+                
+                // Store new file
                 $path = $this->file_path->store('uploads', 's3');
-                $mediaRecord->file_data = $path;
-                $mediaRecord->type = $this->getMediaType($this->file_path->extension());
-                $mediaRecord->save();
+                $media->update([
+                    'file_data' => $path,
+                    'type' => $this->getMediaType($this->file_path->extension())
+                ]);
             }
-
-            $this->modal('edit-cover-media-' . $id)->close();
-        
+    
+            DB::commit();
+            $this->modal('edit-cover-media-' . $mediaId)->close();
             $this->coverMedias(); // Refresh data
         } catch (\Exception $e) {
+            DB::rollBack();
             Log::error('Update cover media failed: ' . $e->getMessage());
-            $this->addError('updateCoverMedia', 'Failed to update cover media: ' . $e->getMessage());
+            $this->addError('updateCoverMedia', 'Failed to update cover media');
         }
     }
-
-    public function deleteCoverMedia($id)
+    
+    public function deleteCoverMedia($mediaId)  // Now expects media ID
     {
         try {
-            // Find the media record first
-            $mediaRecord = Media::findOrFail($id);
+            DB::beginTransaction();
             
-            // Get the slide ID from the media record
-            $slideId = $mediaRecord->slide_id;
+            // Find the media record
+            $media = Media::findOrFail($mediaId);
+            
+            // Get related slide before deletion
+            $slideId = $media->slide_id;
+            
+            // Delete the media file from storage
+            Storage::disk('s3')->delete($media->file_data);
             
             // Delete the media record
-            $mediaRecord->delete();
+            $media->delete();
             
-            // Find and delete the slide
-            $slide = Slides::findOrFail($slideId);
-            $slide->delete();
+            // Delete the related slide
+            Slides::findOrFail($slideId)->delete();
             
+            DB::commit();
+            $this->dispatch('close-modal', 'delete-cover-media-'.$mediaId);
             $this->coverMedias(); // Refresh data
-            $this->dispatch('close-modal', 'delete-cover-media-'.$id);
         } catch (\Exception $e) {
+            DB::rollBack();
             Log::error('Delete cover media failed: ' . $e->getMessage());
-            $this->addError('deleteCoverMedia', 'Failed to delete cover media: ' . $e->getMessage());
+            $this->addError('deleteCoverMedia', 'Failed to delete cover media');
         }
     }
 

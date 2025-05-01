@@ -10,6 +10,7 @@ class PostController extends Controller
 {
     public function index()
     {
+        track_page_view('posts-public');
         $posts = Posts::with(['media', 'user', 'events', 'performances'])
             ->orderBy('created_at', 'desc')
             ->get();

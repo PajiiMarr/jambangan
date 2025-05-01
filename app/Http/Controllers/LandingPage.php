@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -9,13 +8,14 @@ use App\Models\Performances;
 use App\Models\Media;
 use App\Models\Posts;
 use App\Models\Slides;
-use Illuminate\Support\Facades\Storage;
-
 
 class LandingPage extends Controller
 {
     public function __invoke()
     {
+        // Call the page view tracker
+        track_page_view('home-public');
+
         $performances = Performances::with('media')
             ->orderBy('created_at', 'desc')
             ->get();

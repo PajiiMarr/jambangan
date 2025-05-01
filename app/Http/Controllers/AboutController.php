@@ -10,6 +10,7 @@ class AboutController extends Controller
 {
     public function index()
     {
+        track_page_view('about-public');
         $general_contents = General::latest()->first();
         $officers = Officers::with('media')->get();
 

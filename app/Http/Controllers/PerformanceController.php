@@ -11,6 +11,7 @@ class PerformanceController extends Controller
 {
     public function index()
     {
+        track_page_view('performances-public');
         $performances = Performances::with(['media', 'posts.media'])->get();
         $general_contents = General::latest()->first();
 
