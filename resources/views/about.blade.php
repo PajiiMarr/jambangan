@@ -53,7 +53,7 @@
             <div class="flex items-center gap-8">
                 <div class="flex items-center gap-4">
                     <a href="/" class="group">
-                        <img src="{{ $general_contents->logo_path ? $general_contents->logo_path : asset('images/LogoColored.png') }}" alt="Jambangan Logo" class="h-25 w-auto transition-transform duration-300 group-hover:scale-105">
+                        <img src="{{ $general_contents && $general_contents->logo_path ? $general_contents->logo_path : asset('images/LogoColored.png') }}" alt="Jambangan Logo" class="h-25 w-auto transition-transform duration-300 group-hover:scale-105">
                     </a>
                 </div>
                 <ul class="flex space-x-6 font-thin">
@@ -110,7 +110,7 @@
                         OUR MISSION
                     </h2>
                     <p class="text-lg sm:text-xl text-gray-300 leading-relaxed">
-                        {{ $general_contents['mission'] ?? 'To preserve and promote the rich cultural heritage of the Philippines through traditional dance performances, while fostering unity and pride among our members and audiences.' }}
+                        {{ $general_contents && $general_contents->mission ? $general_contents->mission : 'To preserve and promote the rich cultural heritage of the Philippines through traditional dance performances, while fostering unity and pride among our members and audiences.' }}
                     </p>
                 </div>
 
@@ -120,7 +120,7 @@
                         OUR VISION
                     </h2>
                     <p class="text-lg sm:text-xl text-gray-300 leading-relaxed">
-                        {{ $general_contents['vision'] ?? 'To be recognized as the premier cultural dance group in the region, inspiring future generations to appreciate and continue our cultural traditions.' }}
+                        {{ $general_contents && $general_contents->vision ? $general_contents->vision : 'To be recognized as the premier cultural dance group in the region, inspiring future generations to appreciate and continue our cultural traditions.' }}
                     </p>
                 </div>
             </div>
@@ -145,7 +145,7 @@
                 </h2>
                 <div class="my-12 sm:my-24 max-w-4xl">
                     <p class="text-xl sm:text-2xl md:text-3xl font-thin text-gray-300 leading-relaxed">
-                        {{ $general_contents['about_us'] }}
+                        {{ $general_contents && $general_contents->about_us ? $general_contents->about_us : 'About us content coming soon.' }}
                     </p>
                 </div>
             </div>  

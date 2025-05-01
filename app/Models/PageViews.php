@@ -10,6 +10,6 @@ class PageViews extends Model
 {
     protected $table = 'page_views';
     protected $primaryKey = 'id';
-    protected $fillable = ['path', 'year', 'month', 'day', 'views'];
+    protected $fillable = ['year', 'month', 'views'];
     public $timestamps = true;
 }

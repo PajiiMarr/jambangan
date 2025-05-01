@@ -415,7 +415,7 @@
                         Reach out to us at <strong class="text-yellow-400">jambangan@culture.ph</strong>
                     </p>
 
-                    <a href="#booking"
+                    <a href="{{ route('bookings-public') }}"
                        class="inline-block bg-red-600 hover:bg-yellow-400 text-white hover:text-black font-semibold py-2 sm:py-3 px-6 sm:px-8 rounded-full shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 ring-2 ring-yellow-400 text-sm sm:text-base">
                         Go to Bookings →
                     </a>

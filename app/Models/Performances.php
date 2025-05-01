@@ -39,11 +39,6 @@ class Performances extends Model
         return $this->hasOne(Media::class, 'performance_id');
     }
     
-    public function bookings(): HasMany
-    {
-        return $this->hasMany(Bookings::class, 'performance_id');
-    }
-
     public function posts(): HasMany
     {
         return $this->hasMany(Posts::class, 'performance_id');

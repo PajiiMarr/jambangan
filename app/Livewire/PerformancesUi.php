@@ -38,10 +38,10 @@ class PerformancesUi extends Component
 
     protected $rules = [
         'add_title' => 'required|min:3',
-        'add_description' => 'required|min:10',
+        'add_description' => 'nullable',
         'add_performance_file' => 'nullable|image|max:10240', // 10MB Max
         'edit_title' => 'required|min:3',
-        'edit_description' => 'required|min:10',
+        'edit_description' => 'nullable',
         'edit_performance_file' => 'nullable|image|max:10240', // 10MB Max
     ];
     
@@ -51,6 +51,7 @@ class PerformancesUi extends Component
         $this->add_description = '';
         $this->edit_title = '';
         $this->edit_description = '';
+        $this->isEditing = false;
     }
 
     #[On('performance-added')]
@@ -67,7 +68,7 @@ class PerformancesUi extends Component
     {
         $this->validate([
             'add_title' => 'required|min:3',
-            'add_description' => 'required|min:10',
+            'add_description' => 'nullable',
             'add_performance_file' => 'nullable|image|max:10240',
         ]);
 
@@ -102,20 +103,37 @@ class PerformancesUi extends Component
     public function editPerformance($id)
     {
         $this->editingPerformance = Performances::with('media')->find($id);
-        $this->edit_title = $this->editingPerformance->title;
-        $this->edit_description = $this->editingPerformance->description;
-        $this->isEditing = true;
+        
+        if ($this->editingPerformance) {
+            $this->edit_title = $this->editingPerformance->title;
+            $this->edit_description = $this->editingPerformance->description;
+            $this->isEditing = true;
+            $this->edit_performance_file = null;
+            
+            // Force a re-render of the component
+            $this->dispatch('refresh-edit-form');
+        }
+    }
+
+    public function openEditModal($id)
+    {
+        $this->editPerformance($id);
+        $this->dispatch('open-modal', name: 'edit-performance-' . $id);
     }
 
     public function updatePerformance()
     {
         $this->validate([
             'edit_title' => 'required|min:3',
-            'edit_description' => 'required|min:10',
+            'edit_description' => 'nullable',
             'edit_performance_file' => 'nullable|image|max:10240',
         ]);
 
         try {
+            if (!$this->editingPerformance) {
+                throw new \Exception("No performance selected for editing");
+            }
+
             $this->editingPerformance->update([
                 'title' => $this->edit_title,
                 'description' => $this->edit_description,
@@ -237,7 +255,6 @@ class PerformancesUi extends Component
         $activePerformances = Performances::where('status', 'active')->count();
         $inactivePerformances = Performances::where('status', 'inactive')->count();
         $upcomingShows = Performances::where('status', 'active')->count(); // For now, using active performances as upcoming shows
-        $totalBookings = Performances::withCount('bookings')->get()->sum('bookings_count');
 
         return view('livewire.performances-ui',
             [
@@ -247,7 +264,6 @@ class PerformancesUi extends Component
                 'activePerformances' => $activePerformances,
                 'inactivePerformances' => $inactivePerformances,
                 'upcomingShows' => $upcomingShows,
-                'totalBookings' => $totalBookings,
             ]
         );
     }

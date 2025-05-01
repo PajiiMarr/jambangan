@@ -53,7 +53,7 @@
             <div class="flex items-center gap-8">
                 <div class="flex items-center gap-4">
                     <a href="/" class="group">
-                        <img src="{{ $general_contents->logo_path ? $general_contents->logo_path : asset('images/LogoColored.png') }}" alt="Jambangan Logo" class="h-25 w-auto transition-transform duration-300 group-hover:scale-105">
+                        <img src="{{ $general_contents && $general_contents->logo_path ? $general_contents->logo_path : asset('images/LogoColored.png') }}" alt="Jambangan Logo" class="h-25 w-auto transition-transform duration-300 group-hover:scale-105">
                     </a>
                 </div>
                 <ul class="flex space-x-6 font-thin">
@@ -105,54 +105,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
                 <!-- Booking Form -->
-                <div class="bg-[#121212] p-8 rounded-lg shadow-xl">
-                    <h2 class="text-xl sm:text-2xl text-white font-extrabold mb-6 relative pl-6 ml-4 sm:ml-10 before:content-['|'] before:absolute before:left-0 before:text-[#EAB308] before:text-2xl sm:before:text-3xl">
-                        REQUEST A BOOKING
-                    </h2>
-                    <form action="{{ route('bookings.store') }}" method="POST" class="space-y-6">
-                        @csrf
-                        <div>
-                            <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Full Name</label>
-                            <input type="text" id="name" name="name" required
-                                class="w-full px-4 py-2 bg-black/50 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400/50">
-                        </div>
-                        <div>
-                            <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
-                            <input type="email" id="email" name="email" required
-                                class="w-full px-4 py-2 bg-black/50 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400/50">
-                        </div>
-                        <div>
-                            <label for="phone" class="block text-sm font-medium text-gray-300 mb-2">Phone Number</label>
-                            <input type="tel" id="phone" name="phone" required
-                                class="w-full px-4 py-2 bg-black/50 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400/50">
-                        </div>
-                        <div>
-                            <label for="event_date" class="block text-sm font-medium text-gray-300 mb-2">Event Date</label>
-                            <input type="date" id="event_date" name="event_date" required
-                                class="w-full px-4 py-2 bg-black/50 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400/50">
-                        </div>
-                        <div>
-                            <label for="event_type" class="block text-sm font-medium text-gray-300 mb-2">Event Type</label>
-                            <select id="event_type" name="event_type" required
-                                class="w-full px-4 py-2 bg-black/50 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400/50">
-                                <option value="">Select Event Type</option>
-                                <option value="wedding">Wedding</option>
-                                <option value="corporate">Corporate Event</option>
-                                <option value="cultural">Cultural Festival</option>
-                                <option value="other">Other</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="message" class="block text-sm font-medium text-gray-300 mb-2">Additional Details</label>
-                            <textarea id="message" name="message" rows="4"
-                                class="w-full px-4 py-2 bg-black/50 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400/50"></textarea>
-                        </div>
-                        <button type="submit"
-                            class="w-full px-6 py-3 bg-gradient-to-r from-yellow-400 to-red-500 hover:from-red-500 hover:to-yellow-400 text-black hover:text-white rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
-                            Submit Booking Request
-                        </button>
-                    </form>
-                </div>
+                <livewire:public-bookings-component />
 
                 <!-- Booking Information -->
                 <div class="space-y-8">

@@ -63,6 +63,9 @@ class ManageSite extends Component
 
 
     public $cover_medias = [];
+    public $selectedMediaId = null;
+
+    public $showDeleteModal = false;
 
     public function mount()
     {
@@ -255,9 +258,24 @@ class ManageSite extends Component
 
     public function deleteCoreValue($id)
     {
-        CoreValues::findOrFail($id)->delete();
-        $this->coreValues(); // refresh the list
-        $this->modal('delete-core-value-' . $id)->close();
+        try {
+            DB::beginTransaction();
+            
+            $coreValue = CoreValues::findOrFail($id);
+            $coreValue->delete();
+            
+            DB::commit();
+            
+            // Close modal and refresh data
+            $this->dispatch('close-modal', ['name' => 'delete-core-value-' . $id]);
+            $this->coreValues();
+            
+            session()->flash('message', 'Core value deleted successfully!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Delete core value failed: ' . $e->getMessage());
+            session()->flash('error', 'Failed to delete core value: ' . $e->getMessage());
+        }
     }
     
     public function updateCoreValue($id)
@@ -316,19 +334,27 @@ class ManageSite extends Component
         }
     }
     
-    public function deleteCoverMedia($mediaId)  // Now expects media ID
+    public function confirmDelete($mediaId)
+    {
+        $this->selectedMediaId = $mediaId;
+        $this->showDeleteModal = true;
+    }
+
+    public function deleteCoverMedia()
     {
         try {
             DB::beginTransaction();
             
-            // Find the media record
-            $media = Media::findOrFail($mediaId);
+            // Find the media record using media_id
+            $media = Media::where('media_id', $this->selectedMediaId)->firstOrFail();
             
             // Get related slide before deletion
             $slideId = $media->slide_id;
             
             // Delete the media file from storage
-            Storage::disk('s3')->delete($media->file_data);
+            if (Storage::disk('s3')->exists($media->file_data)) {
+                Storage::disk('s3')->delete($media->file_data);
+            }
             
             // Delete the media record
             $media->delete();
@@ -337,15 +363,179 @@ class ManageSite extends Component
             Slides::findOrFail($slideId)->delete();
             
             DB::commit();
-            $this->dispatch('close-modal', 'delete-cover-media-'.$mediaId);
-            $this->coverMedias(); // Refresh data
+            
+            // Reset modal state and refresh data
+            $this->showDeleteModal = false;
+            $this->selectedMediaId = null;
+            $this->coverMedias();
+            
+            session()->flash('message', 'Cover media deleted successfully!');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Delete cover media failed: ' . $e->getMessage());
-            $this->addError('deleteCoverMedia', 'Failed to delete cover media');
+            session()->flash('error', 'Failed to delete cover media: ' . $e->getMessage());
         }
     }
 
+    public function saveSiteIdentity()
+    {
+        try {
+            DB::beginTransaction();
+            
+            $general = General::updateOrCreate(
+                ['id' => $this->general_contents->id ?? null],
+                [
+                    'site_title' => $this->site_title,
+                    'about_us' => $this->about_us,
+                ]
+            );
+            
+            DB::commit();
+            $this->generalContents();
+            session()->flash('message', 'Site identity updated successfully!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Save site identity failed: ' . $e->getMessage());
+            session()->flash('error', 'Failed to update site identity: ' . $e->getMessage());
+        }
+    }
+
+    public function saveMissionVision()
+    {
+        try {
+            DB::beginTransaction();
+            
+            $general = General::updateOrCreate(
+                ['id' => $this->general_contents->id ?? null],
+                [
+                    'mission' => $this->mission,
+                    'vision' => $this->vision,
+                ]
+            );
+            
+            DB::commit();
+            $this->generalContents();
+            session()->flash('message', 'Mission and Vision updated successfully!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Save mission and vision failed: ' . $e->getMessage());
+            session()->flash('error', 'Failed to update mission and vision: ' . $e->getMessage());
+        }
+    }
+
+    public function saveCoreValue()
+    {
+        try {
+            DB::beginTransaction();
+            
+            if ($this->core_value_title && $this->core_value_description) {
+                CoreValues::create([
+                    'core_value_title' => $this->core_value_title,
+                    'core_value_description' => $this->core_value_description,
+                ]);
+            }
+            
+            DB::commit();
+            $this->coreValues();
+            $this->core_value_title = '';
+            $this->core_value_description = '';
+            session()->flash('message', 'Core value added successfully!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Save core value failed: ' . $e->getMessage());
+            session()->flash('error', 'Failed to add core value: ' . $e->getMessage());
+        }
+    }
+
+    public function saveContactDetails()
+    {
+        try {
+            DB::beginTransaction();
+            
+            $general = General::updateOrCreate(
+                ['id' => $this->general_contents->id ?? null],
+                [
+                    'contact_email' => $this->contact_email,
+                    'contact_number' => $this->contact_number,
+                    'address' => $this->address,
+                ]
+            );
+            
+            DB::commit();
+            $this->generalContents();
+            session()->flash('message', 'Contact details updated successfully!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Save contact details failed: ' . $e->getMessage());
+            session()->flash('error', 'Failed to update contact details: ' . $e->getMessage());
+        }
+    }
+
+    public function saveCoverMedia()
+    {
+        try {
+            DB::beginTransaction();
+            
+            if (!empty($this->file_path)) {
+                $slides = Slides::create([
+                    'title' => $this->title,
+                    'subtitle' => $this->subtitle,
+                ]);
+                
+                if (!$slides) {
+                    throw new \Exception('Failed to create slide');
+                }
+    
+                if (is_object($this->file_path) && method_exists($this->file_path, 'store')) {
+                    $path = $this->file_path->store('uploads', 's3');
+                    $url = Storage::disk('s3')->url($path);
+    
+                    Media::create([
+                        'slide_id' => $slides['slide_id'],
+                        'file_data' => $path,
+                        'type' => $this->getMediaType($this->file_path->extension()),
+                    ]);
+                }
+            }
+            
+            DB::commit();
+            $this->coverMedias();
+            $this->title = '';
+            $this->subtitle = '';
+            $this->file_path = null;
+            session()->flash('message', 'Cover media added successfully!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Save cover media failed: ' . $e->getMessage());
+            session()->flash('error', 'Failed to add cover media: ' . $e->getMessage());
+        }
+    }
+
+    public function saveLogo()
+    {
+        try {
+            DB::beginTransaction();
+            
+            if ($this->logo_path) {
+                $logoPath = $this->logo_path->store('logos', 's3');
+                $logoUrl = Storage::disk('s3')->url($logoPath);
+                
+                $general = General::updateOrCreate(
+                    ['id' => $this->general_contents->id ?? null],
+                    ['logo_path' => $logoUrl]
+                );
+            }
+            
+            DB::commit();
+            $this->generalContents();
+            $this->logo_path = null;
+            session()->flash('message', 'Logo updated successfully!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Save logo failed: ' . $e->getMessage());
+            session()->flash('error', 'Failed to update logo: ' . $e->getMessage());
+        }
+    }
 
     public function render()
     {

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,7 +49,7 @@
             <div class="flex items-center gap-8">
                 <div class="flex items-center gap-4">
                     <a href="/" class="group">
-                        <img src="{{ $general_contents->logo_path ? $general_contents->logo_path : asset('images/LogoColored.png') }}" alt="Jambangan Logo" class="h-25 w-auto transition-transform duration-300 group-hover:scale-105">
+                        <img src="{{ $general_contents && $general_contents->logo_path ? $general_contents->logo_path : asset('images/LogoColored.png') }}" alt="Jambangan Logo" class="h-25 w-auto transition-transform duration-300 group-hover:scale-105">
                     </a>
                 </div>
                 <ul class="flex space-x-6 font-thin">
@@ -146,7 +145,6 @@
                         </div>
                     </article>
                 @endforeach
->>>>>>> d8f6815115400387eaee60e73e006d5ed25b8f09
             </div>
         </div>
     </section>
