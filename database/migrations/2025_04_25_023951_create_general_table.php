@@ -17,7 +17,11 @@ return new class extends Migration
             $table->string('about_us')->nullable(); // Store about us content
             $table->string('contact_email')->nullable(); // Store contact email
             $table->string('contact_number')->nullable(); // Store contact email
+            $table->string('address')->nullable();
             $table->string('logo_path')->nullable();
+            $table->string('mission')->nullable();
+            $table->string('vision')->nullable();
+
             $table->timestamps();
         });
     }

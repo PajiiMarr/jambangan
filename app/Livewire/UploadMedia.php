@@ -221,49 +221,11 @@ class UploadMedia extends Component
                         // Get the full public URL
                         $url = Storage::url($path);
                         $mediaType = $this->getMediaType($file->extension());
-                        $thumbnailUrl = null;
-
-                        // Generate thumbnail for videos
-                        if ($mediaType === 'video') {
-                            try {
-                                // Create a temporary file for the video
-                                $tempVideoPath = storage_path('app/temp/' . basename($path));
-                                Storage::disk('s3')->get($path, $tempVideoPath);
-
-                                // Configure FFmpeg
-                                $ffmpeg = FFMpeg::create([
-                                    'ffmpeg.binaries' => '/usr/local/bin/ffmpeg',
-                                    'ffprobe.binaries' => '/usr/local/bin/ffprobe',
-                                    'timeout' => 3600,
-                                    'ffmpeg.threads' => 12,
-                                ]);
-
-                                // Open the video and get the first frame
-                                $video = $ffmpeg->open($tempVideoPath);
-                                $thumbnailPath = storage_path('app/temp/' . basename($path) . '_thumb.jpg');
-                                $video->frame(TimeCode::fromSeconds(0))  // Get frame at 0 seconds
-                                    ->save($thumbnailPath);
-
-                                // Upload thumbnail to S3
-                                $thumbnailS3Path = 'thumbnails/' . basename($path) . '_thumb.jpg';
-                                Storage::disk('s3')->put($thumbnailS3Path, file_get_contents($thumbnailPath));
-
-                                // Get the thumbnail URL
-                                $thumbnailUrl = Storage::url($thumbnailS3Path);
-
-                                // Clean up temporary files
-                                unlink($tempVideoPath);
-                                unlink($thumbnailPath);
-                            } catch (\Exception $e) {
-                                Log::error('Failed to generate video thumbnail: ' . $e->getMessage());
-                            }
-                        }
 
                         Media::create([
                             'post_id' => $post->post_id,
                             'file_data' => $path,
                             'type' => $mediaType,
-                            'thumbnail_url' => $thumbnailUrl,
                         ]);
                     }
                 }

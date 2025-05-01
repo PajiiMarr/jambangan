@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\General;
 use App\Models\Slides;
 use App\Models\Media;
+use App\Models\CoreValues;
 
 class ManageSite extends Component
 {
@@ -27,11 +28,19 @@ class ManageSite extends Component
         'about_us' => 'required|string|max:255',
         'contact_email' => 'required|email|max:255',
         'contact_number' => 'required|string|max:15',
+        'address' => 'required|string|max:255',
         'logo_path' => 'nullable|image|max:1024', // 1MB Max
         'title' => 'nullable|string|max:255',
         'subtitle' => 'nullable|string|max:255',
         'file_path' => 'nullable|file|mimes:jpeg,png,jpg,gif,mp4,mov,avi,wmv|max:10240',
+        'mission' => 'nullable|string|max:255',
+        'vision' => 'nullable|string|max:255',
+        'core_value_title' => 'nullable|string|max:255',
+        'core_value_description' => 'nullable|string|max:255',
     ])]
+
+    public $editValues = [];
+    public $coverEditValues = [];
     
     public $general_contents;
 
@@ -40,11 +49,17 @@ class ManageSite extends Component
     public $about_us;
     public $contact_email;
     public $contact_number;
+    public $address;
     public $logo_path;
-
+    public $mission;
+    public $vision;
     public $title;
     public $subtitle;
     public $file_path;
+    public $core_value_title;
+    public $core_value_description;
+
+    public $core_values = [];
 
 
     public $cover_medias = [];
@@ -53,6 +68,7 @@ class ManageSite extends Component
     {
         $this->generalContents();
         $this->coverMedias();
+        $this->coreValues();
 
         // Log::debug('djfhgjadhfkj' . $this->cover_medias);
 
@@ -61,6 +77,8 @@ class ManageSite extends Component
             $this->about_us = $this->general_contents->about_us;
             $this->contact_email = $this->general_contents->contact_email;
             $this->contact_number = $this->general_contents->contact_number;
+            $this->mission = $this->general_contents->mission;
+            $this->vision = $this->general_contents->vision;
         }
     }
 
@@ -68,7 +86,26 @@ class ManageSite extends Component
         $this->cover_medias = Slides::select('slides.*', 'media.*')
             ->join('media', 'slides.slide_id', '=', 'media.slide_id')
             ->get();
+
+        foreach ($this->cover_medias as $media) {
+            $this->coverEditValues[$media->id] = [
+                'title' => $media->title,
+                'subtitle' => $media->subtitle,
+                'file_path' => $media->file_data,
+            ];
+        }
         // dd($this->cover_medias);
+    }
+
+    public function coreValues(){
+        $this->core_values = CoreValues::all();
+
+        foreach ($this->core_values as $core) {
+            $this->editValues[$core->id] = [
+                'title' => $core->core_value_title,
+                'description' => $core->core_value_description,
+            ];
+        }
     }
 
     public function generalContents(){
@@ -134,9 +171,13 @@ class ManageSite extends Component
         Log::debug('Contact Email: ' . $this->contact_email);
         Log::debug('Contact Number: ' . $this->contact_number);
         Log::debug('File Path: ' . $this->file_path);
-
+        Log::debug('Mission: ' . $this->mission);
+        Log::debug('Vision: ' . $this->vision);
         Log::debug('Cover Title: ' . $this->title);
         Log::debug('Cover Sub-title: ' . $this->subtitle);
+        Log::debug('Core Value Title: ' . $this->core_value_title);
+        Log::debug('Core Value Description: ' . $this->core_value_description); 
+        Log::debug('Address: ' . $this->address);
         try {
             DB::beginTransaction();
 
@@ -147,6 +188,14 @@ class ManageSite extends Component
                 // Get the public URL if needed
                 $logoUrl = Storage::disk('s3')->url($logoPath);
             }
+
+            if ($this->core_value_title && $this->core_value_description) {
+                CoreValues::create([
+                    'core_value_title' => $this->core_value_title,
+                    'core_value_description' => $this->core_value_description,
+                ]);
+            }
+
     
             // Save general settings
             $general = General::updateOrCreate(
@@ -157,6 +206,9 @@ class ManageSite extends Component
                     'contact_email' => $this->contact_email,
                     'contact_number' => $this->contact_number,
                     'logo_path' => $logoUrl ?? '',
+                    'mission' => $this->mission,
+                    'vision' => $this->vision,
+                    'address' => $this->address,
                 ]
             );
     
@@ -188,6 +240,7 @@ class ManageSite extends Component
             Log::debug('Saved successfully' . $this->general_contents);   
     
             // Refresh data without resetting
+            $this->coreValues();
             $this->generalContents();
             if (!empty($this->file_path)) {
                 $this->coverMedias();
@@ -200,8 +253,87 @@ class ManageSite extends Component
         }
     }
 
-
+    public function deleteCoreValue($id)
+    {
+        CoreValues::findOrFail($id)->delete();
+        $this->coreValues(); // refresh the list
+        $this->modal('delete-core-value-' . $id)->close();
+    }
     
+    public function updateCoreValue($id)
+    {
+        $title = $this->editValues[$id]['title'] ?? null;
+        $description = $this->editValues[$id]['description'] ?? null;
+    
+        if ($title && $description) {
+            $coreValue = CoreValues::findOrFail($id);
+            $coreValue->core_value_title = $title;
+            $coreValue->core_value_description = $description;
+            $coreValue->save();
+            
+            $this->modal('edit-core-value-' . $id)->close();
+            $this->coreValues(); // refresh the list
+        } else {
+            $this->addError('editValues', 'Both title and description are required.');
+        }
+    }
+
+    public function updateCoverMedia($id)
+    {
+        try {
+            // Find the media record first
+            $mediaRecord = Media::findOrFail($id);
+            
+            // Find the related slide
+            $slide = Slides::findOrFail($mediaRecord->slide_id);
+
+            
+            // Update slide details
+            $slide->title = $this->coverEditValues[$id]['title'] ?? $slide->title;
+            $slide->subtitle = $this->coverEditValues[$id]['subtitle'] ?? $slide->subtitle;
+            $slide->save();
+        
+            // Update media file if new file was uploaded
+            if ($this->file_path) {
+                $path = $this->file_path->store('uploads', 's3');
+                $mediaRecord->file_data = $path;
+                $mediaRecord->type = $this->getMediaType($this->file_path->extension());
+                $mediaRecord->save();
+            }
+
+            $this->modal('edit-cover-media-' . $id)->close();
+        
+            $this->coverMedias(); // Refresh data
+        } catch (\Exception $e) {
+            Log::error('Update cover media failed: ' . $e->getMessage());
+            $this->addError('updateCoverMedia', 'Failed to update cover media: ' . $e->getMessage());
+        }
+    }
+
+    public function deleteCoverMedia($id)
+    {
+        try {
+            // Find the media record first
+            $mediaRecord = Media::findOrFail($id);
+            
+            // Get the slide ID from the media record
+            $slideId = $mediaRecord->slide_id;
+            
+            // Delete the media record
+            $mediaRecord->delete();
+            
+            // Find and delete the slide
+            $slide = Slides::findOrFail($slideId);
+            $slide->delete();
+            
+            $this->coverMedias(); // Refresh data
+            $this->dispatch('close-modal', 'delete-cover-media-'.$id);
+        } catch (\Exception $e) {
+            Log::error('Delete cover media failed: ' . $e->getMessage());
+            $this->addError('deleteCoverMedia', 'Failed to delete cover media: ' . $e->getMessage());
+        }
+    }
+
 
     public function render()
     {
