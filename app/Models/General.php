@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class General extends Model
 {
@@ -16,4 +17,9 @@ class General extends Model
         'logo_path'
     ];
     public $timestamps = false;
+
+    public function media(): HasMany
+    {
+        return $this->hasMany(Media::class, 'general_id');
+    }
 }
