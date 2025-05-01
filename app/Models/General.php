@@ -14,7 +14,10 @@ class General extends Model
         'about_us',
         'contact_email',
         'contact_number',
-        'logo_path'
+        'address',
+        'logo_path',
+        'mission',
+        'vision'
     ];
     public $timestamps = false;
 

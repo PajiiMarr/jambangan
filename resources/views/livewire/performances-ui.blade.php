@@ -178,7 +178,7 @@
 
     <div class="flex h-full w-full flex-1 gap-6 rounded-2xl">
         <!-- Left Panel -->
-        <div class="hidden md:block w-1/2 overflow-auto max-h-full">
+        <div class="w-full md:w-1/2 overflow-auto max-h-full">
             <div class="grid grid-cols-2 w-full overflow-auto max-h-full">
                 @if ($performances->isEmpty())
                     <div class="mt-2 col-span-2 p-8 text-center rounded-xl bg-gray-50">
@@ -190,11 +190,12 @@
                     </div>
                 @else
                     @foreach ($performances as $performance)
-                    <div 
+                    <!-- Performance Card -->
+                        <div 
                         wire:key="performance-{{ $performance->performance_id }}"
                         wire:click="showPerformance({{ $performance->performance_id }})"
-                        class="m-2 rounded-xl shadow-sm hover:shadow-md bg-white relative overflow-hidden h-60 group cursor-pointer transition-all duration-300 border border-gray-100"
-                    >
+                        class="col-span-2 md:col-span-1 m-2 rounded-xl shadow-sm hover:shadow-md bg-white relative overflow-hidden h-60 group cursor-pointer transition-all duration-300 border border-gray-100"
+                        >
                         @if ($performance->media)
                             <div class="absolute inset-0 w-full h-full transition-transform duration-500 ease-in-out group-hover:scale-105">
                                 <img 
@@ -204,7 +205,7 @@
                                 />
                             </div>
                         @endif
-                        
+
                         <!-- Gradient overlay -->
                         <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 via-black/50 to-transparent p-4 z-10">
                             <div class="flex items-center gap-2 mb-1">
@@ -215,7 +216,7 @@
                             <h2 class="text-lg font-semibold text-white truncate">{{ $performance->title }}</h2>
                             <p class="text-white/80 text-sm mt-1 truncate">{{ Str::limit($performance->description, 50) }}</p>
                         </div>
-                        
+
                         @unless($performance->media)
                             <div class="absolute inset-0 bg-gray-50 flex items-center justify-center">
                                 <svg class="w-12 h-12 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -224,118 +225,124 @@
                             </div>
                         @endunless
 
-                        <!-- Action buttons -->
-                        <div class="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <flux:modal.trigger name="edit-performance-{{ $performance->performance_id }}">
-                                <flux:button variant="outline" class="p-2 bg-white/90 rounded-full hover:bg-white transition-colors" title="Edit Performance">
+                        <!-- Action buttons - Add stop propagation to prevent showing performance when clicking buttons -->
+                        <div class="absolute top-2 right-2 flex gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+                            <flux:modal.trigger 
+                                name="edit-performance-{{ $performance->performance_id }}"
+                                wire:click="editPerformance({{ $performance->performance_id }})"
+                            >
+                                <flux:button 
+                                    variant="outline" 
+                                    class="p-2 bg-white/90 rounded-full md:hover:bg-white transition-colors" 
+                                    title="Edit Performance"
+                                >
                                     <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                                     </svg>
                                 </flux:button>
                             </flux:modal.trigger>
-
                             <flux:modal.trigger name="delete-performance-{{ $performance->performance_id }}">
-                                <flux:button variant="outline" class="p-2 bg-white/90 rounded-full hover:bg-white transition-colors" title="Delete Performance">
+                                <flux:button 
+                                    variant="outline" 
+                                    class="p-2 bg-white/90 rounded-full md:hover:bg-white transition-colors" 
+                                    title="Delete Performance"
+                                >
                                     <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                                     </svg>
                                 </flux:button>
                             </flux:modal.trigger>
                         </div>
+                        </div>
 
+                        <!-- Move modals outside the performance card element -->
                         <!-- Edit Modal -->
+                        @endforeach
                         <flux:modal 
                             name="edit-performance-{{ $performance->performance_id }}" 
                             class="md:w-123"
-                            data-modal-name="edit-performance-{{ $performance->performance_id }}"
-                            x-init="$wire.editPerformance({{ $performance->performance_id }})"
                             :variant="$isMobile ? 'flyout' : null"
                             :position="$isMobile ? 'bottom' : null"
                         >
-                            <div class="space-y-6">
-                                <div>
-                                    <flux:heading size="lg">Edit Performance</flux:heading>
-                                    <flux:text class="mt-2">Update performance details and media.</flux:text>
-                                </div>
-
-                                <div class="space-y-4">
-                                    <flux:input 
-                                        label="Title" 
-                                        wire:model="edit_title" 
-                                        placeholder="Performance title"
-                                    />
-                                    @error('edit_title') 
-                                        <span class="text-red-500 text-sm">{{ $message }}</span> 
-                                    @enderror
-
-                                    <flux:textarea 
-                                        label="Description" 
-                                        wire:model="edit_description" 
-                                        placeholder="Performance description"
-                                        rows="4"
-                                    />
-                                    @error('edit_description') 
-                                        <span class="text-red-500 text-sm">{{ $message }}</span> 
-                                    @enderror
-
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700">Performance Image</label>
-                                        <x-inputs.filepond wire:model="edit_performance_file" />
-                                        @error('edit_performance_file') 
-                                            <span class="text-red-500 text-sm">{{ $message }}</span> 
-                                        @enderror
-                                    </div>
-
-                                    <div class="flex justify-end gap-4">
-                                        <flux:button 
-                                            variant="outline"
-                                            wire:click="closeModal('edit-performance-{{ $performance->performance_id }}')"
-                                        >
-                                            Cancel
-                                        </flux:button>
-                                        <flux:button 
-                                            wire:click="updatePerformance" 
-                                            variant="primary"
-                                        >
-                                            Save Changes
-                                        </flux:button>
-                                    </div>
-                                </div>
+                        <div class="space-y-6">
+                            <div>
+                                <flux:heading size="lg">Edit Performance</flux:heading>
+                                <flux:text class="mt-2">Update performance details and media.</flux:text>
                             </div>
-                        </flux:modal>
-
-                        <!-- Delete Confirmation Modal -->
-                        <flux:modal 
-                            name="delete-performance-{{ $performance->performance_id }}" 
-                            class="md:w-96"
-                            data-modal-name="delete-performance-{{ $performance->performance_id }}"
-                            :variant="$isMobile ? 'flyout' : null"
-                            :position="$isMobile ? 'bottom' : null"
-                        >
-                            <div class="space-y-6">
+                            <div>
+                                <img src="{{ $performance->media->file_url }}" alt="{{ $performance->title }}">
+                            </div>
+                            <div class="space-y-4">
+                                <flux:input 
+                                    label="Title" 
+                                    wire:model="edit_title" 
+                                    placeholder="Performance title"
+                                />
+                                @error('edit_title') 
+                                    <span class="text-red-500 text-sm">{{ $message }}</span> 
+                                @enderror
+                                <flux:textarea 
+                                    label="Description" 
+                                    wire:model="edit_description" 
+                                    placeholder="Performance description"
+                                    rows="4"
+                                />
+                                @error('edit_description') 
+                                    <span class="text-red-500 text-sm">{{ $message }}</span> 
+                                @enderror
                                 <div>
-                                    <flux:heading size="lg">Delete Performance</flux:heading>
-                                    <flux:text class="mt-2">Are you sure you want to delete this performance? This action cannot be undone.</flux:text>
+                                    <label class="block text-sm font-medium text-gray-700">Performance Image</label>
+                                    <x-inputs.filepond wire:model="edit_performance_file" />
+                                    @error('edit_performance_file') 
+                                        <span class="text-red-500 text-sm">{{ $message }}</span> 
+                                    @enderror
                                 </div>
-
                                 <div class="flex justify-end gap-4">
                                     <flux:button 
                                         variant="outline"
-                                        wire:click="closeModal('delete-performance-{{ $performance->performance_id }}')"
+                                        wire:click="closeModal('edit-performance-{{ $performance->performance_id }}')"
                                     >
                                         Cancel
                                     </flux:button>
                                     <flux:button 
-                                        variant="danger"
-                                        wire:click="deletePerformance({{ $performance->performance_id }})"
+                                        wire:click="updatePerformance" 
+                                        variant="primary"
                                     >
-                                        Delete Performance
+                                        Save Changes
                                     </flux:button>
                                 </div>
                             </div>
+                        </div>
                         </flux:modal>
-                    </div>
-                    @endforeach
+
+                        <!-- Delete Confirmation Modal -->
+                        <flux:modal 
+                        name="delete-performance-{{ $performance->performance_id }}" 
+                        class="md:w-96"
+                        :variant="$isMobile ? 'flyout' : null"
+                        :position="$isMobile ? 'bottom' : null"
+                        >
+                        <div class="space-y-6">
+                            <div>
+                                <flux:heading size="lg">Delete Performance</flux:heading>
+                                <flux:text class="mt-2">Are you sure you want to delete this performance? This action cannot be undone.</flux:text>
+                            </div>
+                            <div class="flex justify-end gap-4">
+                                <flux:button 
+                                    variant="outline"
+                                    wire:click="closeModal('delete-performance-{{ $performance->performance_id }}')"
+                                >
+                                    Cancel
+                                </flux:button>
+                                <flux:button 
+                                    variant="danger"
+                                    wire:click="deletePerformance({{ $performance->performance_id }})"
+                                >
+                                    Delete Performance
+                                </flux:button>
+                            </div>
+                        </div>
+                        </flux:modal>
                 @endif
             </div>
 
@@ -403,175 +410,6 @@
             @endif
         </div>
 
-        <!-- Mobile View -->
-        <div class="block md:hidden w-full overflow-auto max-h-full">
-            <div class="grid grid-cols-1 gap-4">
-                @if ($performances->isEmpty())
-                    <div class="p-8 text-center rounded-xl bg-gray-50">
-                        <svg class="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
-                        </svg>
-                        <p class="text-gray-500 font-medium">No performances available.</p>
-                        <p class="text-gray-400 text-sm mt-2">Add your first performance to get started.</p>
-                    </div>
-                @else
-                    @foreach ($performances as $performance)
-                    <flux:modal.trigger name="performance-details">
-                        <div 
-                            wire:key="performance-{{ $performance->performance_id }}"
-                            wire:click="showPerformance({{ $performance->performance_id }})"
-                            class="rounded-xl shadow-sm hover:shadow-md bg-white relative overflow-hidden h-60 group cursor-pointer transition-all duration-300 border border-gray-100"
-                        >
-                            @if ($performance->media)
-                                <div class="absolute inset-0 w-full h-full transition-transform duration-500 ease-in-out group-hover:scale-105">
-                                    <img 
-                                        src="{{ $performance->media->file_url }}" 
-                                        alt="{{ $performance->title }}" 
-                                        class="w-full h-full object-cover" 
-                                    />
-                                </div>
-                            @endif
-                            
-                            <!-- Gradient overlay -->
-                            <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 via-black/50 to-transparent p-4 z-10">
-                                <div class="flex items-center gap-2 mb-1">
-                                    <span class="text-white/80 text-xs">
-                                        {{ $performance->created_at->format('M d, Y') }}
-                                    </span>
-                                </div>
-                                <h2 class="text-lg font-semibold text-white truncate">{{ $performance->title }}</h2>
-                                <p class="text-white/80 text-sm mt-1 truncate">{{ Str::limit($performance->description, 50) }}</p>
-                            </div>
-                            
-                            @unless($performance->media)
-                                <div class="absolute inset-0 bg-gray-50 flex items-center justify-center">
-                                    <svg class="w-12 h-12 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                    </svg>
-                                </div>
-                            @endunless
-
-                            <!-- Action buttons -->
-                            <div class="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <flux:modal.trigger name="edit-performance-{{ $performance->performance_id }}">
-                                    <flux:button variant="outline" class="p-2 bg-white/90 rounded-full hover:bg-white transition-colors" title="Edit Performance">
-                                        <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                        </svg>
-                                    </flux:button>
-                                </flux:modal.trigger>
-
-                                <flux:modal.trigger name="delete-performance-{{ $performance->performance_id }}">
-                                    <flux:button variant="outline" class="p-2 bg-white/90 rounded-full hover:bg-white transition-colors" title="Delete Performance">
-                                        <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                        </svg>
-                                    </flux:button>
-                                </flux:modal.trigger>
-                            </div>
-
-                            <!-- Edit Modal -->
-                            <flux:modal 
-                                name="edit-performance-{{ $performance->performance_id }}" 
-                                class="md:w-123"
-                                data-modal-name="edit-performance-{{ $performance->performance_id }}"
-                                x-init="$wire.editPerformance({{ $performance->performance_id }})"
-                                :variant="$isMobile ? 'flyout' : null"
-                                :position="$isMobile ? 'bottom' : null"
-                            >
-                                <div class="space-y-6">
-                                    <div>
-                                        <flux:heading size="lg">Edit Performance</flux:heading>
-                                        <flux:text class="mt-2">Update performance details and media.</flux:text>
-                                    </div>
-
-                                    <div class="space-y-4">
-                                        <flux:input 
-                                            label="Title" 
-                                            wire:model="edit_title" 
-                                            placeholder="Performance title"
-                                        />
-                                        @error('edit_title') 
-                                            <span class="text-red-500 text-sm">{{ $message }}</span> 
-                                        @enderror
-
-                                        <flux:textarea 
-                                            label="Description" 
-                                            wire:model="edit_description" 
-                                            placeholder="Performance description"
-                                            rows="4"
-                                        />
-                                        @error('edit_description') 
-                                            <span class="text-red-500 text-sm">{{ $message }}</span> 
-                                        @enderror
-
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700">Performance Image</label>
-                                            <x-inputs.filepond wire:model="edit_performance_file" />
-                                            @error('edit_performance_file') 
-                                                <span class="text-red-500 text-sm">{{ $message }}</span> 
-                                            @enderror
-                                        </div>
-
-                                        <div class="flex justify-end gap-4">
-                                            <flux:button 
-                                                variant="outline"
-                                                wire:click="closeModal('edit-performance-{{ $performance->performance_id }}')"
-                                            >
-                                                Cancel
-                                            </flux:button>
-                                            <flux:button 
-                                                wire:click="updatePerformance" 
-                                                variant="primary"
-                                            >
-                                                Save Changes
-                                            </flux:button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </flux:modal>
-
-                            <!-- Delete Confirmation Modal -->
-                            <flux:modal 
-                                name="delete-performance-{{ $performance->performance_id }}" 
-                                class="md:w-96"
-                                data-modal-name="delete-performance-{{ $performance->performance_id }}"
-                                :variant="$isMobile ? 'flyout' : null"
-                                :position="$isMobile ? 'bottom' : null"
-                            >
-                                <div class="space-y-6">
-                                    <div>
-                                        <flux:heading size="lg">Delete Performance</flux:heading>
-                                        <flux:text class="mt-2">Are you sure you want to delete this performance? This action cannot be undone.</flux:text>
-                                    </div>
-
-                                    <div class="flex justify-end gap-4">
-                                        <flux:button 
-                                            variant="outline"
-                                            wire:click="closeModal('delete-performance-{{ $performance->performance_id }}')"
-                                        >
-                                            Cancel
-                                        </flux:button>
-                                        <flux:button 
-                                            variant="danger"
-                                            wire:click="deletePerformance({{ $performance->performance_id }})"
-                                        >
-                                            Delete Performance
-                                        </flux:button>
-                                    </div>
-                                </div>
-                            </flux:modal>
-                        </div>
-                    </flux:modal.trigger>
-                    @endforeach
-                @endif
-            </div>
-
-            <!-- Pagination for Mobile -->
-            <div class="mt-6">
-                {{ $performances->links() }}
-            </div>
-        </div>
 
         <!-- Flash Messages -->
         @if (session()->has('message'))
@@ -592,56 +430,6 @@
             </div>
         @endif
     </div>
-
-    <!-- Performance Details Modal (Mobile) -->
-    <flux:modal 
-        name="performance-details" 
-        class="w-full"
-        data-modal-name="performance-details"
-        :variant="$isMobile ? 'flyout' : null"
-        :position="$isMobile ? 'bottom' : null"
-    >
-        @if ($selectedPerformance)
-        <div class="space-y-6">
-            <div class="flex items-center justify-between">
-                <div>
-                    <h2 class="font-semibold text-2xl text-gray-800">{{ $selectedPerformance->title }}</h2>
-                    <div class="flex items-center gap-2 mt-1">
-                        <span class="text-gray-500 dark:text-gray-400 text-sm">
-                            Added {{ $selectedPerformance->created_at->format('M d, Y') }}
-                        </span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="space-y-4">
-                <div class="bg-gray-50 rounded-xl p-5">
-                    <p class="text-gray-600">{{ $selectedPerformance->description }}</p>
-                </div>
-
-                @if ($selectedPerformance->media)
-                    <div class="mt-6 rounded-xl overflow-hidden">
-                        <img 
-                            src="{{ $selectedPerformance->media->file_url }}" 
-                            alt="{{ $selectedPerformance->title }}" 
-                            class="w-full max-h-80 object-cover"
-                        />
-                    </div>
-                @endif
-
-                <div class="flex justify-end gap-4">
-                    <flux:button 
-                        variant="outline"
-                        wire:click="closeModal('performance-details')"
-                    >
-                        Close
-                    </flux:button>
-                </div>
-            </div>
-        </div>
-        @endif
-    </flux:modal>
-
     @script
     <script>
         document.addEventListener('livewire:initialized', () => {
