@@ -224,10 +224,10 @@
                 <div wire:key="cover-media-{{ $medias->id }}" class="w-full flex flex-col border-b pb-3 md:flex-row gap-4 mb-4">
                     <div class="w-1/2">
                         @if ($medias->type == 'image')
-                            <img src="http://localhost:9000/my-bucket/{{ $medias->file_data }}" alt="Cover Image" class="w-full h-48 object-cover rounded-lg mb-4">
+                            <img src="{{ config('filesystems.disks.s3.url') }}/{{ $medias->file_data }}" alt="Cover Image" class="w-full h-48 object-cover rounded-lg mb-4">
                         @elseif ($medias->type == 'video')
                             <video controls class="w-full h-48 object-cover rounded-lg mb-4">
-                                <source src="{{ $medias->file_data }}" type="video/mp4">
+                                <source src="{{ config('filesystems.disks.s3.url') }}/{{ $medias->file_data }}" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
                         @endif
@@ -240,12 +240,11 @@
                         </div>
             
                         <div class="flex justify-end gap-2 mt-4">
-                            {{-- Edit Button --}}
-                            <flux:modal.trigger name="edit-cover-media-{{ $medias->id }}">
-                                <flux:button size="sm">Edit</flux:button>
-                            </flux:modal.trigger>
+                            <button wire:click="editMedia({{ $medias->media_id }})" 
+                                    class="px-3 py-1 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                Edit
+                            </button>
             
-                            {{-- Delete Button --}}
                             <button wire:click="confirmDelete({{ $medias->media_id }})" 
                                     class="px-3 py-1 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
                                 Delete
@@ -259,8 +258,9 @@
                     </div>
                 @endforelse
 
-                {{-- Single Delete Modal --}}
-                <div x-show="$wire.showDeleteModal" 
+                {{-- Edit Modal --}}
+                <div x-show="$wire.showEditModal" 
+                     x-cloak
                      class="fixed inset-0 z-50 overflow-y-auto" 
                      style="display: none;">
                     <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
@@ -268,66 +268,134 @@
                             <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
                         </div>
                         <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-                        <div class="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                            <div class="px-4 pt-5 pb-4 bg-white sm:p-6 sm:pb-4">
-                                <div class="sm:flex sm:items-start">
-                                    <div class="mt-3 text-center sm:mt-0 sm:text-left">
-                                        <h3 class="text-lg font-medium leading-6 text-gray-900">Delete Cover Media</h3>
-                                        <div class="mt-2">
-                                            <p class="text-sm text-gray-500">Are you sure you want to delete this media item?</p>
+                        <div class="inline-block align-bottom bg-white dark:bg-zinc-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full">
+                            <div class="bg-white dark:bg-zinc-800 px-6 pt-5 pb-4">
+                                <div class="space-y-6">
+                                    <div>
+                                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Edit Cover Media</h3>
+                                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Update the title, subtitle, and media file for your cover section.</p>
+                                    </div>
+
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div class="space-y-4">
+                                            <div>
+                                                <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Title</label>
+                                                <div class="mt-1">
+                                                    <input type="text" 
+                                                           id="title"
+                                                           wire:model="editingTitle" 
+                                                           class="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-zinc-700 text-gray-900 dark:text-white">
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <label for="subtitle" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Subtitle</label>
+                                                <div class="mt-1">
+                                                    <input type="text" 
+                                                           id="subtitle"
+                                                           wire:model="editingSubtitle" 
+                                                           class="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-zinc-700 text-gray-900 dark:text-white">
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Update Media File</label>
+                                                <div class="mt-1">
+                                                    <x-inputs.filepond wire:model="file_path" class="w-full"/>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="space-y-4">
+                                            <div class="bg-gray-100 dark:bg-zinc-700 rounded-lg p-4">
+                                                <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Current Media Preview</h4>
+                                                @if ($editingMedia)
+                                                    @if ($editingMedia->type == 'image')
+                                                        <img src="{{ config('filesystems.disks.s3.url') }}/{{ $editingMedia->file_data }}" 
+                                                             alt="Cover Image" 
+                                                             class="w-full h-48 object-cover rounded-lg">
+                                                    @elseif ($editingMedia->type == 'video')
+                                                        <video controls class="w-full h-48 object-cover rounded-lg">
+                                                            <source src="{{ config('filesystems.disks.s3.url') }}/{{ $editingMedia->file_data }}" type="video/mp4">
+                                                            Your browser does not support the video tag.
+                                                        </video>
+                                                    @endif
+                                                @endif
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="px-4 py-3 bg-gray-50 sm:px-6 sm:flex sm:flex-row-reverse">
+                            <div class="bg-gray-50 dark:bg-zinc-900 px-6 py-4 sm:flex sm:flex-row-reverse">
                                 <button type="button" 
-                                        wire:click="deleteCoverMedia"
-                                        class="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
-                                    Delete
+                                        wire:click="updateCoverMedia"
+                                        wire:loading.attr="disabled"
+                                        class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
+                                    <span wire:loading.remove wire:target="updateCoverMedia">Save Changes</span>
+                                    <span wire:loading wire:target="updateCoverMedia">Saving...</span>
                                 </button>
                                 <button type="button" 
-                                        wire:click="$set('showDeleteModal', false)"
-                                        class="inline-flex justify-center w-full px-4 py-2 mt-3 text-base font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                                        wire:click="closeEditModal"
+                                        class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 dark:border-gray-600 shadow-sm px-4 py-2 bg-white dark:bg-zinc-800 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
                                     Cancel
                                 </button>
                             </div>
                         </div>
                     </div>
                 </div>
+            
+                {{-- Delete Modal --}}
+                <div x-show="$wire.showDeleteModal" 
+                     x-cloak
+                     class="fixed inset-0 z-50 overflow-y-auto" 
+                     style="display: none;">
+                    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+                        <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+                        </div>
+                        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+                        <div class="inline-block align-bottom bg-white dark:bg-zinc-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                            <div class="bg-white dark:bg-zinc-800 px-6 pt-5 pb-4">
+                                <div class="space-y-4">
+                                    <div>
+                                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Delete Cover Media</h3>
+                                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Are you sure you want to delete this cover media? This action cannot be undone.</p>
+                                    </div>
 
-                {{-- Edit Modals --}}
-                @foreach ($cover_medias as $medias)
-                    <flux:modal name="edit-cover-media-{{ $medias->id }}" class="md:w-96">
-                        <div class="space-y-6">
-                            <div>
-                                <flux:heading size="lg">Edit Cover Media</flux:heading>
-                                <flux:text class="mt-2">Update the title and subtitle.</flux:text>
-
-                                @if ($medias->type == 'image')
-                                    <img src="http://localhost:9000/my-bucket/{{ $medias->file_data }}" alt="Cover Image" class="w-full h-48 object-cover rounded-lg mb-4">
-                                @elseif ($medias->type == 'video')
-                                    <video controls class="w-full h-48 object-cover rounded-lg mb-4">
-                                        <source src="{{ $medias->file_data }}" type="video/mp4">
-                                        Your browser does not support the video tag.
-                                    </video>
-                                @endif
+                                    @if ($editingMedia)
+                                        <div class="bg-gray-100 dark:bg-zinc-700 rounded-lg p-4">
+                                            <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Media Preview</h4>
+                                            @if ($editingMedia->type == 'image')
+                                                <img src="{{ config('filesystems.disks.s3.url') }}/{{ $editingMedia->file_data }}" 
+                                                     alt="Cover Image" 
+                                                     class="w-full h-48 object-cover rounded-lg">
+                                            @elseif ($editingMedia->type == 'video')
+                                                <video controls class="w-full h-48 object-cover rounded-lg">
+                                                    <source src="{{ config('filesystems.disks.s3.url') }}/{{ $editingMedia->file_data }}" type="video/mp4">
+                                                    Your browser does not support the video tag.
+                                                </video>
+                                            @endif
+                                        </div>
+                                    @endif
+                                </div>
                             </div>
-                
-                            <flux:input label="Title" wire:model.defer="coverEditValues.{{ $medias->id }}.title" />
-                            <flux:input label="Subtitle" wire:model.defer="coverEditValues.{{ $medias->id }}.subtitle" />
-
-                            <flux:label>Update Cover Photo</flux:label>
-                            <x-inputs.filepond wire:model="file_path"/>
-
-                            <div class="flex">
-                                <flux:spacer />
-                                <flux:button type="button" variant="primary" wire:click="updateCoverMedia({{ $medias->id }})">
-                                    Save Changes
-                                </flux:button>
+                            <div class="bg-gray-50 dark:bg-zinc-900 px-6 py-4 sm:flex sm:flex-row-reverse">
+                                <button type="button" 
+                                        wire:click="deleteCoverMedia"
+                                        wire:loading.attr="disabled"
+                                        class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
+                                    <span wire:loading.remove wire:target="deleteCoverMedia">Delete</span>
+                                    <span wire:loading wire:target="deleteCoverMedia">Deleting...</span>
+                                </button>
+                                <button type="button" 
+                                        wire:click="closeDeleteModal"
+                                        class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 dark:border-gray-600 shadow-sm px-4 py-2 bg-white dark:bg-zinc-800 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                                    Cancel
+                                </button>
                             </div>
                         </div>
-                    </flux:modal>
-                @endforeach
+                    </div>
+                </div>
             
                 <div class="grid gap-6">
                     <div class="w-full flex flex-col md:flex-row gap-4">
