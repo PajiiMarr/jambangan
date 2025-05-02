@@ -3,19 +3,18 @@
         Write a post...
     </flux:modal.trigger>
 
-        <flux:modal name="create-post" class="w-full md:w-123">
+    <flux:modal name="create-post" class="w-full md:w-123">
         <div class="text-center space-x-3">
             <flux:heading size="lg">
                 Create Post
             </flux:heading>
         </div>
-        <form wire:submit.prevent="save" method="POST">
+        <form wire:submit.prevent="save" method="POST" class="flex flex-col space-y-4">
             @csrf
-            <flux:field class="my-3">
+            <div class="space-y-4">
                 <flux:field>
                     <flux:label>Title</flux:label>
                     <flux:input wire:model.blur="title" placeholder="Enter Title" />
-
                     @error('title') <span class="text-red-500">{{ $message }}</span> @enderror
                 </flux:field>
 
@@ -23,10 +22,11 @@
                     <flux:label>Content</flux:label>
                     <textarea class="resize-none p-2 border border-neutral-200 rounded-md w-full" wire:model="content" placeholder="Enter content..."></textarea>
                 </flux:field>
-                <div class="flex w-full justify-between ">
-                    <flux:dropdown class="me-2">
-                        <flux:label>Events</flux:label><br>
-                        <flux:button icon-trailing="chevron-down" class="mt-1">
+
+                <div class="flex w-full justify-between gap-2">
+                    <flux:dropdown class="w-1/2">
+                        <flux:label>Events</flux:label>
+                        <flux:button icon-trailing="chevron-down" class="mt-1 w-full">
                             {{ $selectedEventName }}
                         </flux:button>
                         <flux:menu>
@@ -43,10 +43,9 @@
                         </flux:menu>
                     </flux:dropdown>
 
-                    <flux:dropdown class="me-2 w-[48%]   ">
-                        <flux:label>Performance</flux:label><br>
-                        
-                        <flux:button icon-trailing="chevron-down" class="mt-1">
+                    <flux:dropdown class="w-1/2">
+                        <flux:label>Performance</flux:label>
+                        <flux:button icon-trailing="chevron-down" class="mt-1 w-full">
                             {{ $selectedPerformanceName }}
                         </flux:button>
                         <flux:menu>
@@ -64,11 +63,15 @@
                     </flux:dropdown>
                 </div>
 
-                <x-inputs.filepond wire:model='uploadedFiles' multiple />
-                @error('content') <span class="text-red-500">{{ $message }}</span> @enderror
+                <div class="w-full">
+                    <x-inputs.filepond wire:model='uploadedFiles' multiple />
+                    @error('content') <span class="text-red-500">{{ $message }}</span> @enderror
+                </div>
+            </div>
 
-            </flux:field>
-            <flux:button class="w-full" type="submit">Post</flux:button>
+            <div class="pt-4">
+                <flux:button class="w-full" type="submit">Post</flux:button>
+            </div>
         </form>
     </flux:modal>
 </div>
