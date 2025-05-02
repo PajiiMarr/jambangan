@@ -8,7 +8,7 @@
     <!-- Stylesheets -->
     @vite(['resources/css/landingpage.css', 'resources/js/app.js'])
     <link rel="icon" type="image/svg+xml" href="{{ asset('images/logo.png') }}">
-    <link href="https://fonts.google.com/specimen/DM+Serif+Text?categoryFilters=Feeling:%2FExpressive%2FBusiness" rel="stylesheet">
+    <link href="https://fonts.google.com/specimen/Lato" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
     
@@ -408,24 +408,29 @@
             </div>
         </section>
 
-        <!-- Contact Section -->
+       <!-- Contact Section -->
         <section id="contact" 
-            class="py-12 sm:py-20 bg-[#121212] text-white shadow-inner relative overflow-hidden">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <!-- Red gradient glow at top and bottom for style -->
-                <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-yellow-400 via-red-600 to-yellow-400 opacity-25 animate-pulse"></div>
-                <div class="absolute bottom-0 left-0 w-full h-2 bg-gradient-to-r from-yellow-400 via-red-600 to-yellow-400 opacity-25 animate-pulse"></div>
-
-                <x-contact-info title="BOOK US" :general_contents="$general_contents" />
+        class="py-12 sm:py-20 bg-[#1f1f1f] text-white shadow-inner relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- First Column: Text Content (Left Aligned) -->
+                <div class="flex flex-col justify-center space-y-4 text-left">
+                    <x-contact-info title="BOOK US" :general_contents="$general_contents" />
+                </div>
                 
-                <div class="mt-8 text-center">
+                <!-- Second Column: Button -->
+                <div class="flex justify-center items-center">
                     <a href="{{ route('bookings-public') }}"
-                       class="inline-block bg-red-600 hover:bg-yellow-400 text-white hover:text-black font-semibold py-2 sm:py-3 px-6 sm:px-8 rounded-full shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 ring-2 ring-yellow-400 text-sm sm:text-base">
+                       class="inline-block bg-gradient-to-r from-red-500 to-yellow-400 hover:opacity-90 text-white font-semibold py-4 sm:py-6 px-10 sm:px-12 rounded-lg shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 text-xl sm:text-2xl">
                         Go to Bookings →
                     </a>
                 </div>
             </div>
+        </div>
         </section>
+
+
+
     </main>
 
     <!-- ==================== -->
