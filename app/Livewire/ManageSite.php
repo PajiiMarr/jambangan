@@ -21,7 +21,7 @@ class ManageSite extends Component
 {
     use WithFileUploads;
 
-    protected $listeners = ['postUploaded' => '$refresh'];
+    protected $listeners = ['postUploaded' => '$refresh', 'file-uploaded' => 'handleFileUpload'];
 
     #[Validate([
         'site_title' => 'required|string|max:255',
@@ -65,8 +65,10 @@ class ManageSite extends Component
 
 
     public $cover_medias = [];
-    public $selectedMediaId = null;
-
+    public $showEditModal = false;
+    public $editingMedia = null;
+    public $editingTitle = '';
+    public $editingSubtitle = '';
     public $showDeleteModal = false;
 
     public function mount()
@@ -74,8 +76,6 @@ class ManageSite extends Component
         $this->generalContents();
         $this->coverMedias();
         $this->coreValues();
-
-        // Log::debug('djfhgjadhfkj' . $this->cover_medias);
 
         if($this->general_contents){
             $this->site_title = $this->general_contents->site_title;
@@ -85,6 +85,15 @@ class ManageSite extends Component
             $this->mission = $this->general_contents->mission;
             $this->vision = $this->general_contents->vision;
         }
+
+        // Initialize coverEditValues for all media items
+        foreach ($this->cover_medias as $media) {
+            $this->coverEditValues[$media->media_id] = [
+                'title' => $media->title,
+                'subtitle' => $media->subtitle,
+                'file_path' => $media->file_data,
+            ];
+        }
     }
 
     public function coverMedias (){
@@ -93,13 +102,12 @@ class ManageSite extends Component
             ->get();
 
         foreach ($this->cover_medias as $media) {
-            $this->coverEditValues[$media->id] = [
+            $this->coverEditValues[$media->media_id] = [
                 'title' => $media->title,
                 'subtitle' => $media->subtitle,
                 'file_path' => $media->file_data,
             ];
         }
-        // dd($this->cover_medias);
     }
 
     public function coreValues(){
@@ -118,8 +126,7 @@ class ManageSite extends Component
         $this->general_contents = General::latest()->first();
     }
 
-    #[On('file-uploaded')]
-    public function fileUploaded($data)
+    public function handleFileUpload($data)
     {
         if (isset($data['filename'])) {
             $tempPath = 'livewire-tmp/' . $data['filename'];
@@ -139,14 +146,13 @@ class ManageSite extends Component
                             'mimes:jpg,jpeg,png,gif,webp,bmp,tiff,mp4,avi,mov,wmv,flv,webm,mkv',
                             'max:51200'
                         ]
-                    ],
-                    $this->messages
+                    ]
                 );
 
                 if ($validator->fails()) {
                     $this->addError('uploadedFiles', $validator->errors()->first('file'));
                 } else {
-                    $this->temporaryUploadedFiles[] = $data['filename'];
+                    $this->file_path = $file;
                 }
             }
         }
@@ -192,7 +198,7 @@ class ManageSite extends Component
                 $logoPath = $this->logo_path->store('logos', 's3');
                 
                 // Get the public URL if needed
-                $logoUrl = Storage::disk('s3')->url($logoPath);
+                $logoUrl = config('filesystems.disks.s3.url') . '/' . $logoPath;
             }
 
             if ($this->core_value_title && $this->core_value_description) {
@@ -302,48 +308,89 @@ class ManageSite extends Component
         }
     }
 
-    public function updateCoverMedia($mediaId)  // Now expects media ID
+    public function editMedia($mediaId)
+    {
+        $this->editingMedia = Media::where('media_id', $mediaId)->first();
+        if ($this->editingMedia) {
+            $slide = Slides::findOrFail($this->editingMedia->slide_id);
+            $this->editingTitle = $slide->title;
+            $this->editingSubtitle = $slide->subtitle;
+            $this->showEditModal = true;
+        }
+    }
+
+    public function closeEditModal()
+    {
+        $this->showEditModal = false;
+        $this->editingMedia = null;
+        $this->editingTitle = '';
+        $this->editingSubtitle = '';
+        $this->file_path = null;
+    }
+
+    public function updateCoverMedia()
     {
         try {
             DB::beginTransaction();
             
-            // Find the media record
-            $media = Media::findOrFail($mediaId);
+            if (!$this->editingMedia) {
+                throw new \Exception('Media not found');
+            }
             
             // Find and update the related slide
-            $slide = Slides::findOrFail($media->slide_id);
+            $slide = Slides::findOrFail($this->editingMedia->slide_id);
             $slide->update([
-                'title' => $this->coverEditValues[$mediaId]['title'],
-                'subtitle' => $this->coverEditValues[$mediaId]['subtitle']
+                'title' => $this->editingTitle,
+                'subtitle' => $this->editingSubtitle
             ]);
     
             // Update media file if new file was uploaded
             if ($this->file_path) {
                 // Delete old file from storage
-                Storage::disk('s3')->delete($media->file_data);
+                if (Storage::disk('s3')->exists($this->editingMedia->file_data)) {
+                    Storage::disk('s3')->delete($this->editingMedia->file_data);
+                }
                 
                 // Store new file
                 $path = $this->file_path->store('uploads', 's3');
-                $media->update([
+                
+                // Update media record
+                $this->editingMedia->update([
                     'file_data' => $path,
                     'type' => $this->getMediaType($this->file_path->extension())
                 ]);
+
+                // Reset file_path after successful upload
+                $this->file_path = null;
             }
     
             DB::commit();
-            $this->modal('edit-cover-media-' . $mediaId)->close();
-            $this->coverMedias(); // Refresh data
+            
+            // Refresh the data
+            $this->coverMedias();
+            
+            // Close the modal
+            $this->closeEditModal();
+            
+            // Show success message
+            session()->flash('message', 'Cover media updated successfully!');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Update cover media failed: ' . $e->getMessage());
-            $this->addError('updateCoverMedia', 'Failed to update cover media');
+            session()->flash('error', 'Failed to update cover media: ' . $e->getMessage());
         }
     }
     
     public function confirmDelete($mediaId)
     {
-        $this->selectedMediaId = $mediaId;
+        $this->editingMedia = Media::where('media_id', $mediaId)->first();
         $this->showDeleteModal = true;
+    }
+
+    public function closeDeleteModal()
+    {
+        $this->showDeleteModal = false;
+        $this->editingMedia = null;
     }
 
     public function deleteCoverMedia()
@@ -351,28 +398,25 @@ class ManageSite extends Component
         try {
             DB::beginTransaction();
             
-            // Find the media record using media_id
-            $media = Media::where('media_id', $this->selectedMediaId)->firstOrFail();
-            
-            // Get related slide before deletion
-            $slideId = $media->slide_id;
+            if (!$this->editingMedia) {
+                throw new \Exception('Media not found');
+            }
             
             // Delete the media file from storage
-            if (Storage::disk('s3')->exists($media->file_data)) {
-                Storage::disk('s3')->delete($media->file_data);
+            if (Storage::disk('s3')->exists($this->editingMedia->file_data)) {
+                Storage::disk('s3')->delete($this->editingMedia->file_data);
             }
             
             // Delete the media record
-            $media->delete();
+            $this->editingMedia->delete();
             
             // Delete the related slide
-            Slides::findOrFail($slideId)->delete();
+            Slides::where('slide_id', $this->editingMedia->slide_id)->delete();
             
             DB::commit();
             
-            // Reset modal state and refresh data
-            $this->showDeleteModal = false;
-            $this->selectedMediaId = null;
+            // Close the modal and refresh the data
+            $this->closeDeleteModal();
             $this->coverMedias();
             
             session()->flash('message', 'Cover media deleted successfully!');
@@ -496,7 +540,7 @@ class ManageSite extends Component
     
                 if (is_object($this->file_path) && method_exists($this->file_path, 'store')) {
                     $path = $this->file_path->store('uploads', 's3');
-                    $url = Storage::disk('s3')->url($path);
+                    $url = config('filesystems.disks.s3.url') . '/' . $path;
     
                     Media::create([
                         'slide_id' => $slides['slide_id'],
@@ -526,7 +570,7 @@ class ManageSite extends Component
             
             if ($this->logo_path) {
                 $logoPath = $this->logo_path->store('logos', 's3');
-                $logoUrl = Storage::disk('s3')->url($logoPath);
+                $logoUrl = config('filesystems.disks.s3.url') . '/' . $logoPath;
                 
                 $general = General::updateOrCreate(
                     ['id' => $this->general_contents->id ?? null],
