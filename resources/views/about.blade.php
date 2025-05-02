@@ -284,6 +284,7 @@
             </div>
         </div>
     </section>
+    
 
     <!-- ==================== -->
     <!-- CONTACT SECTION -->
@@ -295,7 +296,22 @@
             <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-yellow-400 via-red-600 to-yellow-400 opacity-25 animate-pulse"></div>
             <div class="absolute bottom-0 left-0 w-full h-2 bg-gradient-to-r from-yellow-400 via-red-600 to-yellow-400 opacity-25 animate-pulse"></div>
 
-            <x-contact-info title="CONTACT US" :general_contents="$general_contents" :showVisitUs="true" />
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- First Column: Text Content (Left Aligned) -->
+                    <div class="flex flex-col justify-center space-y-4 text-left">
+                        <x-contact-info title="BOOK US" :general_contents="$general_contents" />
+                    </div>
+                    
+                    <!-- Second Column: Button -->
+                    <div class="flex justify-center items-center">
+                        <a href="{{ route('bookings-public') }}"
+                           class="inline-block bg-gradient-to-r from-red-500 to-yellow-400 hover:opacity-90 text-white font-semibold py-4 sm:py-6 px-10 sm:px-12 rounded-lg shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 text-xl sm:text-2xl">
+                            Go to Bookings →
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
