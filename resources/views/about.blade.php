@@ -190,54 +190,97 @@
                 OUR LEADERSHIP TEAM
             </h2>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                @foreach($officers as $officer)
-                    <div class="group bg-black rounded-lg shadow-xl overflow-hidden transform transition-all duration-300 hover:scale-105"
-                        data-aos="fade-up"
-                        data-aos-delay="{{ $loop->index * 100 }}">
-                        <!-- Officer Image -->
-                        <div class="relative h-64 overflow-hidden">
-                            @if($officer->media)
-                                <img src="{{ 'http://localhost:9000/my-bucket/' . $officer->media->file_data }}" 
-                                     alt="{{ $officer->name }}"
-                                     class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                            @else
-                                <div class="w-full h-full bg-gradient-to-br from-[#EAB308] to-[#EF4444] flex items-center justify-center">
-                                    <span class="text-white text-2xl font-bold">Jambangan</span>
-                                </div>
-                            @endif
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
-                        </div>
+            <div class="relative">
+                <!-- Pyramid Structure -->
+                <div class="flex flex-col items-center space-y-8">
+                    @php
+                        // Get all officers
+                        $allOfficers = $officers->keyBy('officer_id');
+                        // Get top-level officers (those without parents)
+                        $topOfficers = $officers->whereNull('parent_id');
+                    @endphp
 
-                        <!-- Officer Info -->
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold text-white mb-2 group-hover:text-[#EAB308] transition-colors duration-300">
-                                {{ $officer->name }}
-                            </h3>
-                            <p class="text-[#EAB308] font-semibold mb-4">
-                                {{ $officer->position }}
-                            </p>
-                            <div class="space-y-2 text-gray-300">
-                                @if($officer->email)
-                                    <p class="flex items-center">
-                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                                        </svg>
-                                        {{ $officer->email }}
-                                    </p>
-                                @endif
-                                @if($officer->phone)
-                                    <p class="flex items-center">
-                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
-                                        </svg>
-                                        {{ $officer->phone }}
-                                    </p>
-                                @endif
+                    <!-- Level 1: Top Level -->
+                    <div class="flex justify-center space-x-8">
+                        @foreach($topOfficers as $topOfficer)
+                            <div class="bg-black rounded-lg shadow-xl p-6 transform transition-all duration-300 hover:scale-105 hover:shadow-yellow-500/20">
+                                <div class="flex flex-col items-center space-y-4">
+                                    @if($topOfficer->media)
+                                        <img src="{{ 'http://localhost:9000/my-bucket/' . $topOfficer->media->file_data }}" 
+                                             alt="{{ $topOfficer->name }}"
+                                             class="w-24 h-24 rounded-full object-cover border-2 border-yellow-400">
+                                    @else
+                                        <div class="w-24 h-24 rounded-full bg-gradient-to-br from-yellow-400 to-red-500 flex items-center justify-center border-2 border-yellow-400">
+                                            <span class="text-white text-2xl font-bold">J</span>
+                                        </div>
+                                    @endif
+                                    <div class="text-center">
+                                        <h3 class="text-xl font-bold text-white">{{ $topOfficer->name }}</h3>
+                                        <p class="text-yellow-400">{{ $topOfficer->position }}</p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        @endforeach
                     </div>
-                @endforeach
+
+                    <!-- Level 2: Middle Level -->
+                    @php
+                        $secondLevel = $officers->whereIn('parent_id', $topOfficers->pluck('officer_id'));
+                    @endphp
+                    
+                    @if($secondLevel->count() > 0)
+                        <div class="flex justify-center space-x-6">
+                            @foreach($secondLevel as $secondOfficer)
+                                <div class="bg-[#1a1a1a] rounded-lg shadow-lg p-5 transform transition-all duration-300 hover:scale-105 hover:shadow-yellow-500/10">
+                                    <div class="flex flex-col items-center space-y-3">
+                                        @if($secondOfficer->media)
+                                            <img src="{{ 'http://localhost:9000/my-bucket/' . $secondOfficer->media->file_data }}" 
+                                                 alt="{{ $secondOfficer->name }}"
+                                                 class="w-20 h-20 rounded-full object-cover border-2 border-yellow-400/80">
+                                        @else
+                                            <div class="w-20 h-20 rounded-full bg-gradient-to-br from-yellow-400 to-red-500 flex items-center justify-center border-2 border-yellow-400/80">
+                                                <span class="text-white text-xl font-bold">J</span>
+                                            </div>
+                                        @endif
+                                        <div class="text-center">
+                                            <h4 class="text-lg font-semibold text-white">{{ $secondOfficer->name }}</h4>
+                                            <p class="text-gray-400 text-sm">{{ $secondOfficer->position }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+
+                    <!-- Level 3: Bottom Level -->
+                    @php
+                        $thirdLevel = $officers->whereIn('parent_id', $secondLevel->pluck('officer_id'));
+                    @endphp
+                    
+                    @if($thirdLevel->count() > 0)
+                        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                            @foreach($thirdLevel as $thirdOfficer)
+                                <div class="bg-[#222222] rounded-lg shadow-md p-4 transform transition-all duration-300 hover:scale-105 hover:shadow-yellow-500/5">
+                                    <div class="flex flex-col items-center space-y-2">
+                                        @if($thirdOfficer->media)
+                                            <img src="{{ 'http://localhost:9000/my-bucket/' . $thirdOfficer->media->file_data }}" 
+                                                 alt="{{ $thirdOfficer->name }}"
+                                                 class="w-16 h-16 rounded-full object-cover border-2 border-yellow-400/60">
+                                        @else
+                                            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-yellow-400 to-red-500 flex items-center justify-center border-2 border-yellow-400/60">
+                                                <span class="text-white text-lg font-bold">J</span>
+                                            </div>
+                                        @endif
+                                        <div class="text-center">
+                                            <h5 class="text-base font-medium text-white">{{ $thirdOfficer->name }}</h5>
+                                            <p class="text-gray-500 text-xs">{{ $thirdOfficer->position }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
             </div>
         </div>
     </section>
