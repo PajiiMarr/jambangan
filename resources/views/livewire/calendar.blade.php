@@ -241,6 +241,8 @@
                     document.getElementById('startStr').setAttribute('disabled', 'disabled');
                     document.getElementById('endStr').setAttribute('disabled', 'disabled');
 
+                    document.getElementById('view_event_image').src = 'http://127.0.0.1:8000/my-uploads/' + imageFileName;
+
 
                     document.getElementById('event-modal-trigger').click();
                 },
@@ -382,6 +384,7 @@
             // Set the event image
             const eventImage = document.getElementById('view_event_image');
             if (image) {
+
                 eventImage.src = image;
                 eventImage.style.display = 'block';
             } else {
