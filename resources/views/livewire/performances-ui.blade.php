@@ -180,7 +180,7 @@
                         <div 
                         wire:key="performance-{{ $performance->performance_id }}"
                         wire:click="showPerformance({{ $performance->performance_id }})"
-                        class="col-span-2 md:col-span-1 m-2 rounded-xl shadow-sm hover:shadow-md bg-white relative overflow-hidden h-60 group cursor-pointer transition-all duration-300 border border-gray-100"
+                    class="col-span-2 md:col-span-2 m-2 rounded-xl shadow-sm hover:shadow-md bg-white relative overflow-hidden h-60 group cursor-pointer transition-all duration-300 border border-gray-100"
                         >
                         @if ($performance->media)
                             <div class="absolute inset-0 w-full h-full transition-transform duration-500 ease-in-out group-hover:scale-105">
