@@ -130,10 +130,10 @@
 
             <!-- Gradient Overlays -->
             <div class="absolute inset-0 pointer-events-none z-0" 
-                 style="background: linear-gradient(to bottom, rgba(0,0,0,0) 80%, rgba(0,0,0,0.7) 97%, rgba(0,0,0,1) 100%);">
+                 style="background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.7) 50%, rgba(0,0,0,0.9) 100%);">
             </div>
             
-            <div class="absolute inset-0 z-0 opacity-20 mix-blend-overlay animate-gradient-shift" 
+            <div class="absolute inset-0 z-0 opacity-30 mix-blend-overlay animate-gradient-shift" 
                  style="background: linear-gradient(45deg, rgba(234, 179, 8, 0.3) 0%, rgba(239, 68, 68, 0.3) 50%, rgba(234, 179, 8, 0.3) 100%); background-size: 200% 200%;">
             </div>
 
@@ -143,13 +143,13 @@
 
             <!-- Hero Content -->
             <div class="shadow-text relative z-10 text-center drop-shadow-2xl px-4 sm:px-6">
-                <h1 class="text-3xl sm:text-4xl md:text-5xl drop-shadow-2xl font-extrabold">
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-red-500 to-yellow-400 animate-text-gradient">
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold">
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-red-500 to-yellow-400 animate-text-gradient drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">
                         Jambangan
                     </span>
-                    <span class="text-white block sm:inline">: the Dance Ambassador of WMSU</span>
+                    <span class="text-white block sm:inline drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">: the Dance Ambassador of WMSU</span>
                 </h1>
-                <p class="text-lg sm:text-xl mt-4 drop-shadow-2xl" id="slide-caption"></p>
+                <p class="text-lg sm:text-xl mt-4 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]" id="slide-caption"></p>
             </div>
 
             <!-- Progress Bar -->
