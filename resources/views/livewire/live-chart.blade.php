@@ -1,22 +1,20 @@
 <div 
     wire:ignore
-    class="chart-container h-[80vh] w-full"
+    class="chart-container w-full"
     x-data="{
         chart: null,
         monthLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
         init() {
-            // Wait for next tick to ensure DOM is ready
-            this.$nextTick(() => {
-                this.initChart();
-                
-                // Listen for Livewire updates
-                Livewire.on('chartUpdated', (data) => {
-                    this.updateChart(data);
-                });
-                
-                // Load initial data
-                this.updateChart(@this.chartData);
+            // Initialize chart when component is mounted
+            this.initChart();
+            
+            // Listen for Livewire updates
+            Livewire.on('chartUpdated', (data) => {
+                this.updateChart(data);
             });
+            
+            // Load initial data
+            this.updateChart(@this.chartData);
         },
         initChart() {
             const ctx = this.$el.querySelector('#liveViewsChart');
@@ -38,7 +36,7 @@
                 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: false,
+                    maintainAspectRatio: true,
                     animation: {
                         duration: 300,
                         easing: 'linear'
@@ -75,7 +73,6 @@
 >
     <canvas 
         id="liveViewsChart"
-        x-init="console.log('Canvas initialized')"
         wire:ignore
     ></canvas>
 </div>
@@ -85,7 +82,8 @@
 <style>
     .chart-container {
         position: relative;
-        min-height: 400px;
+        height: 400px;
+        width: 100%;
     }
     canvas {
         width: 100% !important;
