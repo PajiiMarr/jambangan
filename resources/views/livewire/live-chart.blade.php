@@ -41,9 +41,15 @@
                         duration: 300,
                         easing: 'linear'
                     },
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
                     plugins: {
                         legend: { display: false },
                         tooltip: {
+                            mode: 'index',
+                            intersect: false,
                             callbacks: {
                                 label: (context) => `Views: ${context.raw}`
                             }
