@@ -1,36 +1,45 @@
 <?php
+
 namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\PageViews;
 
-class DynamicChart extends Component
+class LiveChart extends Component
 {
-    public $hello = "hellooo";
-    public $selectedYear = '2023';
-    public $selectedMonth = '01';
-    public $chartData = [];
-    public $pageViewsData = [];
-    public $years = [];
-    public $months = [];
+    public array $chartData = [];
+    public bool $readyToLoad = false;
 
-    public function mount() {
-        $pageViewsData = PageViews::selectRaw('year, month, SUM(views) as total_views')
-                ->groupBy('year', 'month')
-                ->orderBy('year', 'desc')
-                ->orderBy('month', 'desc')
-                ->get();
+    protected $listeners = ['refreshChart' => 'loadChartData'];
 
-                foreach ($pageViewsData as $view) {
-                    $this->chartData[$view->year][$view->month] = $view->total_views;
-                }
-                $years = $pageViewsData->pluck('year')->unique();
-                $months = $pageViewsData->pluck('month')->unique();
+    public function mount()
+    {
+        $this->readyToLoad = true;
+        $this->loadChartData();
     }
+
+    public function loadChartData()
+    {
+        $pageViewsData = PageViews::selectRaw('year, month, SUM(views) as total_views')
+            ->where('year', date('Y'))
+            ->groupBy('year', 'month')
+            ->orderBy('month', 'asc')
+            ->get();
     
+        $this->chartData = array_fill(0, 12, 0);
+    
+        foreach ($pageViewsData as $view) {
+            $monthIndex = $view->month - 1;
+            if ($monthIndex >= 0 && $monthIndex < 12) {
+                $this->chartData[$monthIndex] = (int)$view->total_views;
+            }
+        }
+    
+        $this->dispatch('chartUpdated', data: $this->chartData);
+    }
+
     public function render()
     {
-        // Render the Livewire vie
         return view('livewire.live-chart');
     }
 }

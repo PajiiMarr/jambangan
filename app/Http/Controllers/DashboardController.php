@@ -10,24 +10,45 @@ use App\Models\Events;
 use App\Models\Posts;
 use App\Models\Performances;
 use App\Models\PageViews;
-
+use Illuminate\Support\Facades\Log;
 
 class DashboardController extends Controller
 {
+    public $performancesCount;
+    public $postsCount;
+    public $eventsCount;
+
+    // Add this property
+    public $chartData = [];
+
+    protected $listeners = ['refreshChart' => '$refresh'];
+
+    public function mount()
+    {
+        $this->dispatch('updateChart', data: $this->chartData);
+    }
+    
     public function index()
     {
-        // Fetch unique years and months from the PageViews model
-        // Fetch and calculate page views by year and month
+        $performancesCount = Performances::count();
+        $postsCount = Posts::count();
+        $eventsCount = Events::count();
+
+        
         $pageViewsData = PageViews::selectRaw('year, month, SUM(views) as total_views')
             ->groupBy('year', 'month')
             ->orderBy('year', 'desc')
             ->orderBy('month', 'desc')
             ->get();
 
-        // Prepare chart data
-        $chartData = [];
+
+        
+        $chartData = array_fill(0, 12, 0);
+
         foreach ($pageViewsData as $view) {
-            $chartData[$view->year][$view->month] = $view->total_views;
+            // Ensure month is between 1-12
+            $monthIndex = max(0, min(11, $view->month - 1));
+            $chartData[$monthIndex] = $view->total_views;
         }
 
         // Get all unique years and months for the dropdown
@@ -35,28 +56,42 @@ class DashboardController extends Controller
         $months = $pageViewsData->pluck('month')->unique();
 
         // Example dashboard data
+        $pageViewsTotal = PageViews::sum('views');
+
         $mockDashboardData = [
-            'page_views' => [
-                'count' => rand(1500, 5000),
-                'trend' => '+12%',
+            'performances_count' => [
+                'count' => $performancesCount,
+                'trend' => '+12%', // You can replace this with real trend logic
                 'icon' => 'eye',
             ],
-            'posts_uploaded' => [
-                'count' => rand(50, 200),
-                'trend' => '-3%',
+            'posts_count' => [
+                'count' => $postsCount,
+                'trend' => '+5%',  // Replace as needed
                 'icon' => 'check',
             ],
-            'events_created' => [
-                'count' => rand(10, 50),
-                'trend' => '+8%',
+            'events_count' => [
+                'count' => $eventsCount,
+                'trend' => '+8%',  // Replace as needed
                 'icon' => 'event-calendar',
             ],
         ];
 
-        // dd($pageViewsData); // Check if you're getting data from the query
-        // dd($chartData); // Check the structure of your chart data
+        // Temporarily add this to your controller to see the raw data
+        
+        // Debug the actual data being pulled
+        // dd([
+        //     'raw_data' => $pageViewsData->toArray(),
+        //     'chart_data' => $chartData,
+        //     'current_month' => date('n') // Should be 5 for May
+        // ]);
 
-        return view('dashboard', compact('mockDashboardData', 'chartData', 'years', 'months'));
+
+        // After preparing $chartData, assign it to the public property
+
+        // Right before the return statement
+        \Log::debug('Chart Data:', $chartData);
+
+        return view('dashboard', compact('mockDashboardData', 'chartData', 'years', 'months', 'performancesCount', 'postsCount', 'eventsCount'));
     }
 
     

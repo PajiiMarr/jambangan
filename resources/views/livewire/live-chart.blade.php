@@ -1,29 +1,95 @@
-<div class="relative h-full flex-1 overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-zinc-900 shadow-md p-6">
-    <div wire:ignore.self class="w-full h-150 sm-h-full">
-        <!-- Year and Month Selectors -->
-        <div class="flex gap-4 ms-4 mt-3">
-            <select class="p-2 rounded" x-model="selectedYear" @change="updateChart">
-                <option value="2023">2023</option>
-                <option value="2022">2022</option>
-                <option value="2021">2021</option>
-            </select>
-            <select class="p-2 rounded" x-model="selectedMonth" @change="updateChart">
-                <option value="01">January</option>
-                <option value="02">February</option>
-                <option value="03">March</option>
-                <option value="04">April</option>
-                <option value="05">May</option>
-                <option value="06">June</option>
-                <option value="07">July</option>
-                <option value="08">August</option>
-                <option value="09">September</option>
-                <option value="10">October</option>
-                <option value="11">November</option>
-                <option value="12">December</option>
-            </select>
-        </div>
-
-        <!-- Chart Canvas -->
-        <canvas id="myChart"></canvas>
-    </div>
+<div 
+    wire:ignore
+    class="chart-container h-[80vh] w-full"
+    x-data="{
+        chart: null,
+        monthLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+        init() {
+            // Wait for next tick to ensure DOM is ready
+            this.$nextTick(() => {
+                this.initChart();
+                
+                // Listen for Livewire updates
+                Livewire.on('chartUpdated', (data) => {
+                    this.updateChart(data);
+                });
+                
+                // Load initial data
+                this.updateChart(@this.chartData);
+            });
+        },
+        initChart() {
+            const ctx = this.$el.querySelector('#liveViewsChart');
+            if (this.chart) {
+                this.chart.destroy();
+            }
+            
+            this.chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: this.monthLabels,
+                    datasets: [{
+                        label: 'Page Views',
+                        data: Array(12).fill(0),
+                        backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: {
+                        duration: 300,
+                        easing: 'linear'
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: (context) => `Views: ${context.raw}`
+                            }
+                        }
+                    },
+                    scales: {
+                        y: { 
+                            beginAtZero: true,
+                            ticks: { precision: 0 }
+                        }
+                    }
+                }
+            });
+        },
+        updateChart(data) {
+            if (!this.chart) this.initChart();
+            
+            // Convert data to regular array if it's a Proxy
+            const chartData = Array.isArray(data) ? [...data] : Array(12).fill(0);
+            
+            this.chart.data.datasets[0].data = chartData;
+            this.chart.update();
+            
+            console.log('Chart data updated:', chartData);
+        }
+    }"
+>
+    <canvas 
+        id="liveViewsChart"
+        x-init="console.log('Canvas initialized')"
+        wire:ignore
+    ></canvas>
 </div>
+
+@assets
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+    .chart-container {
+        position: relative;
+        min-height: 400px;
+    }
+    canvas {
+        width: 100% !important;
+        height: 100% !important;
+    }
+</style>
+@endassets
