@@ -9,7 +9,13 @@
 
                     <div class="relative z-10 flex justify-between items-center">
                         <h2 class="text-lg font-semibold text-neutral-700 dark:text-neutral-200">
-                            {{ __($key === 'page_views' ? 'Page Views' : ($key === 'posts_uploaded' ? 'Posts Uploaded' : 'Events Created')) }}
+                            @if ($key == "performance_count")
+                                Total Performances
+                            @elseif ($key == "posts_count")
+                                Total Posts
+                            @else
+                                Total Events
+                            @endif   
                         </h2>
                         <flux:icon name="{{ $data['icon'] }}" class="w-10 h-10 text-blue-500 dark:text-blue-400" />
                     </div>
