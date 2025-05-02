@@ -13,21 +13,12 @@ class Bookings extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'client_name',
-        'contact_number',
+        'name',
         'email',
-        'event_name',
-        'event_date',
-        'event_time',
-        'event_location',
-        'performance_id',
-        'fee',
-        'status'
+        'phone',
+        'event_data',
+        'event_type',
+        'message',
     ];
-
-    public function performance(): BelongsTo
-    {
-    return $this->belongsTo(Performances::class, 'performance_id');
-    }
 
 }

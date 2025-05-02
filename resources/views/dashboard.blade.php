@@ -23,42 +23,13 @@
                             {{ __('Total this month') }}
                         </p>
                     </div>
-
-                    <!-- Footer Details -->
-                    <div class="relative z-10 flex justify-between items-center text-sm font-medium">
-                        <span class="text-gray-500 dark:text-gray-400">
-                            {{ __('Last updated: ') }} {{ now()->format('M d, Y') }}
-                        </span>
-                        <span class="flex items-center">
-                            {{-- <flux:icon name="{{ $data['trend'][0] }}" class="w-5 h-5 mr-1" /> --}}
-                            {{ $data['trend'] }}
-                        </span>
-                    </div>
                 </div>
             @endforeach
         </div>
 
         <!-- Live Chart -->
         <div class="relative h-full flex-1 overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-zinc-900 shadow-md p-6">
-            <div wire:ignore.self x-data="chartComponent({{ json_encode($chartData) }})" class="w-full h-150 sm-h-full">
-                <div class="flex gap-4 ms-4 mt-3">
-                    <select class="p-2 rounded" x-model="selectedYear" @change="updateChart">
-                        @foreach ($years as $year)
-                            <option value="{{ $year }}">{{ $year }}</option>
-                        @endforeach
-                    </select>
-                    <select class="p-2 rounded" x-model="selectedMonth" @change="updateChart">
-                        @foreach ($months as $month)
-                            <option value="{{ str_pad($month, 2, '0', STR_PAD_LEFT) }}">
-                                {{ \Carbon\Carbon::createFromFormat('m', str_pad($month, 2, '0', STR_PAD_LEFT))->format('F') }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <!-- Chart Canvas -->
-                <canvas id="myChart"></canvas>
-            </div>
+        <livewire:live-chart/>
         </div>
     </div>
 </x-layouts.app>

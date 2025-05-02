@@ -13,23 +13,12 @@ return new class extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id(); // Unique booking ID
-            $table->string('client_name');
-            $table->string('contact_number');
+            $table->string('name');
+            $table->string('phone');
             $table->string('email');
-            $table->string('event_name');
             $table->date('event_date');
-            $table->string('event_time');
-            $table->text('event_location');
-
-            $table->unsignedBigInteger('performance_id')->nullable();
-            
-            $table->foreign('performance_id')
-                ->references('performance_id')
-                ->on('performances')
-                ->onDelete('cascade');
-
-            $table->decimal('fee', 10, 2);
-            $table->string('status')->default('Pending'); // Default to 'Pending'
+            $table->string('event_type');
+            $table->text('message');
             $table->timestamp('created_at')->useCurrent();
         });
     }
