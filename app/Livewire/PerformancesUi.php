@@ -9,6 +9,9 @@ use Livewire\Attributes\On;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Logs;
+
 
 class PerformancesUi extends Component
 {
@@ -86,6 +89,16 @@ class PerformancesUi extends Component
                 'type' => 'image',
             ]);
         }
+
+        Logs::create([
+            'user_id' => Auth::id(),
+            'action' => 'Added a new performance',
+            'navigation' => 'performances',
+            'performance_id' => $performance->performance_id,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         $this->modal('add-performance')->close();
         $this->reset(['add_title', 'add_description', 'add_performance_file']);
         $this->dispatch('performance-added');
@@ -113,6 +126,8 @@ class PerformancesUi extends Component
             // Force a re-render of the component
             $this->dispatch('refresh-edit-form');
         }
+
+        
     }
 
     public function openEditModal($id)
@@ -157,6 +172,15 @@ class PerformancesUi extends Component
 
             // Store the ID before resetting
             $performanceId = $this->editingPerformance->performance_id;
+
+            Logs::create([
+                'user_id' => Auth::id(),
+                'action' => 'Updated performance',
+                'navigation' => 'performances',
+                'performance_id' => $performanceId,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
             
             // Reset the properties
             $this->reset(['edit_title', 'edit_description', 'edit_performance_file', 'isEditing', 'editingPerformance']);
@@ -185,8 +209,16 @@ class PerformancesUi extends Component
                 
                 // Soft delete the performance
                 $performance->delete();
-                
+                Logs::created([
+                    'user_id' => Auth::id(),
+                    'action' => 'Deleted performance',
+                    'navigation' => 'performances',
+                    'performance_id' => $id,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
                 $this->dispatch('performance-deleted');
+                $this->modal('delete-performance-' . $id)->close();
                 session()->flash('message', 'Performance deleted successfully!');
             }
         } catch (\Exception $e) {

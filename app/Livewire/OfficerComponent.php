@@ -4,6 +4,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\Officers;
 use App\Models\Media;
+use App\Models\Logs;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -84,6 +85,15 @@ class OfficerComponent extends Component
                 'pid' => $officer->parent_id,
                 'tempId' => $data['id'] // Pass the temporary ID
             ]);
+
+            Logs::create([
+                'action' => 'Added an officer',
+                'navigation' => 'officers',
+                'user_id' => Auth::id(),
+                'officer_id' => $officer->officer_id,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ])->save();
             
             return true;
         } catch (\Exception $e) {
@@ -160,6 +170,15 @@ class OfficerComponent extends Component
                     }
                 }
 
+            Logs::create([
+                'action' => 'Saved an officer',
+                'navigation' => 'officers',
+                'user_id' => Auth::id(),
+                'officer_id' => $officer->officer_id,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
             $this->modal('edit-officer')->close();
             $this->js('window.chart.load(' . json_encode($this->getChartData()) . ')');
 
@@ -208,7 +227,16 @@ public function removeOfficer($data)
         
         if ($deleted) {
             $this->dispatch('officer-removed', id: $id);
-            // Refresh the chart data
+            
+            Logs::create([
+                'action' => 'Removed an officer',
+                'navigation' => 'officers',
+                'user_id' => Auth::id(),
+                'officer_id' => $id,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+            
             $this->js('window.chart.load(' . json_encode($this->getChartData()) . ')');
             return true;
         }
@@ -271,6 +299,15 @@ public function updateOfficerParent($data)
         \Log::info('Officer parent updated:', [
             'officer_id' => $officer->officer_id,
             'new_parent_id' => $officer->parent_id
+        ]);
+
+        Logs::create([
+            'action' => 'Updated officer parent',
+            'navigation' => 'officers',
+            'user_id' => Auth::id(),
+            'officer_id' => $officer->officer_id,
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
         return true;

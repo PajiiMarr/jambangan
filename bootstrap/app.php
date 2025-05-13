@@ -18,6 +18,12 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ]);
+
+        $middleware->alias([
+            'request.accepted' => \App\Http\Middleware\EnsureRequestStatusIsAccepted::class,
+            'is_superadmin' => \App\Http\Middleware\EnsureUserIsSuperAdmin::class,
+
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

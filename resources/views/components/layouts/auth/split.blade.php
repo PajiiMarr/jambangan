@@ -25,7 +25,12 @@
             </div>
         </div>
     </div>
-
+    <script>
+        window.addEventListener('redirect-to', event => {
+            window.location.href = event.detail;
+        });
+    </script>
+    
     @fluxScripts
 </body>
 </html>

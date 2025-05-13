@@ -6,7 +6,9 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Posts;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Logs;
 
 class PostList extends Component
 {
@@ -90,6 +92,16 @@ class PostList extends Component
 
             // Store the ID before resetting
             $postId = $this->editingPost->post_id;
+
+            // Log the update action
+            Logs::create([
+                'action' => 'Updated a post',
+                'navigation' => 'posts',
+                'user_id' => Auth::user()->user_id,
+                'post_id' => $postId,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
             
             // Reset the properties
             $this->reset(['edit_title', 'edit_content', 'editingPost']);
@@ -113,6 +125,22 @@ class PostList extends Component
             if ($post) {
                 // Soft delete the post
                 $post->delete();
+
+                // Log the delete action
+                Logs::create([
+                    'action' => 'Deleted a post',
+                    'navigation' => 'posts',
+                    'user_id' => Auth::user()->user_id,
+                    'post_id' => $id,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+                // Delete associated media
+                $media = \App\Models\Media::where('post_id', $id)->get();
+                foreach ($media as $item) {
+                    Storage::disk('public')->delete($item->file_path);
+                    $item->delete();
+                }
                 
                 $this->dispatch('post-deleted');
                 $this->modal('delete-post-' . $id)->close();
@@ -159,11 +187,22 @@ class PostList extends Component
                 'remainingCount' => $remainingMedia
             ]);
 
+
+
             $this->modal('delete-media-confirmation')->close();
             
             // Dispatch the media-deleted event with the media ID
             $this->dispatch('media-deleted', [
                 'mediaId' => $mediaId
+            ]);
+
+            Logs::create([
+                'action' => 'Deleted a media',
+                'navigation' => 'posts',
+                'user_id' => Auth::user()->user_id,
+                'post_id' => $media->post_id,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
             
             session()->flash('message', 'Media deleted successfully!');

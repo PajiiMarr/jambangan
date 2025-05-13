@@ -15,6 +15,8 @@ use App\Http\Controllers\AboutController;
 use App\Http\Controllers\PerformanceController;
 use App\Http\Controllers\EventsController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\UsersController;
+use App\Models\LogsController;
 
 // Public Routes
 Route::get('/', LandingPage::class)->name('home-public');
@@ -29,7 +31,7 @@ Route::get('/bookings', [BookingController::class, 'publicIndex'])->name('bookin
 Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
 
 // Admin Routes
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', 'request.accepted'])->group(function () {
     // Dashboard
     Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     
@@ -50,6 +52,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     
     // Bookings Management
     Route::get('/admin/bookings', [BookingController::class, 'index'])->name('bookings');
+    
+    Route::get('/admin/users', [UsersController::class, 'index'])
+        ->name('admin-users')
+        ->middleware('is_superadmin');;
+        
+    Route::get('/admin/logs', [LogsController::class, 'index'])->name('logs');
 });
 
 // Settings Routes
@@ -60,12 +68,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
 });
 
-// Favicon Route
 Route::get('/favicon.svg', function () {
     $svgContent = Blade::render('<x-app-logo-icon />');
     return response($svgContent, 200, [
         'Content-Type' => 'image/svg+xml',
     ]);
 });
+
+Route::view('/register/pending', 'request_pending')->name('register_pending');
+Route::view('/register/rejected', 'request_rejected')->name('register_rejected');
 
 require __DIR__.'/auth.php';

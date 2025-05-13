@@ -616,16 +616,4 @@
         x-init="$store.deleteMediaId = null"
         x-on:set-delete-media-id.window="$store.deleteMediaId = $event.detail.mediaId">
     </div>
-
-    <!-- Debug output (temporary) -->
-    <div x-data="{ showDebug: false }" class="fixed bottom-4 right-4 z-50">
-        <button @click="showDebug = !showDebug" class="bg-black/50 text-white p-2 rounded-full">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-            </svg>
-        </button>
-        <div x-show="showDebug" class="fixed bottom-20 right-4 bg-black/90 text-white p-4 rounded-lg max-w-lg">
-            <pre x-text="JSON.stringify({ media }, null, 2)"></pre>
-        </div>
-    </div>
 </div>

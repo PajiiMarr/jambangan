@@ -16,6 +16,7 @@ use App\Models\General;
 use App\Models\Slides;
 use App\Models\Media;
 use App\Models\CoreValues;
+use App\Models\Logs;
 
 class ManageSite extends Component
 {
@@ -250,6 +251,15 @@ class ManageSite extends Component
     
             DB::commit();
 
+            Logs::create([
+                'action' => 'Updated site settings',
+                'navigation' => 'manage-site',
+                'user_id' => Auth::user()->user_id,
+                'general_id' => $this->general_contents->id ?? null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
             Log::debug('Saved successfully' . $this->general_contents);   
     
             // Refresh data without resetting
@@ -279,6 +289,15 @@ class ManageSite extends Component
             // Close modal and refresh data
             $this->dispatch('close-modal', ['name' => 'delete-core-value-' . $id]);
             $this->coreValues();
+
+            Logs::create([
+                'action' => 'Deleted a core value',
+                'navigation' => 'manage-site',
+                'user_id' => Auth::user()->user_id,
+                'general_id' => $this->general_contents->id ?? null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
             
             session()->flash('message', 'Core value deleted successfully!');
         } catch (\Exception $e) {
@@ -300,6 +319,15 @@ class ManageSite extends Component
             $coreValue->core_value_description = $description;
             $coreValue->emoji = $emoji;
             $coreValue->save();
+
+            Logs::create([
+                'action' => 'Updated a core value',
+                'navigation' => 'manage-site',
+                'user_id' => Auth::user()->user_id,
+                'general_id' => $this->general_contents->id ?? null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
             
             $this->modal('edit-core-value-' . $id)->close();
             $this->coreValues(); // refresh the list
@@ -365,6 +393,16 @@ class ManageSite extends Component
             }
     
             DB::commit();
+
+            Logs::create([
+                'action' => 'Updated cover media',
+                'navigation' => 'manage-site',
+                'user_id' => Auth::user()->user_id,
+                'slide_id' => $this->editingMedia->slide_id,
+                'media_id' => $this->editingMedia->media_id,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
             
             // Refresh the data
             $this->coverMedias();
@@ -414,6 +452,16 @@ class ManageSite extends Component
             Slides::where('slide_id', $this->editingMedia->slide_id)->delete();
             
             DB::commit();
+
+            Logs::create([
+                'action' => 'Deleted cover media',
+                'navigation' => 'manage-site',
+                'user_id' => Auth::user()->user_id,
+                'slide_id' => $this->editingMedia->slide_id,
+                'media_id' => $this->editingMedia->media_id,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
             
             // Close the modal and refresh the data
             $this->closeDeleteModal();
@@ -441,6 +489,16 @@ class ManageSite extends Component
             );
             
             DB::commit();
+
+            Logs::create([
+                'action' => 'Updated site identity',
+                'navigation' => 'manage-site',
+                'user_id' => Auth::user()->user_id,
+                'general_id' => $this->general_contents->id ?? null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
             $this->generalContents();
             session()->flash('message', 'Site identity updated successfully!');
         } catch (\Exception $e) {
@@ -462,6 +520,15 @@ class ManageSite extends Component
                     'vision' => $this->vision,
                 ]
             );
+
+            Logs::create([
+                'action' => 'Updated mission and vision',
+                'navigation' => 'manage-site',
+                'user_id' => Auth::user()->user_id,
+                'general_id' => $this->general_contents->id ?? null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
             
             DB::commit();
             $this->generalContents();
@@ -487,6 +554,15 @@ class ManageSite extends Component
             }
             
             DB::commit();
+
+            Logs::create([
+                'action' => 'Added a core value',
+                'navigation' => 'manage-site',
+                'user_id' => Auth::user()->user_id,
+                'general_id' => $this->general_contents->id ?? null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
             $this->coreValues();
             $this->core_value_title = '';
             $this->core_value_description = '';
@@ -514,6 +590,15 @@ class ManageSite extends Component
             );
             
             DB::commit();
+
+            Logs::create([
+                'action' => 'Updated contact details',
+                'navigation' => 'manage-site',
+                'user_id' => Auth::user()->user_id,
+                'general_id' => $this->general_contents->id ?? null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
             $this->generalContents();
             session()->flash('message', 'Contact details updated successfully!');
         } catch (\Exception $e) {
@@ -551,6 +636,15 @@ class ManageSite extends Component
             }
             
             DB::commit();
+
+            Logs::create([
+                'action' => 'Added cover media',
+                'navigation' => 'manage-site',
+                'user_id' => Auth::user()->user_id,
+                'slide_id' => $slides['slide_id'],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
             $this->coverMedias();
             $this->title = '';
             $this->subtitle = '';
@@ -577,6 +671,15 @@ class ManageSite extends Component
                     ['logo_path' => $logoUrl]
                 );
             }
+
+            Logs::create([
+                'action' => 'Updated logo',
+                'navigation' => 'manage-site',
+                'user_id' => Auth::user()->user_id,
+                'general_id' => $this->general_contents->id ?? null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
             
             DB::commit();
             $this->generalContents();

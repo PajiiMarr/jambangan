@@ -16,11 +16,6 @@
                     <flux:navlist.item icon="home-icon" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
                 </flux:navlist.group>
 
-                {{-- <flux:navlist.group class="grid">
-                    <flux:navlist.item icon="paper" :href="route('contents')" :current="request()->routeIs('contents')" wire:navigate>{{ __('Manage Contents') }}</flux:navlist.item>
-                </flux:navlist.group> --}}
-                {{-- </flux:navlist.group> --}}
-
                 <flux:navlist.group class="grid">
                     <flux:navlist.item icon="sparkle" :href="route('performances')" :current="request()->routeIs('performances')" wire:navigate>{{ __('Performances') }}</flux:navlist.item>
                 </flux:navlist.group>
@@ -43,6 +38,16 @@
                 
                 <flux:navlist.group class="grid">
                     <flux:navlist.item icon="bookings" :href="route('bookings')" :current="request()->routeIs('bookings')" wire:navigate>{{ __('Bookings') }}</flux:navlist.item>
+                </flux:navlist.group>
+                
+                @if(auth()->check() && auth()->user()->is_superadmin)
+                <flux:navlist.group class="grid">
+                    <flux:navlist.item icon="admin-users" :href="route('admin-users')" :current="request()->routeIs('admin-users')" wire:navigate>{{ __('Users') }}</flux:navlist.item>
+                </flux:navlist.group>
+                @endif
+
+                <flux:navlist.group class="grid">
+                    <flux:navlist.item icon="logs" :href="route('logs')" :current="request()->routeIs('logs')" wire:navigate>{{ __('Logs') }}</flux:navlist.item>
                 </flux:navlist.group>
 
             </flux:navlist>

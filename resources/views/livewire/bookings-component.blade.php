@@ -1,5 +1,5 @@
 <div>
-    <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl bg-[#121212] p-4 shadow" wire:poll.5s>
+    <div class="flex h-full w-full flex-1 flex-col gap-4 bg-white rounded-xl dark:bg-[#121212] p-4 shadow" wire:poll.5s>
         <!-- Flash Message -->
         @if (session()->has('message'))
             <div class="mb-4 rounded-lg bg-green-400/20 p-4 text-green-400">
@@ -30,11 +30,11 @@
         </div>
 
         <!-- Bookings Table -->
-        <div class="overflow-x-auto rounded-lg border border-gray-700 bg-[#121212] shadow">
+        <div class="overflow-x-auto rounded-lg border border-gray-700 bg-white dark:bg-[#121212] shadow">
             <table class="min-w-full divide-y divide-gray-700 text-sm">
-                <thead class="bg-black/50">
-                    <tr>
-                        <th class="px-6 py-3 text-left font-medium text-gray-300 uppercase cursor-pointer hover:text-yellow-400 transition-colors duration-300" wire:click="sortBy('name')">
+                <thead class="dark:bg-black/50">
+                    <tr class="dark:hover:bg-gray transition-colors duration-300">
+                        <th class="px-6 py-3 text-left font-medium text-black dark:text-white uppercase cursor-pointer hover:text-yellow-400 transition-colors duration-300" wire:click="sortBy('name')">
                             Name
                             @if($sortField === 'name')
                                 @if($sortDirection === 'asc')
@@ -44,7 +44,7 @@
                                 @endif
                             @endif
                         </th>
-                        <th class="px-6 py-3 text-left font-medium text-gray-300 uppercase cursor-pointer hover:text-yellow-400 transition-colors duration-300" wire:click="sortBy('email')">
+                        <th class="px-6 py-3 text-left text-black dark:text-white font-medium uppercase cursor-pointer hover:text-yellow-400 transition-colors duration-300" wire:click="sortBy('email')">
                             Email
                             @if($sortField === 'email')
                                 @if($sortDirection === 'asc')
@@ -54,7 +54,7 @@
                                 @endif
                             @endif
                         </th>
-                        <th class="px-6 py-3 text-left font-medium text-gray-300 uppercase cursor-pointer hover:text-yellow-400 transition-colors duration-300" wire:click="sortBy('event_date')">
+                        <th class="px-6 py-3 text-left text-black dark:text-white font-medium uppercase cursor-pointer hover:text-yellow-400 transition-colors duration-300" wire:click="sortBy('event_date')">
                             Event Date
                             @if($sortField === 'event_date')
                                 @if($sortDirection === 'asc')
@@ -64,7 +64,7 @@
                                 @endif
                             @endif
                         </th>
-                        <th class="px-6 py-3 text-left font-medium text-gray-300 uppercase cursor-pointer hover:text-yellow-400 transition-colors duration-300" wire:click="sortBy('event_type')">
+                        <th class="px-6 py-3 text-left text-black dark:text-white font-medium uppercase cursor-pointer hover:text-yellow-400 transition-colors duration-300" wire:click="sortBy('event_type')">
                             Event Type
                             @if($sortField === 'event_type')
                                 @if($sortDirection === 'asc')
@@ -74,7 +74,7 @@
                                 @endif
                             @endif
                         </th>
-                        <th class="px-6 py-3 text-left font-medium text-gray-300 uppercase cursor-pointer hover:text-yellow-400 transition-colors duration-300" wire:click="sortBy('status')">
+                        <th class="px-6 py-3 text-left text-black dark:text-white font-medium uppercase cursor-pointer hover:text-yellow-400 transition-colors duration-300" wire:click="sortBy('status')">
                             Status
                             @if($sortField === 'status')
                                 @if($sortDirection === 'asc')
@@ -84,16 +84,16 @@
                                 @endif
                             @endif
                         </th>
-                        <th class="px-6 py-3 text-right font-medium text-gray-300 uppercase">Actions</th>
+                        <th class="px-6 py-3 text-right text-black dark:text-white font-medium uppercase">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-700">
                     @forelse($bookings as $booking)
-                        <tr class="hover:bg-black/50 transition-colors duration-300">
-                            <td class="px-6 py-4 text-gray-200">{{ $booking->name }}</td>
-                            <td class="px-6 py-4 text-gray-400">{{ $booking->email }}</td>
-                            <td class="px-6 py-4 text-gray-400">{{ $booking->event_date->format('M d, Y') }}</td>
-                            <td class="px-6 py-4 text-gray-400 capitalize">{{ $booking->event_type }}</td>
+                        <tr class="dark:hover:bg-gray transition-colors duration-300">
+                            <td class="px-6 py-4 text-black dark:text-gray-200 hover:text-yellow-400 transition-colors duration-300">{{ $booking->name }}</td>
+                            <td class="px-6 py-4 text-black dark:text-gray-200 hover:text-yellow-400 transition-colors duration-300">{{ $booking->email }}</td>
+                            <td class="px-6 py-4 text-black dark:text-gray-200 hover:text-yellow-400 transition-colors duration-300">{{ $booking->event_date->format('M d, Y') }}</td>
+                            <td class="px-6 py-4 text-black dark:text-gray-200 hover:text-yellow-400 transition-colors duration-300 capitalize">{{ $booking->event_type }}</td>
                             <td class="px-6 py-4">
                                 <div class="flex items-center gap-2">
                                     <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium

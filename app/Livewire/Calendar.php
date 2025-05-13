@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Exception;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
+use App\Models\Logs;
 
 class Calendar extends Component
 {
@@ -197,6 +198,15 @@ class Calendar extends Component
             $this->loadEvents();
             Log::info('Events reloaded after creation');
 
+            Logs::create([
+                'action' => 'Created an event',
+                'navigation' => 'events',
+                'user_id' => Auth::user()->id,
+                'event_id' => $event->event_id,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
             $this->dispatch('eventLoaded', events: $this->events);
             $this->dispatch('close-modal', id: 'add-event');
             
@@ -236,6 +246,15 @@ class Calendar extends Component
                 'end_date' => $data['end'] ?? $event->end_date,
                 'status' => $status,
                 'user_id' => Auth::user()->id,
+            ]);
+
+            Logs::create([
+                'action' => 'Updated an event',
+                'navigation' => 'events',
+                'user_id' => Auth::user()->id,
+                'event_id' => $event->event_id,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
 
             $this->loadEvents();

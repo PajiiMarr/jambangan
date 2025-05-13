@@ -29,8 +29,8 @@
                     datasets: [{
                         label: 'Page Views',
                         data: Array(12).fill(0),
-                        backgroundColor: 'rgba(54, 162, 235, 0.7)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
+                        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--color-accent').trim() || 'rgba(239, 68, 68, 0.7)', // fallback to Tailwind red-500
+                        borderColor: getComputedStyle(document.documentElement).getPropertyValue('--color-accent-content').trim() || 'rgba(220, 38, 38, 1)',
                         borderWidth: 1
                     }]
                 },

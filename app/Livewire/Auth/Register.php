@@ -26,18 +26,34 @@ class Register extends Component
      */
     public function register(): void
     {
+        // Validate the input fields
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        // Hash the password
         $validated['password'] = Hash::make($validated['password']);
 
-        event(new Registered(($user = User::create($validated))));
+        // Check if this is the first user
+        $isFirstUser = User::count() === 0;
 
+        // Set the request status and is_superadmin value based on first user
+        $validated['request_status'] = $isFirstUser ? 'accepted' : 'pending';
+        $validated['is_superadmin'] = $isFirstUser ? true : false;
+
+        // Log debug information
+        \Log::info('Is first user: ' . $isFirstUser); // Check if it's the first user
+        \Log::info('Validated data: ', $validated); // Check the values being passed to the database
+
+        // Create the user
+        event(new Registered($user = User::create($validated)));
+
+        // Log the user in
         Auth::login($user);
 
-        $this->redirect(route('dashboard', absolute: false), navigate: true);
+        // Redirect to the dashboard
+        $this->dispatch('redirect-to', url()->route('dashboard'));
     }
 }

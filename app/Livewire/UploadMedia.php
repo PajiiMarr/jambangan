@@ -17,6 +17,7 @@ use App\Models\Media;
 use App\Models\Performances;
 use FFMpeg\FFMpeg;
 use FFMpeg\Coordinate\TimeCode;
+use App\Models\Logs;
 
 class UploadMedia extends Component
 {
@@ -233,6 +234,15 @@ class UploadMedia extends Component
             }
 
             DB::commit();
+
+            Logs::create([
+                'action' => 'Created a post',
+                'navigation' => 'posts',
+                'user_id' => Auth::id(),
+                'post_id' => $post->post_id,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
 
             Log::debug('Post created with ID: ' . $post->id);
 
