@@ -28,6 +28,7 @@ class Events extends Model
         'description',
         'user_id',
         'status',
+        'spp_status'
     ];
 
     // Date casts

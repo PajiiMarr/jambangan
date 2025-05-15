@@ -67,6 +67,8 @@ class UploadMedia extends Component
     public $selectedEvent = null;
     public $selectedPerformance = null;
 
+    public $lastSavedPostId;
+
     public function rules()
     {
         return [
@@ -244,7 +246,11 @@ class UploadMedia extends Component
                 'updated_at' => now(),
             ]);
 
-            Log::debug('Post created with ID: ' . $post->id);
+            Log::debug('Post created with ID: ' . $post->post_id);
+
+            $this->lastSavedPostId = $post->post_id;
+            $this->modal('spp-confirmation')->show();
+
 
             $this->reset(['title', 'content', 'selectedEvent', 'uploadedFiles', 'temporaryUploadedFiles']);
 
@@ -275,6 +281,22 @@ class UploadMedia extends Component
 
         if ($validator->fails()) {
             $this->addError('uploadedFiles', $validator->errors()->first());
+        }
+    }
+
+    public function modal_close($modal_name){
+        $this->modal($modal_name)->close();
+    }
+
+    public function spp_status_save(){
+        try {
+            $post = Posts::find($this->lastSavedPostId);
+            $post->spp_status = 'publish';
+            $post->save();
+            $this->modal('spp-confirmation')->close();
+        } catch (\Exception $e) {
+            Log::error('Error updating spp_status:', ['error' => $e->getMessage()]);
+            session()->flash('error', 'Failed to publish performance. Please try again.');
         }
     }
 

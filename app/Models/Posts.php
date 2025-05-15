@@ -18,7 +18,8 @@ class Posts extends Model
         'content',
         'event_id',
         'performance_id',
-        'user_id'
+        'user_id',
+        'spp_status'
     ];
 
     public function events(): BelongsTo

@@ -22,6 +22,7 @@ class PerformancesUi extends Component
     public $add_title;
     public $add_description;
     public $add_performance_file;
+    public $publish_peformance_id;
 
     // Edit performance variables
     public $edit_title;
@@ -37,7 +38,10 @@ class PerformancesUi extends Component
     public $search = '';
     public $sortBy = 'created_at';
     public $sortDirection = 'desc';
+    public $sortSppStatus = 'preview';
     public $statusFilter = '';
+
+    public $lastSavedPerformanceId;
 
     protected $rules = [
         'add_title' => 'required|min:3',
@@ -55,6 +59,7 @@ class PerformancesUi extends Component
         $this->edit_title = '';
         $this->edit_description = '';
         $this->isEditing = false;
+        $this->selectedPerformance;
     }
 
     #[On('performance-added')]
@@ -99,7 +104,10 @@ class PerformancesUi extends Component
             'updated_at' => now(),
         ]);
 
+        $this->lastSavedPerformanceId = $performance->performance_id;
+
         $this->modal('add-performance')->close();
+        $this->modal('spp-confirmation')->show();
         $this->reset(['add_title', 'add_description', 'add_performance_file']);
         $this->dispatch('performance-added');
     }
@@ -119,11 +127,11 @@ class PerformancesUi extends Component
         
         if ($this->editingPerformance) {
             $this->edit_title = $this->editingPerformance->title;
+            $this->publish_peformance_id = $this->editingPerformance->performance_id;
             $this->edit_description = $this->editingPerformance->description;
             $this->isEditing = true;
             $this->edit_performance_file = null;
             
-            // Force a re-render of the component
             $this->dispatch('refresh-edit-form');
         }
 
@@ -133,7 +141,29 @@ class PerformancesUi extends Component
     public function openEditModal($id)
     {
         $this->editPerformance($id);
-        $this->dispatch('open-modal', name: 'edit-performance-' . $id);
+    }
+
+    public function publish_performance($id){
+        try {
+            $performance = Performances::find($id);
+            $performance->spp_status = 'publish';
+            $performance->save();
+
+            Logs::create([
+                'user_id' => Auth::id(),
+                'action' => 'Published a performance',
+                'navigation' => 'performances',
+                'performance_id' => $performance->performance_id,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            $this->modal('publish')->close();
+
+        } catch (\Exception $e) {
+            Log::error('Error updating spp_status:', ['error' => $e->getMessage()]);
+            session()->flash('error', 'Failed to publish performance. Please try again.');
+        }
     }
 
     public function updatePerformance()
@@ -181,6 +211,8 @@ class PerformancesUi extends Component
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
+
+            $this->showPerformance($performanceId);
             
             // Reset the properties
             $this->reset(['edit_title', 'edit_description', 'edit_performance_file', 'isEditing', 'editingPerformance']);
@@ -206,6 +238,7 @@ class PerformancesUi extends Component
                 if ($performance->media) {
                     $performance->media->delete();
                 }
+
                 
                 // Soft delete the performance
                 $performance->delete();
@@ -217,8 +250,11 @@ class PerformancesUi extends Component
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);
+                
+                $this->showPerformance($id);
+                
                 $this->dispatch('performance-deleted');
-                $this->modal('delete-performance-' . $id)->close();
+                $this->modal('delete-performance')->close();
                 session()->flash('message', 'Performance deleted successfully!');
             }
         } catch (\Exception $e) {
@@ -257,9 +293,36 @@ class PerformancesUi extends Component
         $this->resetPage();
     }
 
+    public function modal_close($modal_name){
+        $this->modal($modal_name)->close();
+    }
+
     public function closeModal($modalName)
     {
         $this->modal($modalName)->close();
+    }
+
+    public function spp_status_save($id){
+        try {
+            $performance = Performances::find($id);
+            $performance->spp_status = 'publish';
+            $performance->save();
+
+
+            Logs::create([
+                'user_id' => Auth::id(),
+                'action' => 'Published a performance',
+                'navigation' => 'performances',
+                'performance_id' => $performance->performance_id,
+                'created_at' => now(),
+                'updated_at' => now(),
+        ]);
+
+            $this->modal('spp-confirmation')->close();
+        } catch (\Exception $e) {
+            Log::error('Error updating spp_status:', ['error' => $e->getMessage()]);
+            session()->flash('error', 'Failed to publish performance. Please try again.');
+        }
     }
 
     public function render()
@@ -274,7 +337,12 @@ class PerformancesUi extends Component
             ->when($this->statusFilter, function ($query) {
                 $query->where('status', $this->statusFilter);
             })
+            ->when($this->sortSppStatus, function ($query) {
+                $query->where('spp_status', $this->sortSppStatus);
+            })
             ->orderBy($this->sortBy, $this->sortDirection);
+
+            $this->selectedPerformance;
 
         $performances = $query->paginate($this->perPage);
 
@@ -282,7 +350,6 @@ class PerformancesUi extends Component
             $this->selectedPerformance = $performances->first();
         }
 
-        // Get statistics
         $totalPerformances = Performances::count();
         $activePerformances = Performances::where('status', 'active')->count();
         $inactivePerformances = Performances::where('status', 'inactive')->count();

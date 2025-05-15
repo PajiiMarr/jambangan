@@ -19,14 +19,15 @@
                 <flux:navlist.group class="grid">
                     <flux:navlist.item icon="sparkle" :href="route('performances')" :current="request()->routeIs('performances')" wire:navigate>{{ __('Performances') }}</flux:navlist.item>
                 </flux:navlist.group>
+                
+                <flux:navlist.group class="grid">
+                    <flux:navlist.item icon="event-calendar" :href="route('events')" :current="request()->routeIs('events')" wire:navigate>{{ __('Events') }}</flux:navlist.item>
+                </flux:navlist.group>
 
                 <flux:navlist.group class="grid">
                     <flux:navlist.item icon="paper" :href="route('posts')" :current="request()->routeIs('posts')" wire:navigate>{{ __('Posts') }}</flux:navlist.item>
                 </flux:navlist.group>
 
-                <flux:navlist.group class="grid">
-                    <flux:navlist.item icon="event-calendar" :href="route('events')" :current="request()->routeIs('events')" wire:navigate>{{ __('Events') }}</flux:navlist.item>
-                </flux:navlist.group>
 
                 <flux:navlist.group class="grid">
                     <flux:navlist.item icon="manage" :href="route('manage')" :current="request()->routeIs('manage')" wire:navigate>{{ __('Manage Site') }}</flux:navlist.item>

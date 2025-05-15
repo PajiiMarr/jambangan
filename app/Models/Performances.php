@@ -19,7 +19,8 @@ class Performances extends Model
         'title',
         'description',
         'created_at',
-        'status'
+        'status',
+        'spp_status',
     ];
     public $timestamps = false;
 

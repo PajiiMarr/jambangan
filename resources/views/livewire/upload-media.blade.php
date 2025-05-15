@@ -1,3 +1,8 @@
+@php
+    $isMobile = request()->header('User-Agent') && preg_match('/Mobile|Android|iPhone|iPad/', request()->header('User-Agent'));
+    // dd($isMobile);
+@endphp
+
 <div class="h-25 w-full rounded-xl border-neutral-200">
     <flux:modal.trigger name="create-post" class="w-full h-full flex rounded-xl p-1.5 cursor-pointer border-2 border-neutral-200 dark:hover:bg-gray-600 hover:bg-gray-100 duration-100 ease-in-out">
         Write a post...
@@ -73,5 +78,23 @@
                 <flux:button class="w-full" type="submit">Post</flux:button>
             </div>
         </form>
+    </flux:modal>
+
+    <flux:modal 
+        name="spp-confirmation"
+        class="w-full md:w-123"
+        :variant="$isMobile ? 'flyout' : null"
+        :position="$isMobile ? 'bottom' : null"
+    >
+        <flux:heading size="lg">Post Review</flux:heading>
+        
+        <flux:text class="mb-4">
+            Your post is saved. Keep it in preview or publish it now?
+        </flux:text>
+        
+        <div class="flex">
+            <flux:button variant="filled" class="w-1/2 mx-1" wire:click="modal_close('spp-confirmation')">Keep in Preview</flux:button>
+            <flux:button variant="primary" class="w-1/2 mx-1" wire:click="spp_status_save">Publish immediately</flux:button>
+        </div>
     </flux:modal>
 </div>

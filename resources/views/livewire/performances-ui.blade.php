@@ -39,7 +39,29 @@
         
         <flux:label>Cover Photo</flux:label>
         <x-inputs.filepond class="mt-5" wire:model="add_performance_file" />  
-        <flux:button variant="primary" wire:click="save">Add Performance</flux:button>
+        <div class="flex justify-between">
+            <flux:button variant="filled" class="w-1/2 mx-1" wire:click="modal_close('add-performance')">Cancel</flux:button>
+            <flux:button variant="primary" class="w-1/2 mx-1" wire:click="save">Add Performance</flux:button>
+
+        </div>
+    </flux:modal>
+
+    <flux:modal 
+        name="spp-confirmation"
+        class="w-full md:w-123"
+        :variant="$isMobile ? 'flyout' : null"
+        :position="$isMobile ? 'bottom' : null"
+    >
+        <flux:heading size="lg">Performance Review</flux:heading>
+        
+        <flux:text class="mb-4">
+            Your performance is saved. Keep it in preview or publish it now?
+        </flux:text>
+        
+        <div class="flex">
+            <flux:button variant="filled" class="w-1/2 mx-1" wire:click="modal_close('spp-confirmation')">Keep in Preview</flux:button>
+            <flux:button variant="primary" class="w-1/2 mx-1" wire:click="spp_status_save({{ $lastSavedPerformanceId }})">Publish immediately</flux:button>
+        </div>
     </flux:modal>
 
     <!-- Filters and Search Section -->
@@ -83,8 +105,23 @@
                         wire:model.live="sortDirection" 
                         class="appearance-none rounded-lg border border-gray-200 dark:border-red-800/30 bg-white dark:bg-red-900/10 text-gray-900 dark:text-gray-100 pl-4 pr-10 py-2 focus:border-red-800/50 focus:ring-1 focus:ring-red-800/30 cursor-pointer hover:bg-gray-50 dark:hover:bg-red-900/20 transition-colors duration-200"
                     >
-                        <option value="desc">Descending</option>
-                        <option value="asc">Ascending</option>
+                        <option value="desc">Recent</option>
+                        <option value="asc">Oldest</option>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="relative">
+                    <select 
+                        wire:model.live="sortSppStatus" 
+                        class="appearance-none rounded-lg border border-gray-200 dark:border-red-800/30 bg-white dark:bg-red-900/10 text-gray-900 dark:text-gray-100 pl-4 pr-10 py-2 focus:border-red-800/50 focus:ring-1 focus:ring-red-800/30 cursor-pointer hover:bg-gray-50 dark:hover:bg-red-900/20 transition-colors duration-200"
+                    >
+                        <option value="preview">Preview</option>
+                        <option value="publish">Publish</option>
                     </select>
                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -213,8 +250,26 @@
 
                         <!-- Action buttons - Add stop propagation to prevent showing performance when clicking buttons -->
                         <div class="absolute top-2 right-2 flex gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+                            @if ($performance->spp_status == 'preview')
+                                <flux:modal.trigger 
+                                    name="publish"
+                                    wire:click="openEditModal({{ $performance->performance_id }})"
+                                    wire:key="edit-trigger-{{ $performance->performance_id }}"
+                                >
+                                    <flux:button 
+                                        variant="outline" 
+                                        class="p-2 bg-white/90 rounded-full md:hover:bg-white transition-colors" 
+                                        title="Publish Performance"
+                                    >
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                    </svg>    
+                                    </flux:button>
+                                </flux:modal.trigger>
+                            @endif
+
                             <flux:modal.trigger 
-                                name="edit-performance-{{ $performance->performance_id }}"
+                                name="edit-performance"
                                 wire:click="openEditModal({{ $performance->performance_id }})"
                                 wire:key="edit-trigger-{{ $performance->performance_id }}"
                             >
@@ -228,7 +283,8 @@
                                     </svg>
                                 </flux:button>
                             </flux:modal.trigger>
-                            <flux:modal.trigger name="delete-performance-{{ $performance->performance_id }}">
+
+                            <flux:modal.trigger name="delete-performance">
                                 <flux:button 
                                     variant="outline" 
                                     class="p-2 bg-white/90 rounded-full md:hover:bg-white transition-colors" 
@@ -244,108 +300,143 @@
 
                         <!-- Move modals outside the performance card element -->
                         <!-- Edit Modal -->
+                        @endforeach
                         <flux:modal 
-                            name="edit-performance-{{ $performance->performance_id }}" 
+                            name="edit-performance" 
                             class="md:w-123"
                             :variant="$isMobile ? 'flyout' : null"
                             :position="$isMobile ? 'bottom' : null"
                             wire:ignore.self
                         >
-                        <div class="space-y-6">
-                            <div>
-                                <flux:heading size="lg">Edit Performance</flux:heading>
-                                <flux:text class="mt-2">Update performance details and media.</flux:text>
+                            <div class="space-y-6">
+                                <div>
+                                    <flux:heading size="lg">Edit Performance</flux:heading>
+                                    <flux:text class="mt-2">Update performance details and media.</flux:text>
+                                </div>
+                                
+                                @if($performance->media)
+                                    <div class="rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700">
+                                        <img 
+                                            src="{{ $performance->media->file_url }}" 
+                                            alt="{{ $performance->title }}" 
+                                            class="w-full h-48 object-cover"
+                                        >
+                                    </div>
+                                @endif
+
+                                <div class="space-y-4">
+                                    <div>
+                                        <flux:input 
+                                            label="Title" 
+                                            wire:model="edit_title" 
+                                            placeholder="Performance title"
+                                        />
+                                        @error('edit_title') 
+                                            <span class="text-red-500 text-sm">{{ $message }}</span> 
+                                        @enderror
+                                    </div>
+
+                                    <div>
+                                        <flux:textarea 
+                                            label="Description" 
+                                            wire:model="edit_description" 
+                                            placeholder="Performance description"
+                                            rows="4"
+                                        />
+                                        @error('edit_description') 
+                                            <span class="text-red-500 text-sm">{{ $message }}</span> 
+                                        @enderror
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Performance Image</label>
+                                        <x-inputs.filepond wire:model="edit_performance_file" />
+                                        @error('edit_performance_file') 
+                                            <span class="text-red-500 text-sm">{{ $message }}</span> 
+                                        @enderror
+                                    </div>
+
+                                    <div class="flex w-full justify-end pt-4">
+                                        <flux:button 
+                                            class="w-1/2 mx-1"
+                                            variant="outline"
+                                            wire:click="closeModal('edit-performance')"
+                                        >
+                                            Cancel
+                                        </flux:button>
+                                        <flux:button 
+                                            class="w-1/2 mx-1"
+                                            wire:click="updatePerformance" 
+                                            variant="primary"
+                                        >
+                                            Save Changes
+                                        </flux:button>
+                                    </div>
+                                </div>
                             </div>
-                            
-                            @if($performance->media)
-                                <div class="rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700">
-                                    <img 
-                                        src="{{ $performance->media->file_url }}" 
-                                        alt="{{ $performance->title }}" 
-                                        class="w-full h-48 object-cover"
-                                    >
-                                </div>
-                            @endif
-
-                            <div class="space-y-4">
-                                <div>
-                                    <flux:input 
-                                        label="Title" 
-                                        wire:model="edit_title" 
-                                        placeholder="Performance title"
-                                    />
-                                    @error('edit_title') 
-                                        <span class="text-red-500 text-sm">{{ $message }}</span> 
-                                    @enderror
-                                </div>
-
-                                <div>
-                                    <flux:textarea 
-                                        label="Description" 
-                                        wire:model="edit_description" 
-                                        placeholder="Performance description"
-                                        rows="4"
-                                    />
-                                    @error('edit_description') 
-                                        <span class="text-red-500 text-sm">{{ $message }}</span> 
-                                    @enderror
-                                </div>
-
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Performance Image</label>
-                                    <x-inputs.filepond wire:model="edit_performance_file" />
-                                    @error('edit_performance_file') 
-                                        <span class="text-red-500 text-sm">{{ $message }}</span> 
-                                    @enderror
-                                </div>
-
-                                <div class="flex justify-end gap-4 pt-4">
-                                    <flux:button 
-                                        variant="outline"
-                                        wire:click="closeModal('edit-performance-{{ $performance->performance_id }}')"
-                                    >
-                                        Cancel
-                                    </flux:button>
-                                    <flux:button 
-                                        wire:click="updatePerformance" 
-                                        variant="primary"
-                                    >
-                                        Save Changes
-                                    </flux:button>
-                                </div>
-                            </div>
-                        </div>
                         </flux:modal>
 
                         <!-- Delete Confirmation Modal -->
                         <flux:modal 
-                        name="delete-performance-{{ $performance->performance_id }}" 
+                        name="delete-performance" 
                         class="md:w-96"
                         :variant="$isMobile ? 'flyout' : null"
                         :position="$isMobile ? 'bottom' : null"
                         >
-                        <div class="space-y-6">
-                            <div>
-                                <flux:heading size="lg">Delete Performance</flux:heading>
-                                <flux:text class="mt-2">Are you sure you want to delete this performance? This action cannot be undone.</flux:text>
+                            <div class="space-y-6">
+                                <div>
+                                    <flux:heading size="lg">Delete Performance</flux:heading>
+                                    <flux:text class="mt-2">Are you sure you want to delete this performance? This action cannot be undone.</flux:text>
+                                </div>
+                                <div class="flex justify-between">
+                                    <flux:button 
+                                        class="w-1/2 mx-1"
+                                        variant="outline"
+                                        wire:click="closeModal('delete-performance')"
+                                    >
+                                        Cancel
+                                    </flux:button>
+                                    <flux:button 
+                                        class="w-1/2 mx-1"
+                                        variant="danger"
+                                        wire:click="deletePerformance({{ $performance->performance_id }})"
+                                    >
+                                        Delete Performance
+                                    </flux:button>
+                                </div>
                             </div>
-                            <div class="flex justify-end gap-4">
-                                <flux:button 
-                                    variant="outline"
-                                    wire:click="closeModal('delete-performance-{{ $performance->performance_id }}')"
-                                >
-                                    Cancel
-                                </flux:button>
-                                <flux:button 
-                                    variant="danger"
-                                    wire:click="deletePerformance({{ $performance->performance_id }})"
-                                >
-                                    Delete Performance
-                                </flux:button>
-                            </div>
-                        </div>
                         </flux:modal>
-                    @endforeach
+
+
+                        <flux:modal 
+                        name="publish" 
+                        class="md:w-96"
+                        :variant="$isMobile ? 'flyout' : null"
+                        :position="$isMobile ? 'bottom' : null"
+                        >
+                            <div class="space-y-6">
+                                <div>
+                                    <flux:heading size="lg">Publish Performannce?</flux:heading>
+                                    <flux:text class="mt-2">Do you want to publish {{ $edit_title }}? </flux:text>
+                                </div>
+                                <div class="flex justify-between">
+                                    <flux:button 
+                                        class="w-1/2 mx-1"
+                                        variant="outline"
+                                        wire:click="closeModal('publish')"
+                                    >
+                                        Cancel
+                                    </flux:button>
+                                    <flux:button 
+                                        class="w-1/2 mx-1"
+                                        variant="danger"
+                                        wire:click="publish_performance({{ $publish_peformance_id }})"
+                                    >
+                                        Publish
+                                    </flux:button>
+                                </div>
+                            </div>
+                        </flux:modal>
                 @endif
             </div>
 
@@ -356,7 +447,7 @@
         </div>
 
         <!-- Right Panel -->
-        <div class="hidden md:block w-1/2 p-6 h-[150vh] rounded-2xl bg-white dark:bg-red-900/20 shadow-sm border border-gray-200 dark:border-red-800/30">
+        <div class="hidden md:block w-1/2 p-6 h-auto rounded-2xl bg-white dark:bg-red-900/20 shadow-sm border border-gray-200 dark:border-red-800/30">
             @if ($selectedPerformance)
             <div class="flex items-center justify-between mb-6">
                 <div>
@@ -368,8 +459,22 @@
                     </div>
                 </div>
                 <div class="flex gap-2">
+                    @if ($selectedPerformance->spp_status == 'preview')
+                        <flux:modal.trigger 
+                        name="publish"
+                        wire:click="openEditModal({{ $selectedPerformance->performance_id }})"
+                        >
+                            <flux:button variant="outline" size="sm" class="border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                </svg>                                  
+                                Publish
+                            </flux:button>
+                        </flux:modal.trigger>
+                    @endif
+
                     <flux:modal.trigger 
-                    name="edit-performance-{{ $selectedPerformance->performance_id }}"
+                    name="edit-performance"
                     wire:click="openEditModal({{ $selectedPerformance->performance_id }})"
                     >
                         <flux:button variant="outline" size="sm" class="border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
@@ -379,7 +484,7 @@
                             Edit
                         </flux:button>
                     </flux:modal.trigger>
-                    <flux:modal.trigger name="delete-performance-{{ $selectedPerformance->performance_id }}">
+                    <flux:modal.trigger name="delete-performance">
                         <flux:button variant="danger" size="sm" class="bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300 hover:bg-red-200 dark:hover:bg-red-900/70">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>

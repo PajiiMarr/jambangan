@@ -5,146 +5,73 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\Booking;
 use Livewire\WithPagination;
-use Livewire\Attributes\Rule;
 
 class BookingsComponent extends Component
 {
     use WithPagination;
-    
+
     public $search = '';
-    public $sortField = 'created_at';
-    public $sortDirection = 'desc';
-    public $showModal = false;
-    public $showViewModal = false;
-    public $editingBooking = null;
-    public $viewingBooking = null;
+    public $tab = 'Completed';
+    public $sortBy = 'start_date';
+    public $sortSppStatus = 'preview';
+    public $perPage = 10;
+    public $selectedBooking = null;
 
-    protected $listeners = ['booking-created' => '$refresh'];
+    protected $listeners = ['eventClick', 'dateClick'];
 
-    #[Rule('required|string|max:255')]
-    public $name = '';
-
-    #[Rule('required|email|max:255')]
-    public $email = '';
-
-    #[Rule('required|string|max:20')]
-    public $phone = '';
-
-    #[Rule('required|date|after:today')]
-    public $event_date = '';
-
-    #[Rule('required|string|max:255')]
-    public $event_type = '';
-
-    #[Rule('nullable|string|max:1000')]
-    public $message = '';
-
-    public function mount()
+    public function eventClick($event)
     {
-        $this->viewingBooking = null;
+        $this->selectedBooking = Booking::find($event['id']);
     }
 
-    public function updatingSearch()
+    public function dateClick($date)
     {
-        $this->resetPage();
-    }
-
-    public function sortBy($field)
-    {
-        if ($this->sortField === $field) {
-            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
-        } else {
-            $this->sortDirection = 'asc';
-        }
-        $this->sortField = $field;
-    }
-
-    public function openModal()
-    {
-        $this->reset(['name', 'email', 'phone', 'event_date', 'event_type', 'message', 'editingBooking']);
-        $this->showModal = true;
-    }
-
-    public function viewBooking(Booking $booking)
-    {
-        $this->viewingBooking = $booking;
-        $this->showViewModal = true;
-    }
-
-    public function closeViewModal()
-    {
-        $this->showViewModal = false;
-        $this->viewingBooking = null;
-    }
-
-    public function editBooking(Booking $booking)
-    {
-        $this->editingBooking = $booking;
-        $this->name = $booking->name;
-        $this->email = $booking->email;
-        $this->phone = $booking->phone;
-        $this->event_date = $booking->event_date->format('Y-m-d');
-        $this->event_type = $booking->event_type;
-        $this->message = $booking->message;
-        $this->showModal = true;
-    }
-
-    public function saveBooking()
-    {
-        $this->validate();
-
-        if ($this->editingBooking) {
-            $this->editingBooking->update([
-                'name' => $this->name,
-                'email' => $this->email,
-                'phone' => $this->phone,
-                'event_date' => $this->event_date,
-                'event_type' => $this->event_type,
-                'message' => $this->message,
-            ]);
-            session()->flash('message', 'Booking updated successfully.');
-        } else {
-            Booking::create([
-                'name' => $this->name,
-                'email' => $this->email,
-                'phone' => $this->phone,
-                'event_date' => $this->event_date,
-                'event_type' => $this->event_type,
-                'message' => $this->message,
-                'status' => 'pending',
-            ]);
-            session()->flash('message', 'Booking created successfully.');
-        }
-
-        $this->showModal = false;
-        $this->reset(['name', 'email', 'phone', 'event_date', 'event_type', 'message', 'editingBooking']);
-    }
-
-    public function deleteBooking(Booking $booking)
-    {
-        $booking->delete();
-        session()->flash('message', 'Booking deleted successfully.');
-    }
-
-    public function updateStatus(Booking $booking, $status)
-    {
-        $booking->update(['status' => $status]);
-        session()->flash('message', 'Booking status updated successfully.');
+        // Handle date click if needed
     }
 
     public function render()
     {
+        $statusCounts = [
+            'Completed' => Booking::where('status', 'completed')->count(),
+            'Ongoing' => Booking::where('status', 'ongoing')->count(),
+            'Upcoming' => Booking::where('status', 'upcoming')->count(),
+        ];
+
         $bookings = Booking::query()
             ->when($this->search, function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%')
-                    ->orWhere('email', 'like', '%' . $this->search . '%')
-                    ->orWhere('event_type', 'like', '%' . $this->search . '%');
+                      ->orWhere('email', 'like', '%' . $this->search . '%');
             })
-            ->orderBy($this->sortField, $this->sortDirection)
-            ->paginate(10);
+            ->when($this->tab, function ($query) {
+                $query->where('status', strtolower($this->tab));
+            })
+            ->orderBy($this->sortBy)
+            ->paginate($this->perPage);
+
+        $events = Booking::all()->map(function ($booking) {
+            return [
+                'id' => $booking->id,
+                'title' => $booking->name . ' - ' . $booking->event_type,
+                'start' => $booking->start_date->toIso8601String(),
+                'end' => $booking->end_date ? $booking->end_date->toIso8601String() : null,
+                'color' => $this->getStatusColor($booking->status),
+            ];
+        })->toArray();
 
         return view('livewire.bookings-component', [
-            'bookings' => $bookings
+            'statusCounts' => $statusCounts,
+            'bookings' => $bookings,
+            'events' => $events,
         ]);
+    }
+
+    private function getStatusColor($status)
+    {
+        return match($status) {
+            'upcoming' => '#3b82f6', // blue
+            'ongoing' => '#10b981',   // emerald
+            'completed' => '#6b7280',  // gray
+            default => '#3b82f6',
+        };
     }
 }

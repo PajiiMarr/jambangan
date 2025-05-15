@@ -32,7 +32,7 @@ class PostList extends Component
     public $editingPost = null;
     public $edit_title = '';
     public $edit_content = '';
-
+    public $sortSppStatus = '';
     // Reset page when filter/search changes
     public function updatedSearch()
     {
@@ -238,6 +238,9 @@ class PostList extends Component
             })
             ->when($this->selectedPerformance, function ($query) {
                 $query->where('performance_id', $this->selectedPerformance);
+            })
+            ->when($this->sortSppStatus, function ($query) {
+                $query->where('spp_status', $this->sortSppStatus);
             })
             ->orderBy($this->sortBy, $this->sortDirection)
             ->paginate($this->perPage);

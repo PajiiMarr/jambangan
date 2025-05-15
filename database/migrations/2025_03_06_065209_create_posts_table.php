@@ -14,6 +14,7 @@ return new class extends Migration
             $table->id('post_id');
             $table->string('title');
             $table->text('content');
+            $table->string('spp_status')->default('preview');
             $table->timestamps();
         
             $table->unsignedBigInteger('event_id')->nullable();

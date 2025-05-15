@@ -60,6 +60,21 @@
                     </div>
                 </div>
 
+                <div class="relative">
+                    <select 
+                        wire:model.live="sortSppStatus" 
+                        class="appearance-none rounded-lg border border-gray-200 dark:border-red-800/30 bg-white dark:bg-red-900/10 text-gray-900 dark:text-gray-100 pl-4 pr-10 py-2 focus:border-red-800/50 focus:ring-1 focus:ring-red-800/30 cursor-pointer hover:bg-gray-50 dark:hover:bg-red-900/20 transition-colors duration-200"
+                    >
+                        <option value="preview">Preview</option>
+                        <option value="publish">Publish</option>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                </div>
+
                 <!-- Filter -->
                 <div class="flex gap-3 w-full md:w-auto">
                     <div class="relative w-full md:w-40">
