@@ -20,6 +20,7 @@ class Bookings extends Model
         'event_end_date',
         'event_type',
         'message',
+        'status',
     ];
 
 }

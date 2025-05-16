@@ -11,9 +11,12 @@
     <link href="https://fonts.google.com/specimen/DM+Serif+Text?categoryFilters=Feeling:%2FExpressive%2FBusiness" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet">
     
     <!-- Scripts (deferred) -->
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js" defer></script>
+    @livewireStyles
 </head>
 
 <body class="bg-black">
@@ -103,52 +106,7 @@
         data-aos="fade-up"
         data-aos-duration="1000">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                <!-- Booking Form -->
-                <livewire:public-bookings-component />
-
-                <!-- Booking Information -->
-                <div class="space-y-8">
-                    <div class="bg-[#121212] p-8 rounded-lg shadow-xl">
-                        <h2 class="text-xl sm:text-2xl text-white font-extrabold mb-6 relative pl-6 ml-4 sm:ml-10 before:content-['|'] before:absolute before:left-0 before:text-[#EAB308] before:text-2xl sm:before:text-3xl">
-                            BOOKING INFORMATION
-                        </h2>
-                        <div class="space-y-4 text-gray-300">
-                            <p class="text-lg">Please provide accurate information about your event to help us better serve you. Our team will review your request and get back to you within 24-48 hours.</p>
-                            <ul class="space-y-2">
-                                <li class="flex items-start gap-2">
-                                    <svg class="w-6 h-6 text-yellow-400 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    <span>All fields are required for proper processing</span>
-                                </li>
-                                <li class="flex items-start gap-2">
-                                    <svg class="w-6 h-6 text-yellow-400 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    <span>We require at least 2 weeks notice for bookings</span>
-                                </li>
-                                <li class="flex items-start gap-2">
-                                    <svg class="w-6 h-6 text-yellow-400 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    <span>Performance duration and pricing will be discussed after initial contact</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- Contact Section -->
-                    <section id="contact" 
-                    class="py-12 sm:py-20 bg-[#121212] text-white shadow-inner relative overflow-hidden">
-                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <x-contact-info title="CONTACT US" :general_contents="$general_contents" />
-                    </div>
-
-                    </section>
-
-                </div>
-            </div>
+            <livewire:public-bookings-component />
         </div>
     </section>
 
@@ -195,6 +153,8 @@
     <!-- ==================== -->
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    @livewireScripts
+    @stack('scripts')
     
     <script>
         // Initialize AOS

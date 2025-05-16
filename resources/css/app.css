@@ -53,3 +53,12 @@ textarea:focus[data-flux-control],
 select:focus[data-flux-control] {
     @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
 }
+
+/* Global dark mode label styling */
+.dark [data-flux-label] {
+    @apply text-white;
+}
+
+[data-flux-label] {
+    @apply text-gray-900 dark:text-white;
+}
