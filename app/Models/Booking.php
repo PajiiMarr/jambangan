@@ -20,7 +20,7 @@ class Booking extends Model
     ];
 
     protected $casts = [
-        'event_date' => 'date'
+        'event_date' => 'datetime'
     ];
 
     public static function rules()
@@ -30,7 +30,7 @@ class Booking extends Model
             'email' => 'required|email|max:255',
             'phone' => 'required|string|max:20',
             'event_date' => 'required|date|after:today',
-            'event_type' => 'required|in:wedding,corporate,cultural,other',
+            'event_type' => 'required|string|max:255',
             'message' => 'nullable|string|max:1000',
         ];
     }
@@ -45,7 +45,6 @@ class Booking extends Model
             'event_date.required' => 'Please select an event date',
             'event_date.after' => 'Event date must be in the future',
             'event_type.required' => 'Please select an event type',
-            'event_type.in' => 'Please select a valid event type',
             'message.max' => 'Message cannot exceed 1000 characters',
         ];
     }
