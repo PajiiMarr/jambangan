@@ -411,7 +411,7 @@
             
             // Call the Livewire method to load the selected booking
             // This will set the selectedBooking property in your component
-            @this.selectBooking(bookingId).then(() => {
+            @this.selectedBooking(bookingId).then(() => {
                 // After the booking is loaded, open the booking details modal
                 if (window.Flux && window.Flux.Modal) {
                     window.Flux.Modal.toggle('booking-details');
@@ -443,6 +443,14 @@
     });
     
     calendar.render();
+
+    Livewire.on('bookingAdded', () => {
+        // Refetch events from Livewire
+        @this.getEvents().then(events => {
+            calendar.removeAllEvents();
+            calendar.addEventSource(events);
+        });
+    });
 });
 </script>
 @endscript

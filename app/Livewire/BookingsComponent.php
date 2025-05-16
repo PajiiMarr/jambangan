@@ -85,6 +85,27 @@ class BookingsComponent extends Component
         }
     }
 
+    public function getEvents()
+    {
+        return Bookings::all()->map(function ($booking) {
+            return [
+                'id' => $booking->id,
+                'title' => $booking->name,
+                'start' => $booking->event_start_date,
+                'end' => $booking->event_end_date,
+                'color' => $this->getStatusColor($booking->status),
+                'extendedProps' => [
+                    'email' => $booking->email,
+                    'phone' => $booking->phone,
+                    'event_type' => $booking->event_type,
+                    'status' => $booking->status,
+                    'message' => $booking->message,
+                ]
+            ];
+        })->toArray();
+    }
+
+
     
 
     public function save()
@@ -117,6 +138,9 @@ class BookingsComponent extends Component
             session()->flash('success', 'Booking successfully saved.');
 
             DB::commit();
+
+            $this->dispatch('bookingAdded'); // Add this line to dispatch an event
+
     
             Logs::create([
                 'user_id' => Auth::id(),
