@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('phone');
             $table->string('email');
 
+            $table->string('status')->default('pending');
+            
             $table->date('event_start_date');
             $table->date('event_end_date');
             
@@ -24,6 +26,7 @@ return new class extends Migration
             $table->text('message');
             $table->timestamp('created_at');
             $table->timestamp('updated_at');
+
         });
     }
 
