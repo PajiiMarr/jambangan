@@ -16,7 +16,8 @@ class Bookings extends Model
         'name',
         'email',
         'phone',
-        'event_data',
+        'event_start_date',
+        'event_end_date',
         'event_type',
         'message',
     ];

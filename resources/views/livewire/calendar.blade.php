@@ -225,6 +225,7 @@
         <flux:modal.trigger id="event-modal-trigger" name="add-event" style="display: none;">
             <flux:button>Add Event</flux:button>
         </flux:modal.trigger>
+        
         <flux:modal id="add-event" name="add-event" variant="dialog" class="modal-center md:w-150">
             <div class="space-y-6">
                 <div>
@@ -246,8 +247,6 @@
             </div>
         </flux:modal>
 
-
-        {{-- Event Details Modal --}}
         <flux:modal.trigger id="view-event-modal-trigger" name="view-event" style="display: none;">
             <flux:button>View Event</flux:button>
         </flux:modal.trigger>
@@ -259,10 +258,12 @@
                     <flux:dropdown class="absolute top-0 right-4 sm:right-1">
                         <flux:button icon="dots-horizontal" class="border-none"></flux:button>
                         <flux:menu>
-                            @if($event['spp_status'] === 'preview')
-                                <flux:menu.item icon="pen" data-publish-event>Publish</flux:menu.item>
-                                <flux:menu.separator />
-                            @endif
+                            @isset($event)
+                                @if($event['spp_status'] === 'preview')
+                                    <flux:menu.item icon="pen" data-publish-event>Publish</flux:menu.item>
+                                    <flux:menu.separator />
+                                @endif
+                            @endisset
                             <flux:menu.item icon="pen" data-edit-event>Edit</flux:menu.item>
                             <flux:menu.separator />
                             <flux:menu.item variant="danger" icon="trash">Delete</flux:menu.item>
@@ -371,9 +372,6 @@
                     document.getElementById('startStr').setAttribute('disabled', 'disabled');
                     document.getElementById('endStr').setAttribute('disabled', 'disabled');
 
-                    // document.getElementById('view_event_image').src = 'http://127.0.0.1:8000/my-uploads/' + imageFileName;
-
-
                     document.getElementById('event-modal-trigger').click();
                 },
                 eventClick: function (info) {
@@ -457,7 +455,6 @@
                 if (event.target.closest('[aria-label="Dropdown toggle"]')) {
                     const publishMenuItem = document.querySelector('[data-publish-event]');
                     
-                    // Show publish menu item only if spp_status is 'preview'
                     if (window.selectedEventSppStatus === 'preview') {
                         publishMenuItem.style.display = 'block';
                     } else {
@@ -607,7 +604,6 @@
         }
 
         Livewire.hook('message.processed', (message, component) => {
-            // Only reinitialize if the tab was changed
             if (message.updateQueue.some(update => update.method === 'syncInput' && update.name === 'tab')) {
                 initSwiper();
             }

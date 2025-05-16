@@ -1,3 +1,8 @@
+@php
+    $isMobile = request()->header('User-Agent') && preg_match('/Mobile|Android|iPhone|iPad/', request()->header('User-Agent'));
+    // dd($isMobile);
+@endphp
+
 <div class="w-full h-full mt-2">
     <div class="bg-white dark:bg-red-900/20 rounded-xl shadow-sm border border-gray-200 dark:border-red-800/30 p-4 mb-6">
         <div class="flex flex-col md:flex-row gap-4">
@@ -175,78 +180,129 @@
                 </div>
             </div>
         </div>
+
+                
+        <flux:modal.trigger id="booking-warning" name="booking-warning" style="display: none">
+            Warning
+        </flux:modal.trigger>
+        
+        <flux:modal.trigger id="booking-modal-trigger" name="booking-modal" style="display: none">
+            View Booking
+        </flux:modal.trigger>
+
+
+        <flux:modal
+            name="booking-warning"
+            class="w-full md:w-123"
+            :variant="$isMobile ? 'flyout' : null"
+            :position="$isMobile ? 'bottom' : null"
+        >
+            <div>
+                <flux:heading size="lg">Booking Details</flux:heading>
+                <flux:text>You cannot book that has book in the same date</flux:text>
+            </div>
+            
+        </flux:modal>
+
+        <flux:modal
+            id="booking-modal" 
+            name="booking-modal"
+            data-modal-name="booking-modal"
+            variant="dialog" 
+            class="modal-center md:w-123"
+        >    
+        <div class="space-y-4">
+            <div>
+                <flux:heading size="lg">Booking Details</flux:heading>
+            </div>
+
+            {{ $name }}
+
+    
+            <flux:input id="modal_booking_name" wire:model.live="name" label="Name" value="" placeholder="Full name of the requester" />
+            <flux:input id="modal_booking_email" wire:model="email" label="Email" value="" placeholder="example@example.com" />
+            <flux:input id="modal_booking_phone" wire:model="phone" label="Phone" value="" placeholder="Phone number" />
+            <flux:input id="modal_booking_event_type" wire:model="event_type" label="Event Type" value="" placeholder="Type of event (e.g. Wedding, Seminar)"  />
+            <flux:input id="modal_booking_start_date" wire:model="event_start_date" label="Start Date" value="" placeholder="YYYY-MM-DD" disabled />
+            <flux:input id="modal_booking_end_date" wire:model="event_end_date" label="End Date" value="" placeholder="YYYY-MM-DD" disabled />
+            <flux:textarea id="modal_booking_message" wire:model="message" label="Message" value="" placeholder="Additional message or request" />
+            
+            <div class="flex justify-between w-full">
+                <flux:button wire:click="modal_close('booking-modal')" class="w-1/2 mx-1" variant="filled">Close</flux:button>
+                <flux:button wire:click="save" class="w-1/2 mx-1" variant="primary">Add</flux:button>
+            </div>
+        </div>
+    </flux:modal>
     </div>
 </div>
 
-@if($selectedBooking)
-    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" wire:click="$set('selectedBooking', null)">
-        <div class="bg-white dark:bg-red-900/20 rounded-xl shadow-lg max-w-md w-full p-6" wire:click.stop>
-            <div class="flex justify-between items-start mb-4">
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">{{ $selectedBooking->name }}</h3>
-                <button wire:click="$set('selectedBooking', null)" class="text-gray-400 hover:text-gray-500">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
-                </button>
-            </div>
-            
-            <div class="space-y-3">
-                <div>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">Email</p>
-                    <p class="text-gray-900 dark:text-gray-100">{{ $selectedBooking->email }}</p>
-                </div>
-                
-                <div>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">Phone</p>
-                    <p class="text-gray-900 dark:text-gray-100">{{ $selectedBooking->phone }}</p>
-                </div>
-                
-                <div>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">Event Type</p>
-                    <p class="text-gray-900 dark:text-gray-100">{{ $selectedBooking->event_type }}</p>
-                </div>
-                
-                <div>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">Start Date</p>
-                    <p class="text-gray-900 dark:text-gray-100">{{ $selectedBooking->start_date->format('M d, Y H:i') }}</p>
-                </div>
-                
-                @if($selectedBooking->end_date)
-                <div>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">End Date</p>
-                    <p class="text-gray-900 dark:text-gray-100">{{ $selectedBooking->end_date->format('M d, Y H:i') }}</p>
-                </div>
-                @endif
-                
-                <div>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">Status</p>
-                    <span class="px-2 py-1 text-xs rounded-full 
-                        {{ $selectedBooking->status === 'upcoming' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300' : 
-                           ($selectedBooking->status === 'ongoing' ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300' : 
-                           'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-300') }}">
-                        {{ ucfirst($selectedBooking->status) }}
-                    </span>
-                </div>
-                
-                @if($selectedBooking->message)
-                <div>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">Message</p>
-                    <p class="text-gray-900 dark:text-gray-100">{{ $selectedBooking->message }}</p>
-                </div>
-                @endif
-            </div>
-        </div>
-    </div>
-@endif
-
 @script
-    <script type="text/javascript">
-        document.addEventListener('livewire:navigated', function() {
-            var calendarEl = document.getElementById('bookings-calendar');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth'
-            });
-            calendar.render();
-        });
-    </script>
+<script type="text/javascript">
+    document.addEventListener('livewire:navigated', function() {
+    var calendarEl = document.getElementById('bookings-calendar');
+    if (!calendarEl) return;
+    
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        selectable: true,
+        events: @json($events),
+        select: function (info){
+            console.log(info)
+            document.getElementById('modal_booking_name').value = '';
+            document.getElementById('modal_booking_email').value = '';
+            document.getElementById('modal_booking_phone').value = '';
+            document.getElementById('modal_booking_event_type').value = '';
+            document.getElementById('modal_booking_start_date').value = info.startStr;
+            document.getElementById('modal_booking_end_date').value = info.endStr;
+            document.getElementById('modal_booking_message').value = '';
+            
+            document.getElementById('booking-modal-trigger').click();
+        },
+        eventClick: function(info) {
+            console.log(info)
+            const props = info.event.extendedProps;
+            
+            document.getElementById('modal_booking_name').value = info.event.title || 'N/A';
+            document.getElementById('modal_booking_email').value = props.email || 'N/A';
+            document.getElementById('modal_booking_phone').value = props.phone || 'N/A';
+            document.getElementById('modal_booking_event_type').value = props.event_type || 'N/A';
+            document.getElementById('modal_booking_start_date').value = info.event.start ? info.event.start.toISOString().split('T')[0] : 'N/A';
+            document.getElementById('modal_booking_end_date').value = info.event.end ? info.event.end.toISOString().split('T')[0] : 'N/A';
+            document.getElementById('modal_booking_status').value = props.status || 'N/A';
+            document.getElementById('modal_booking_message').value = props.message || 'N/A';
+            
+            if (window.Flux && window.Flux.Modal) {
+                window.Flux.Modal.toggle('booking-modal');
+            } else {
+                const modalTrigger = document.getElementById('booking-modal-trigger');
+                if (modalTrigger) {
+                    modalTrigger.click();
+                }
+                
+                const modal = document.querySelector('[data-modal-name="booking-modal"]');
+                if (modal && typeof modal.show === 'function') {
+                    modal.show();
+                }
+            }
+        },
+        eventContent: function(info) {
+            let bgColor;
+            switch(info.event.extendedProps.status) {
+                case 'upcoming': bgColor = 'bg-blue-500'; break;
+                case 'ongoing': bgColor = 'bg-green-500'; break;
+                case 'completed': bgColor = 'bg-gray-500'; break;
+                default: bgColor = 'bg-blue-500';
+            }
+            
+            return {
+                html: `<div class="p-1 text-white text-sm rounded ${bgColor}">
+                    ${info.event.title}
+                </div>`
+            };
+        }
+    });
+    
+    calendar.render();
+});
+</script>
 @endscript

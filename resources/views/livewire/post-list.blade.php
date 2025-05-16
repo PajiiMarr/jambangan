@@ -180,7 +180,6 @@
             <div class="grid grid-cols-1 gap-4">
                 @forelse ($posts as $post)
                     <div class="bg-white dark:bg-zinc-800 rounded-lg shadow-sm overflow-hidden transition-all duration-200 hover:shadow-md">
-                        <!-- Post header -->
                         <div class="px-6 py-3 border-b border-gray-200 dark:border-zinc-700 flex items-center justify-between">
                             <div class="flex items-center space-x-3">
                                 <div>
@@ -198,6 +197,15 @@
                                     {{ $post->media->isEmpty() ? 'Text' : 'Media' }}
                                 </span>
                                 <div class="flex items-center space-x-2">
+
+                                    <flux:modal.trigger name="publish-{{ $post->post_id }}">
+                                    <flux:button variant="ghost" @click="$wire.editPost({{ $post->post_id }})">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                            </svg>    
+                                        </flux:button>
+                                    </flux:modal.trigger>
+                                    
                                     <flux:modal.trigger name="edit-post-{{ $post->post_id }}">
                                         <flux:button variant="ghost" @click="$wire.editPost({{ $post->post_id }})">
                                             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -297,7 +305,7 @@
                             </div>
                         @endif
 
-                        <!-- Edit Post Modal -->
+                        
                         <flux:modal 
                             name="edit-post-{{ $post->post_id }}" 
                             class="md:w-123"
@@ -337,6 +345,59 @@
                         </flux:modal>
 
                         <!-- Delete Post Modal -->
+                        <flux:modal 
+                            name="delete-post-{{ $post->post_id }}" 
+                            class="max-w-md"
+                            variant="dialog"
+                            data-modal-name="delete-post-{{ $post->post_id }}">
+                            <div class="space-y-6">
+                                <div>
+                                    <flux:heading size="lg">Delete Post</flux:heading>
+                                    <flux:text class="mt-2">Are you sure you want to delete this post? This action cannot be undone.</flux:text>
+                                </div>
+
+                                <div class="flex">
+                                    <flux:spacer />
+                                    <flux:button 
+                                        wire:click="deletePost({{ $post->post_id }})" 
+                                        variant="danger"
+                                    >
+                                        Delete Post
+                                    </flux:button>
+                                </div>
+                            </div>
+                        </flux:modal>
+
+                        <flux:modal 
+                            name="publish-{{ $post->post_id }}" 
+                            class="max-w-md"
+                            variant="dialog"
+                            >
+                            <div class="space-y-6">
+                                <div>
+                                    <flux:heading size="lg">Publish Post</flux:heading>
+                                    <flux:text class="mt-2">Are you sure you want to publish this post?</flux:text>
+                                </div>
+
+                                <div class="flex w-full justify-between">
+                                    <flux:button 
+                                        wire:click="modal_close('publish-{{ $post->post_id }}')" 
+                                        variant="filled"
+                                        class="w-1/2 mx-1"
+                                    >
+                                        Cancel
+                                    </flux:button>
+                                    <flux:button 
+                                        wire:click="publish_post({{ $post->post_id }})" 
+                                        variant="primary"
+                                        class="w-1/2 mx-1"
+                                    >
+                                        Publish Post
+                                    </flux:button>
+                                </div>
+                            </div>
+                        </flux:modal>
+                        
                         <flux:modal 
                             name="delete-post-{{ $post->post_id }}" 
                             class="max-w-md"
@@ -407,11 +468,6 @@
                                 Create your first post to get started!
                             @endif
                         </p>
-                        @if(!$search)
-                            <button class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-accent hover:bg-accent/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent">
-                                Create Post
-                            </button>
-                        @endif
                     </div>
                 @endforelse
             </div>

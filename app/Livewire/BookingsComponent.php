@@ -17,6 +17,8 @@ class BookingsComponent extends Component
     public $perPage = 10;
     public $selectedBooking = null;
 
+    public $name;
+
     protected $listeners = ['eventClick', 'dateClick'];
 
     public function eventClick($event)
@@ -29,6 +31,8 @@ class BookingsComponent extends Component
         // Handle date click if needed
     }
 
+
+
     public function render()
     {
         $statusCounts = [
@@ -38,25 +42,32 @@ class BookingsComponent extends Component
         ];
 
         $bookings = Booking::query()
-            ->when($this->search, function ($query) {
-                $query->where('name', 'like', '%' . $this->search . '%')
-                      ->orWhere('email', 'like', '%' . $this->search . '%');
-            })
-            ->when($this->tab, function ($query) {
-                $query->where('status', strtolower($this->tab));
-            })
-            ->orderBy($this->sortBy)
-            ->paginate($this->perPage);
-
+        ->when($this->search, function ($query) {
+            $query->where('name', 'like', '%' . $this->search . '%')
+                  ->orWhere('email', 'like', '%' . $this->search . '%');
+        })
+        ->when($this->tab, function ($query) {
+            $query->where('status', strtolower($this->tab));
+        })
+        ->orderBy($this->sortBy)
+        ->paginate($this->perPage);
+    
         $events = Booking::all()->map(function ($booking) {
             return [
                 'id' => $booking->id,
-                'title' => $booking->name . ' - ' . $booking->event_type,
-                'start' => $booking->start_date->toIso8601String(),
-                'end' => $booking->end_date ? $booking->end_date->toIso8601String() : null,
+                'title' => $booking->name,
+                'start' => $booking->event_start_date,
+                'end' => $booking->event_end_date ? $booking->event_end_date : null,
                 'color' => $this->getStatusColor($booking->status),
+                'extendedProps' => [
+                    'email' => $booking->email,
+                    'phone' => $booking->phone,
+                    'event_type' => $booking->event_type,
+                    'status' => $booking->status,
+                    'message' => $booking->message,
+                ]
             ];
-        })->toArray();
+    })->toArray();
 
         return view('livewire.bookings-component', [
             'statusCounts' => $statusCounts,
@@ -73,5 +84,9 @@ class BookingsComponent extends Component
             'completed' => '#6b7280',  // gray
             default => '#3b82f6',
         };
+    }
+
+    public function modal_close($name){
+        $this->modal($name)->close();
     }
 }

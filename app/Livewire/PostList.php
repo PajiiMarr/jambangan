@@ -32,7 +32,7 @@ class PostList extends Component
     public $editingPost = null;
     public $edit_title = '';
     public $edit_content = '';
-    public $sortSppStatus = '';
+    public $sortSppStatus = 'preview';
     // Reset page when filter/search changes
     public function updatedSearch()
     {
@@ -244,6 +244,31 @@ class PostList extends Component
             })
             ->orderBy($this->sortBy, $this->sortDirection)
             ->paginate($this->perPage);
+    }
+
+    public function modal_close($name){
+        $this->modal($name)->close();
+    }
+
+    public function publish_post($id){
+        try {
+             $post = Posts::find($id);
+             $post->spp_status = 'publish';
+             $post->save();
+
+             Logs::create([
+                'action' => 'Published a post',
+                'navigation' => 'posts',
+                'user_id' => Auth::user()->user_id,
+                'post_id' => $id,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+             $this->modal('publish-' . $id)->close();
+        } catch (\Exception $e) {
+            Log::error('Error updating post:', ['error' => $e->getMessage()]);
+            session()->flash('error', 'Failed to update post. Please try again.');
+        }
     }
 
     public function render()
