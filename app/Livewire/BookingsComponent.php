@@ -2,153 +2,180 @@
 
 namespace App\Livewire;
 
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
-use App\Models\Booking;
-use Livewire\WithPagination;
+use App\Models\Bookings; // Correct model name
 use Illuminate\Support\Facades\Log;
+use Livewire\Attributes\On;
+use App\Models\Logs;
+use App\Models\Performances;
+use Livewire\WithPagination;
+use Illuminate\Support\Facades\DB;
 
 class BookingsComponent extends Component
 {
     use WithPagination;
 
+    
+
     public $search = '';
     public $tab = 'Completed';
-    public $sortBy = 'event_date';
+    public $sortBy = 'start_date';
+    public $sortSppStatus = 'preview';
     public $perPage = 10;
     public $selectedBooking = null;
-    public $showModal = false;
+    public $selectedPerformanceName = 'Select Performance';
+    public $selectedPerformance;
 
+    // Form properties
     public $name;
     public $email;
     public $phone;
-    public $event_date;
     public $event_type;
+    public $event_start_date;
+    public $event_end_date;
     public $message;
+    public $booking_id;
 
-    protected $listeners = [
-        'eventClick',
-        'dateClick',
-        'booking-operation-successful' => '$refresh',
-    ];
+    public $performances;
 
-    public function mount()
-    {
-        $this->event_date = null;
+    public function mount(){
+        $this->performances = Performances::all();
     }
 
-    public function eventClick($eventInfo)
+    public function updatedSelectedPerformance($value)
     {
-        $bookingId = null;
-        if (is_array($eventInfo) && isset($eventInfo['id'])) {
-            $bookingId = $eventInfo['id'];
-        } elseif (is_object($eventInfo) && isset($eventInfo->id)) {
-            $bookingId = $eventInfo->id;
+        if ($value == "none"){
+            $this->selectedPerformanceName = "None";
+            $this->selectedPerformance = null;
+            return;
         }
 
-        if ($bookingId) {
-            $this->selectedBooking = Booking::find($bookingId);
-            if ($this->selectedBooking) {
-                $this->name = $this->selectedBooking->name;
-                $this->email = $this->selectedBooking->email;
-                $this->phone = $this->selectedBooking->phone;
-                $this->event_date = $this->selectedBooking->event_date instanceof \Carbon\Carbon
-                                    ? $this->selectedBooking->event_date->format('Y-m-d')
-                                    : $this->selectedBooking->event_date;
-                $this->event_type = $this->selectedBooking->event_type;
-                $this->message = $this->selectedBooking->message;
-            }
-        }
-    }
-
-    public function viewBooking($bookingId)
-    {
-        $this->selectedBooking = Booking::find($bookingId);
-        $this->dispatch('open-modal', 'booking-modal');
-    }
-
-    public function updatedSelectedBooking($value)
-    {
-        if (is_array($value)) {
-            $bookingId = $value[1]['key'] ?? null;
-            if ($bookingId) {
-                $this->selectedBooking = Booking::find($bookingId);
-            }
-        } elseif (is_numeric($value)) {
-            $this->selectedBooking = Booking::find($value);
+        if ($value) {
+            $performance = Performances::find($value);
+            $this->selectedPerformanceName = $performance ? $performance->title : 'Select Performance';
         } else {
-            $this->selectedBooking = null;
+            $this->selectedPerformanceName = 'Select Performance';
         }
     }
 
-    public function dateClick($date)
+    #[On('dateClick')]
+    public function dateClick($data)
     {
-        $this->event_date = date('Y-m-d', strtotime($date));
+        $this->event_start_date = date('Y-m-d', strtotime($data['start']));
+        $this->event_end_date = date('Y-m-d', strtotime($data['end']));
     }
+
+
+    public function eventClick($id)
+    {
+        $booking = Bookings::find($id);
+        if ($booking) {
+            $this->booking_id = $booking->id;
+            $this->selectedBooking = $booking;
+            $this->name = $booking->name;
+            $this->email = $booking->email;
+            $this->phone = $booking->phone;
+            $this->event_type = $booking->event_type;
+            $this->event_start_date = $booking->event_start_date;
+            $this->event_end_date = $booking->event_end_date;
+            $this->message = $booking->message;
+
+            $this->modal('booking-details')->show();
+        }
+    }
+
+    
 
     public function save()
     {
+        $this->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email',
+            'phone' => 'nullable|string|max:20',
+            'event_type' => 'required|string|max:255',
+            'event_start_date' => 'required|date',
+            'event_end_date' => 'nullable|date|after_or_equal:event_start_date',
+            'message' => 'nullable|string',
+        ]);
+
+        Log::debug($this->event_end_date . ' ' . $this->event_start_date);
+    
         try {
-            $validated = $this->validate([
-                'name' => 'required|string|max:255',
-                'email' => 'required|email|max:255',
-                'phone' => 'required|string|max:20',
-                'event_date' => [
-                    'required',
-                    'date',
-                    function ($attribute, $value, $fail) {
-                        if (strtotime($value) <= strtotime(now()->format('Y-m-d'))) {
-                            $fail('The event date must be a future date.');
-                        }
-                    },
-                ],
-                'event_type' => 'required|string|max:255',
-                'message' => 'nullable|string'
+            DB::beginTransaction();
+            $bookings = Bookings::create([
+                'name' => $this->name,
+                'email' => $this->email,
+                'phone' => $this->phone,
+                'event_type' => $this->event_type,
+                'event_start_date' => $this->event_start_date,
+                'event_end_date' => $this->event_end_date,
+                'message' => $this->message,
+                'performance_id' => $this->selectedPerformance
+            ]);
+            
+            session()->flash('success', 'Booking successfully saved.');
+
+            DB::commit();
+    
+            Logs::create([
+                'user_id' => Auth::id(),
+                'action' => 'Added a booking',
+                'navigation' => 'bookings',
+                'booking_id' => $bookings->id,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
 
-            if ($this->selectedBooking && $this->selectedBooking->id) {
-                $booking = Booking::find($this->selectedBooking->id);
-                if ($booking) {
-                    $booking->update($validated);
-                }
-            } else {
-                $validated['status'] = 'upcoming';
-                Booking::create($validated);
-            }
-
-            $this->resetForm();
-            $this->closeModal();
-            session()->flash('message', 'Booking saved successfully!');
-
-            $freshEvents = $this->getCalendarEvents();
-            $this->dispatch('booking-operation-successful', events: $freshEvents);
-            
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            session()->flash('error', 'Validation failed: ' . implode(', ', array_map(function($arr) { return implode(', ', $arr); }, $e->errors())));
+            $this->resetFormFields();
+            $this->modal_close('booking-modal');
         } catch (\Exception $e) {
-            session()->flash('error', 'Error saving booking: ' . $e->getMessage());
+            Log::error('Error adding booking:', ['error' => $e->getMessage()]);
+            session()->flash('error', 'Failed to publish performance. Please try again.');
         }
     }
 
-    protected function resetForm()
+    private function resetFormFields()
     {
-        $this->reset(['name', 'email', 'phone', 'event_date', 'event_type', 'message', 'selectedBooking']);
-        $this->event_date = null;
+        $this->name = null;
+        $this->email = null;
+        $this->phone = null;
+        $this->event_type = null;
+        $this->event_start_date = null;
+        $this->event_end_date = null;
+        $this->message = null;
     }
 
-    public function closeModal()
-    {
-        $this->selectedBooking = null;
-        $this->dispatch('close-modal', 'booking-modal');
+    public function modal_close($name){
+        $this->modal($name)->close();
     }
-    
-    protected function getCalendarEvents()
+
+    public function render()
     {
-        return Booking::all()->map(function ($booking) {
+        $statusCounts = [
+            'Completed' => Bookings::where('status', 'completed')->count(),
+            'Ongoing' => Bookings::where('status', 'ongoing')->count(),
+            'Upcoming' => Bookings::where('status', 'upcoming')->count(),
+        ];
+
+        $bookings = Bookings::query()
+            ->when($this->search, function ($query) {
+                $query->where('name', 'like', '%' . $this->search . '%')
+                      ->orWhere('email', 'like', '%' . $this->search . '%');
+            })
+            // ->when($this->tab, function ($query) {
+            //     $query->where('status', strtolower($this->tab));
+            // })
+            ->orderBy($this->sortBy)
+            ->paginate($this->perPage);
+
+
+        $events = Bookings::all()->map(function ($booking) {
             return [
                 'id' => $booking->id,
                 'title' => $booking->name,
-                'start' => $booking->event_date instanceof \Carbon\Carbon ? $booking->event_date->format('Y-m-d') : $booking->event_date,
-                'end' => $booking->event_date instanceof \Carbon\Carbon ? $booking->event_date->format('Y-m-d') : $booking->event_date,
+                'start' => $booking->event_start_date,
+                'end' => $booking->event_end_date,
                 'color' => $this->getStatusColor($booking->status),
                 'extendedProps' => [
                     'email' => $booking->email,
@@ -159,67 +186,6 @@ class BookingsComponent extends Component
                 ]
             ];
         })->toArray();
-    }
-
-    public function updateStatus($bookingId, $newStatus)
-    {
-        try {
-            $booking = Booking::find($bookingId);
-            if ($booking) {
-                $booking->update(['status' => $newStatus]);
-                session()->flash('message', 'Booking status updated successfully!');
-            }
-        } catch (\Exception $e) {
-            session()->flash('error', 'Error updating booking status: ' . $e->getMessage());
-        }
-    }
-
-    public function render()
-    {
-        // Get status counts
-        $statusCounts = [
-            'Completed' => Booking::where('status', 'completed')->count(),
-            'Ongoing' => Booking::where('status', 'ongoing')->count(),
-            'Upcoming' => Booking::where('status', 'upcoming')->count(),
-        ];
-
-        // Build the query
-        $query = Booking::query();
-
-        // Apply search filter
-        if ($this->search) {
-            $query->where(function($q) {
-                $q->where('name', 'like', '%' . $this->search . '%')
-                  ->orWhere('email', 'like', '%' . $this->search . '%')
-                  ->orWhere('event_type', 'like', '%' . $this->search . '%');
-            });
-        }
-
-        // Apply status filter - make it case insensitive
-        if ($this->tab) {
-            $query->whereRaw('LOWER(status) = ?', [strtolower($this->tab)]);
-        }
-
-        // Apply sorting
-        $query->orderBy($this->sortBy, 'desc');
-
-        // Get paginated results
-        $bookings = $query->paginate($this->perPage);
-
-        // Get calendar events
-        $events = $this->getCalendarEvents();
-
-        // Debug information
-        \Log::info('Bookings Query:', [
-            'search' => $this->search,
-            'tab' => $this->tab,
-            'sortBy' => $this->sortBy,
-            'perPage' => $this->perPage,
-            'bookings_count' => $bookings->count(),
-            'total_bookings' => $bookings->total(),
-            'sql' => $query->toSql(),
-            'bindings' => $query->getBindings()
-        ]);
 
         return view('livewire.bookings-component', [
             'statusCounts' => $statusCounts,
@@ -230,16 +196,12 @@ class BookingsComponent extends Component
 
     private function getStatusColor($status)
     {
-        return match(strtolower($status ?? '')) {
-            'upcoming' => '#3b82f6', 
-            'ongoing' => '#10b981',   
-            'completed' => '#6b7280',  
+        return match($status) {
+            'upcoming' => '#3b82f6',
+            'ongoing' => '#10b981',
+            'completed' => '#6b7280',
             default => '#3b82f6',
         };
     }
-
-    public function handleModalClose($modalName){
-        $this->resetForm();
-        $this->dispatch('js-close-flux-modal', name: $modalName);
-    }
 }
+ 

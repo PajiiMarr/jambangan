@@ -16,11 +16,14 @@ return new class extends Migration
             $table->string('name');
             $table->string('phone');
             $table->string('email');
+
             $table->date('event_start_date');
             $table->date('event_end_date');
+            
             $table->string('event_type');
             $table->text('message');
-            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('created_at');
+            $table->timestamp('updated_at');
         });
     }
 
