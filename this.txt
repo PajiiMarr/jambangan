@@ -1,0 +1,801 @@
+2025-05-17T01:20:04.524296315Z ==> Starting service...
+2025-05-17T01:20:32.600450355Z Running composer
+2025-05-17T01:20:33.997010584Z Installing dependencies from lock file
+2025-05-17T01:20:34.004909096Z Verifying lock file contents can be installed on current platform.
+2025-05-17T01:20:34.202703471Z Package operations: 97 installs, 0 updates, 0 removals
+2025-05-17T01:20:34.204234921Z   - Downloading aws/aws-crt-php (v1.2.7)
+2025-05-17T01:20:34.205886033Z   - Downloading doctrine/inflector (2.0.10)
+2025-05-17T01:20:34.205978055Z   - Downloading doctrine/lexer (3.0.1)
+2025-05-17T01:20:34.20624127Z   - Downloading symfony/polyfill-ctype (v1.31.0)
+2025-05-17T01:20:34.206843842Z   - Downloading webmozart/assert (1.11.0)
+2025-05-17T01:20:34.20727103Z   - Downloading dragonmantank/cron-expression (v3.4.0)
+2025-05-17T01:20:34.207774229Z   - Downloading symfony/polyfill-php83 (v1.31.0)
+2025-05-17T01:20:34.292646901Z   - Downloading symfony/polyfill-mbstring (v1.31.0)
+2025-05-17T01:20:34.294051738Z   - Downloading symfony/deprecation-contracts (v3.5.1)
+2025-05-17T01:20:34.294479986Z   - Downloading symfony/http-foundation (v7.2.3)
+2025-05-17T01:20:34.29520258Z   - Downloading fruitcake/php-cors (v1.3.0)
+2025-05-17T01:20:34.295391734Z   - Downloading psr/http-message (2.0)
+2025-05-17T01:20:34.295836343Z   - Downloading psr/http-client (1.0.3)
+2025-05-17T01:20:34.296150509Z   - Downloading ralouphie/getallheaders (3.0.3)
+2025-05-17T01:20:34.296401874Z   - Downloading psr/http-factory (1.1.0)
+2025-05-17T01:20:34.296679479Z   - Downloading guzzlehttp/psr7 (2.7.0)
+2025-05-17T01:20:34.296907633Z   - Downloading guzzlehttp/promises (2.0.4)
+2025-05-17T01:20:34.297093927Z   - Downloading guzzlehttp/guzzle (7.9.2)
+2025-05-17T01:20:34.297344132Z   - Downloading symfony/polyfill-php80 (v1.31.0)
+2025-05-17T01:20:34.297577206Z   - Downloading guzzlehttp/uri-template (v1.0.4)
+2025-05-17T01:20:34.29778239Z   - Downloading symfony/polyfill-intl-normalizer (v1.31.0)
+2025-05-17T01:20:34.29826776Z   - Downloading symfony/polyfill-intl-grapheme (v1.31.0)
+2025-05-17T01:20:34.29830459Z   - Downloading symfony/string (v7.2.0)
+2025-05-17T01:20:34.299108016Z   - Downloading psr/container (2.0.2)
+2025-05-17T01:20:34.299117516Z   - Downloading symfony/service-contracts (v3.5.1)
+2025-05-17T01:20:34.299122206Z   - Downloading symfony/console (v7.2.1)
+2025-05-17T01:20:34.29933085Z   - Downloading voku/portable-ascii (2.0.3)
+2025-05-17T01:20:34.299611596Z   - Downloading phpoption/phpoption (1.9.3)
+2025-05-17T01:20:34.299899461Z   - Downloading graham-campbell/result-type (v1.1.3)
+2025-05-17T01:20:34.300190017Z   - Downloading vlucas/phpdotenv (v5.6.1)
+2025-05-17T01:20:34.300426611Z   - Downloading symfony/css-selector (v7.2.0)
+2025-05-17T01:20:34.300718007Z   - Downloading tijsverkoyen/css-to-inline-styles (v2.3.0)
+2025-05-17T01:20:34.300937751Z   - Downloading symfony/var-dumper (v7.2.3)
+2025-05-17T01:20:34.301154255Z   - Downloading symfony/polyfill-uuid (v1.31.0)
+2025-05-17T01:20:34.301415091Z   - Downloading symfony/uid (v7.2.0)
+2025-05-17T01:20:34.301635065Z   - Downloading symfony/routing (v7.2.3)
+2025-05-17T01:20:34.3019242Z   - Downloading symfony/process (v7.2.4)
+2025-05-17T01:20:34.302161395Z   - Downloading symfony/polyfill-intl-idn (v1.31.0)
+2025-05-17T01:20:34.302498872Z   - Downloading symfony/mime (v7.2.4)
+2025-05-17T01:20:34.302981281Z   - Downloading psr/event-dispatcher (1.0.0)
+2025-05-17T01:20:34.302988271Z   - Downloading symfony/event-dispatcher-contracts (v3.5.1)
+2025-05-17T01:20:34.302992561Z   - Downloading symfony/event-dispatcher (v7.2.0)
+2025-05-17T01:20:34.303180625Z   - Downloading psr/log (3.0.2)
+2025-05-17T01:20:34.30347625Z   - Downloading egulias/email-validator (4.0.3)
+2025-05-17T01:20:34.303719295Z   - Downloading symfony/mailer (v7.2.3)
+2025-05-17T01:20:34.303943329Z   - Downloading symfony/error-handler (v7.2.4)
+2025-05-17T01:20:34.304215045Z   - Downloading symfony/http-kernel (v7.2.4)
+2025-05-17T01:20:34.30449501Z   - Downloading symfony/finder (v7.2.2)
+2025-05-17T01:20:34.304807956Z   - Downloading ramsey/collection (2.1.0)
+2025-05-17T01:20:34.305184353Z   - Downloading brick/math (0.12.3)
+2025-05-17T01:20:34.305474589Z   - Downloading ramsey/uuid (4.7.6)
+2025-05-17T01:20:34.305607232Z   - Downloading psr/simple-cache (3.0.0)
+2025-05-17T01:20:34.305931918Z   - Downloading nunomaduro/termwind (v2.3.0)
+2025-05-17T01:20:34.306199103Z   - Downloading symfony/translation-contracts (v3.5.1)
+2025-05-17T01:20:34.306435168Z   - Downloading symfony/translation (v7.2.4)
+2025-05-17T01:20:34.306690913Z   - Downloading psr/clock (1.0.0)
+2025-05-17T01:20:34.306890016Z   - Downloading symfony/clock (v7.2.0)
+2025-05-17T01:20:34.307208212Z   - Downloading carbonphp/carbon-doctrine-types (3.2.0)
+2025-05-17T01:20:34.307555509Z   - Downloading nesbot/carbon (3.8.6)
+2025-05-17T01:20:34.307851305Z   - Downloading monolog/monolog (3.8.1)
+2025-05-17T01:20:34.308210762Z   - Downloading league/uri-interfaces (7.5.0)
+2025-05-17T01:20:34.396382267Z   - Downloading league/uri (7.5.1)
+2025-05-17T01:20:34.396401437Z   - Downloading league/mime-type-detection (1.16.0)
+2025-05-17T01:20:34.396405098Z   - Downloading league/flysystem-local (3.29.0)
+2025-05-17T01:20:34.396408058Z   - Downloading league/flysystem (3.29.1)
+2025-05-17T01:20:34.396410798Z   - Downloading nette/utils (v4.0.5)
+2025-05-17T01:20:34.396413288Z   - Downloading nette/schema (v1.3.2)
+2025-05-17T01:20:34.396415998Z   - Downloading dflydev/dot-access-data (v3.0.3)
+2025-05-17T01:20:34.396418538Z   - Downloading league/config (v1.2.0)
+2025-05-17T01:20:34.396421038Z   - Downloading league/commonmark (2.6.1)
+2025-05-17T01:20:34.396423478Z   - Downloading laravel/serializable-closure (v2.0.3)
+2025-05-17T01:20:34.396426278Z   - Downloading laravel/prompts (v0.3.5)
+2025-05-17T01:20:34.396428858Z   - Downloading laravel/framework (v12.1.1)
+2025-05-17T01:20:34.396431548Z   - Downloading laravel/sanctum (v4.0.8)
+2025-05-17T01:20:34.396434078Z   - Downloading nikic/php-parser (v5.4.0)
+2025-05-17T01:20:34.396437088Z   - Downloading psy/psysh (v0.12.7)
+2025-05-17T01:20:34.396583791Z   - Downloading laravel/tinker (v2.10.1)
+2025-05-17T01:20:34.396863166Z   - Downloading mtdowling/jmespath.php (2.8.0)
+2025-05-17T01:20:34.397081021Z   - Downloading aws/aws-sdk-php (3.342.2)
+2025-05-17T01:20:34.397305585Z   - Downloading league/flysystem-aws-s3-v3 (3.29.0)
+2025-05-17T01:20:34.397644441Z   - Downloading spatie/laravel-package-tools (1.19.0)
+2025-05-17T01:20:34.397940567Z   - Downloading livewire/livewire (v3.6.1)
+2025-05-17T01:20:34.398236363Z   - Downloading livewire-ui/modal (2.0.13)
+2025-05-17T01:20:34.398451337Z   - Downloading livewire/flux (v2.0.4)
+2025-05-17T01:20:34.398678821Z   - Downloading livewire/volt (v1.7.0)
+2025-05-17T01:20:34.398922216Z   - Downloading symfony/var-exporter (v7.2.5)
+2025-05-17T01:20:34.399147161Z   - Downloading psr/cache (3.0.0)
+2025-05-17T01:20:34.399368385Z   - Downloading symfony/cache-contracts (v3.5.1)
+2025-05-17T01:20:34.39963362Z   - Downloading symfony/cache (v7.2.5)
+2025-05-17T01:20:34.399874535Z   - Downloading spatie/temporary-directory (2.3.0)
+2025-05-17T01:20:34.400181981Z   - Downloading evenement/evenement (v3.0.2)
+2025-05-17T01:20:34.401442245Z   - Downloading php-ffmpeg/php-ffmpeg (v1.3.2)
+2025-05-17T01:20:34.401450845Z   - Downloading spatie/image-optimizer (1.8.0)
+2025-05-17T01:20:34.401453845Z   - Downloading spatie/image (3.8.3)
+2025-05-17T01:20:34.401462666Z   - Downloading maennchen/zipstream-php (3.1.2)
+2025-05-17T01:20:34.401465435Z   - Downloading composer/semver (3.4.3)
+2025-05-17T01:20:34.401609328Z   - Downloading spatie/laravel-medialibrary (11.12.9)
+2025-05-17T01:20:35.205976105Z   0/97 [>---------------------------]   0%
+2025-05-17T01:20:35.312458614Z  19/97 [=====>----------------------]  19%
+2025-05-17T01:20:35.49374868Z  28/97 [========>-------------------]  28%
+2025-05-17T01:20:35.608980188Z  38/97 [==========>-----------------]  39%
+2025-05-17T01:20:35.709160266Z  48/97 [=============>--------------]  49%
+2025-05-17T01:20:35.990193161Z  58/97 [================>-----------]  59%
+2025-05-17T01:20:36.09044582Z  65/97 [==================>---------]  67%
+2025-05-17T01:20:36.307201112Z  70/97 [====================>-------]  72%
+2025-05-17T01:20:36.607357477Z  81/97 [=======================>----]  83%
+2025-05-17T01:20:37.592785745Z  93/97 [==========================>-]  95%
+2025-05-17T01:20:37.592820535Z  97/97 [============================] 100%
+2025-05-17T01:20:37.593248944Z   - Installing aws/aws-crt-php (v1.2.7): Extracting archive
+2025-05-17T01:20:37.597515486Z   - Installing doctrine/inflector (2.0.10): Extracting archive
+2025-05-17T01:20:37.600388012Z   - Installing doctrine/lexer (3.0.1): Extracting archive
+2025-05-17T01:20:37.694086864Z   - Installing symfony/polyfill-ctype (v1.31.0): Extracting archive
+2025-05-17T01:20:37.697472269Z   - Installing webmozart/assert (1.11.0): Extracting archive
+2025-05-17T01:20:37.699679382Z   - Installing dragonmantank/cron-expression (v3.4.0): Extracting archive
+2025-05-17T01:20:37.894290456Z   - Installing symfony/polyfill-php83 (v1.31.0): Extracting archive
+2025-05-17T01:20:37.897918736Z   - Installing symfony/polyfill-mbstring (v1.31.0): Extracting archive
+2025-05-17T01:20:37.994445153Z   - Installing symfony/deprecation-contracts (v3.5.1): Extracting archive
+2025-05-17T01:20:37.997356459Z   - Installing symfony/http-foundation (v7.2.3): Extracting archive
+2025-05-17T01:20:38.094498508Z   - Installing fruitcake/php-cors (v1.3.0): Extracting archive
+2025-05-17T01:20:38.095258122Z   - Installing psr/http-message (2.0): Extracting archive
+2025-05-17T01:20:38.096004857Z   - Installing psr/http-client (1.0.3): Extracting archive
+2025-05-17T01:20:38.096522227Z   - Installing ralouphie/getallheaders (3.0.3): Extracting archive
+2025-05-17T01:20:38.096961845Z   - Installing psr/http-factory (1.1.0): Extracting archive
+2025-05-17T01:20:38.097438494Z   - Installing guzzlehttp/psr7 (2.7.0): Extracting archive
+2025-05-17T01:20:38.097873493Z   - Installing guzzlehttp/promises (2.0.4): Extracting archive
+2025-05-17T01:20:38.098339042Z   - Installing guzzlehttp/guzzle (7.9.2): Extracting archive
+2025-05-17T01:20:38.193716727Z   - Installing symfony/polyfill-php80 (v1.31.0): Extracting archive
+2025-05-17T01:20:38.193840829Z   - Installing guzzlehttp/uri-template (v1.0.4): Extracting archive
+2025-05-17T01:20:38.196668553Z   - Installing symfony/polyfill-intl-normalizer (v1.31.0): Extracting archive
+2025-05-17T01:20:38.196680114Z   - Installing symfony/polyfill-intl-grapheme (v1.31.0): Extracting archive
+2025-05-17T01:20:38.196685694Z   - Installing symfony/string (v7.2.0): Extracting archive
+2025-05-17T01:20:38.196689804Z   - Installing psr/container (2.0.2): Extracting archive
+2025-05-17T01:20:38.196694004Z   - Installing symfony/service-contracts (v3.5.1): Extracting archive
+2025-05-17T01:20:38.196800236Z   - Installing symfony/console (v7.2.1): Extracting archive
+2025-05-17T01:20:38.197184843Z   - Installing voku/portable-ascii (2.0.3): Extracting archive
+2025-05-17T01:20:38.197597771Z   - Installing phpoption/phpoption (1.9.3): Extracting archive
+2025-05-17T01:20:38.197969869Z   - Installing graham-campbell/result-type (v1.1.3): Extracting archive
+2025-05-17T01:20:38.198336066Z   - Installing vlucas/phpdotenv (v5.6.1): Extracting archive
+2025-05-17T01:20:38.198754624Z   - Installing symfony/css-selector (v7.2.0): Extracting archive
+2025-05-17T01:20:38.199151562Z   - Installing tijsverkoyen/css-to-inline-styles (v2.3.0): Extracting archive
+2025-05-17T01:20:38.199526659Z   - Installing symfony/var-dumper (v7.2.3): Extracting archive
+2025-05-17T01:20:38.199914096Z   - Installing symfony/polyfill-uuid (v1.31.0): Extracting archive
+2025-05-17T01:20:38.200302934Z   - Installing symfony/uid (v7.2.0): Extracting archive
+2025-05-17T01:20:38.293099298Z   - Installing symfony/routing (v7.2.3): Extracting archive
+2025-05-17T01:20:38.293559867Z   - Installing symfony/process (v7.2.4): Extracting archive
+2025-05-17T01:20:38.293920654Z   - Installing symfony/polyfill-intl-idn (v1.31.0): Extracting archive
+2025-05-17T01:20:38.294322082Z   - Installing symfony/mime (v7.2.4): Extracting archive
+2025-05-17T01:20:38.294691429Z   - Installing psr/event-dispatcher (1.0.0): Extracting archive
+2025-05-17T01:20:38.295066736Z   - Installing symfony/event-dispatcher-contracts (v3.5.1): Extracting archive
+2025-05-17T01:20:38.295427494Z   - Installing symfony/event-dispatcher (v7.2.0): Extracting archive
+2025-05-17T01:20:38.29577682Z   - Installing psr/log (3.0.2): Extracting archive
+2025-05-17T01:20:38.296096816Z   - Installing egulias/email-validator (4.0.3): Extracting archive
+2025-05-17T01:20:38.296488614Z   - Installing symfony/mailer (v7.2.3): Extracting archive
+2025-05-17T01:20:38.29680531Z   - Installing symfony/error-handler (v7.2.4): Extracting archive
+2025-05-17T01:20:38.297171627Z   - Installing symfony/http-kernel (v7.2.4): Extracting archive
+2025-05-17T01:20:38.297497914Z   - Installing symfony/finder (v7.2.2): Extracting archive
+2025-05-17T01:20:38.297868471Z   - Installing ramsey/collection (2.1.0): Extracting archive
+2025-05-17T01:20:38.298198357Z   - Installing brick/math (0.12.3): Extracting archive
+2025-05-17T01:20:38.393941379Z   - Installing ramsey/uuid (4.7.6): Extracting archive
+2025-05-17T01:20:38.394795075Z   - Installing psr/simple-cache (3.0.0): Extracting archive
+2025-05-17T01:20:38.395161212Z   - Installing nunomaduro/termwind (v2.3.0): Extracting archive
+2025-05-17T01:20:38.395521709Z   - Installing symfony/translation-contracts (v3.5.1): Extracting archive
+2025-05-17T01:20:38.395870516Z   - Installing symfony/translation (v7.2.4): Extracting archive
+2025-05-17T01:20:38.396232103Z   - Installing psr/clock (1.0.0): Extracting archive
+2025-05-17T01:20:38.39658637Z   - Installing symfony/clock (v7.2.0): Extracting archive
+2025-05-17T01:20:38.396937627Z   - Installing carbonphp/carbon-doctrine-types (3.2.0): Extracting archive
+2025-05-17T01:20:38.397534818Z   - Installing nesbot/carbon (3.8.6): Extracting archive
+2025-05-17T01:20:38.397719232Z   - Installing monolog/monolog (3.8.1): Extracting archive
+2025-05-17T01:20:38.398034508Z   - Installing league/uri-interfaces (7.5.0): Extracting archive
+2025-05-17T01:20:38.398380765Z   - Installing league/uri (7.5.1): Extracting archive
+2025-05-17T01:20:38.398690541Z   - Installing league/mime-type-detection (1.16.0): Extracting archive
+2025-05-17T01:20:38.399022097Z   - Installing league/flysystem-local (3.29.0): Extracting archive
+2025-05-17T01:20:38.399352393Z   - Installing league/flysystem (3.29.1): Extracting archive
+2025-05-17T01:20:38.39969203Z   - Installing nette/utils (v4.0.5): Extracting archive
+2025-05-17T01:20:38.400014756Z   - Installing nette/schema (v1.3.2): Extracting archive
+2025-05-17T01:20:38.400366543Z   - Installing dflydev/dot-access-data (v3.0.3): Extracting archive
+2025-05-17T01:20:38.400668879Z   - Installing league/config (v1.2.0): Extracting archive
+2025-05-17T01:20:38.401001995Z   - Installing league/commonmark (2.6.1): Extracting archive
+2025-05-17T01:20:38.401328151Z   - Installing laravel/serializable-closure (v2.0.3): Extracting archive
+2025-05-17T01:20:38.493011195Z   - Installing laravel/prompts (v0.3.5): Extracting archive
+2025-05-17T01:20:38.493371592Z   - Installing laravel/framework (v12.1.1): Extracting archive
+2025-05-17T01:20:38.493707238Z   - Installing laravel/sanctum (v4.0.8): Extracting archive
+2025-05-17T01:20:38.493999204Z   - Installing nikic/php-parser (v5.4.0): Extracting archive
+2025-05-17T01:20:38.49431389Z   - Installing psy/psysh (v0.12.7): Extracting archive
+2025-05-17T01:20:38.494627866Z   - Installing laravel/tinker (v2.10.1): Extracting archive
+2025-05-17T01:20:38.494944272Z   - Installing mtdowling/jmespath.php (2.8.0): Extracting archive
+2025-05-17T01:20:38.495257608Z   - Installing aws/aws-sdk-php (3.342.2): Extracting archive
+2025-05-17T01:20:38.495579765Z   - Installing league/flysystem-aws-s3-v3 (3.29.0): Extracting archive
+2025-05-17T01:20:38.49587514Z   - Installing spatie/laravel-package-tools (1.19.0): Extracting archive
+2025-05-17T01:20:38.496224937Z   - Installing livewire/livewire (v3.6.1): Extracting archive
+2025-05-17T01:20:38.496546593Z   - Installing livewire-ui/modal (2.0.13): Extracting archive
+2025-05-17T01:20:38.496851769Z   - Installing livewire/flux (v2.0.4): Extracting archive
+2025-05-17T01:20:38.497167105Z   - Installing livewire/volt (v1.7.0): Extracting archive
+2025-05-17T01:20:38.497486751Z   - Installing symfony/var-exporter (v7.2.5): Extracting archive
+2025-05-17T01:20:38.497765877Z   - Installing psr/cache (3.0.0): Extracting archive
+2025-05-17T01:20:38.498079633Z   - Installing symfony/cache-contracts (v3.5.1): Extracting archive
+2025-05-17T01:20:38.592604061Z   - Installing symfony/cache (v7.2.5): Extracting archive
+2025-05-17T01:20:38.593122261Z   - Installing spatie/temporary-directory (2.3.0): Extracting archive
+2025-05-17T01:20:38.59359866Z   - Installing evenement/evenement (v3.0.2): Extracting archive
+2025-05-17T01:20:38.594024488Z   - Installing php-ffmpeg/php-ffmpeg (v1.3.2): Extracting archive
+2025-05-17T01:20:38.594465827Z   - Installing spatie/image-optimizer (1.8.0): Extracting archive
+2025-05-17T01:20:38.594864705Z   - Installing spatie/image (3.8.3): Extracting archive
+2025-05-17T01:20:38.595245372Z   - Installing maennchen/zipstream-php (3.1.2): Extracting archive
+2025-05-17T01:20:38.59567388Z   - Installing composer/semver (3.4.3): Extracting archive
+2025-05-17T01:20:38.596020287Z   - Installing spatie/laravel-medialibrary (11.12.9): Extracting archive
+2025-05-17T01:20:39.203619038Z   0/97 [>---------------------------]   0%
+2025-05-17T01:20:40.298582204Z  10/97 [==>-------------------------]  10%
+2025-05-17T01:20:41.296056605Z  16/97 [====>-----------------------]  16%
+2025-05-17T01:20:42.495460571Z  20/97 [=====>----------------------]  20%
+2025-05-17T01:20:43.693899429Z  27/97 [=======>--------------------]  27%
+2025-05-17T01:20:44.701472235Z  35/97 [==========>-----------------]  36%
+2025-05-17T01:20:45.99487776Z  39/97 [===========>----------------]  40%
+2025-05-17T01:20:46.601313208Z  46/97 [=============>--------------]  47%
+2025-05-17T01:20:48.095407864Z  49/97 [==============>-------------]  50%
+2025-05-17T01:20:49.696371296Z  56/97 [================>-----------]  57%
+2025-05-17T01:20:51.196508959Z  61/97 [=================>----------]  62%
+2025-05-17T01:20:52.393585291Z  67/97 [===================>--------]  69%
+2025-05-17T01:20:53.793145439Z  70/97 [====================>-------]  72%
+2025-05-17T01:20:55.001504828Z  74/97 [=====================>------]  76%
+2025-05-17T01:20:55.694192685Z  77/97 [======================>-----]  79%
+2025-05-17T01:20:57.10341788Z  78/97 [======================>-----]  80%
+2025-05-17T01:20:59.104118103Z  81/97 [=======================>----]  83%
+2025-05-17T01:20:59.896129711Z  86/97 [========================>---]  88%
+2025-05-17T01:21:00.992504116Z  88/97 [=========================>--]  90%
+2025-05-17T01:21:02.100366422Z  93/97 [==========================>-]  95%
+2025-05-17T01:21:09.72361125Z  96/97 [===========================>]  98%
+2025-05-17T01:21:09.72363768Z  97/97 [============================] 100%
+2025-05-17T01:21:10.126487061Z Package livewire-ui/modal is abandoned, you should avoid using it. Use wire-elements/modal instead.
+2025-05-17T01:21:10.126511422Z Generating optimized autoload files
+2025-05-17T01:21:11.490425404Z ==> No open HTTP ports detected on 0.0.0.0, continuing to scan...
+2025-05-17T01:21:26.406948507Z > Illuminate\Foundation\ComposerScripts::postAutoloadDump
+2025-05-17T01:21:26.60716562Z > @php artisan package:discover --ansi
+2025-05-17T01:21:29.097213169Z 
+2025-05-17T01:21:29.09724201Z    INFO  Discovering packages.  
+2025-05-17T01:21:29.09724874Z 
+2025-05-17T01:21:29.104253796Z   laravel/sanctum ....................................................... DONE
+2025-05-17T01:21:29.193498702Z   laravel/tinker ........................................................ DONE
+2025-05-17T01:21:29.195496581Z   livewire-ui/modal ..................................................... DONE
+2025-05-17T01:21:29.197119152Z   livewire/flux ......................................................... DONE
+2025-05-17T01:21:29.198635361Z   livewire/livewire ..................................................... DONE
+2025-05-17T01:21:29.20010436Z   livewire/volt ......................................................... DONE
+2025-05-17T01:21:29.201616529Z   nesbot/carbon ......................................................... DONE
+2025-05-17T01:21:29.203016926Z   nunomaduro/termwind ................................................... DONE
+2025-05-17T01:21:29.20423819Z   spatie/laravel-medialibrary ........................................... DONE
+2025-05-17T01:21:29.204354892Z 
+2025-05-17T01:21:29.394371057Z 63 packages you are using are looking for funding.
+2025-05-17T01:21:29.394389677Z Use the `composer fund` command to find out more!
+2025-05-17T01:21:29.506863553Z Caching config...
+2025-05-17T01:21:31.802655526Z [2025-05-17 01:21:31] production.ERROR: Command "config:" is ambiguous.
+2025-05-17T01:21:31.802674906Z Did you mean one of these?
+2025-05-17T01:21:31.802679736Z     config:cache   Create a cache file for faster configuration loading
+2025-05-17T01:21:31.802684476Z     config:clear   Remove the configuration cache file
+2025-05-17T01:21:31.802688166Z     config:show    Display all of the values for a given configuration ...
+2025-05-17T01:21:31.802692756Z     config:publish Publish configuration files to your application. {"exception":"[object] (Symfony\\Component\\Console\\Exception\\CommandNotFoundException(code: 0): Command \"config:\" is ambiguous.
+2025-05-17T01:21:31.802705947Z Did you mean one of these?
+2025-05-17T01:21:31.802708607Z     config:cache   Create a cache file for faster configuration loading
+2025-05-17T01:21:31.802711077Z     config:clear   Remove the configuration cache file
+2025-05-17T01:21:31.802713557Z     config:show    Display all of the values for a given configuration ...
+2025-05-17T01:21:31.802716507Z     config:publish Publish configuration files to your application. at /var/www/html/vendor/symfony/console/Application.php:767)
+2025-05-17T01:21:31.802718907Z [stacktrace]
+2025-05-17T01:21:31.802721517Z #0 /var/www/html/vendor/symfony/console/Application.php(284): Symfony\\Component\\Console\\Application->find('config:')
+2025-05-17T01:21:31.802724787Z #1 /var/www/html/vendor/symfony/console/Application.php(193): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+2025-05-17T01:21:31.802735927Z #2 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+2025-05-17T01:21:31.802738587Z #3 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+2025-05-17T01:21:31.802741448Z #4 /var/www/html/artisan(16): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+2025-05-17T01:21:31.802743828Z #5 {main}
+2025-05-17T01:21:31.802746108Z "} 
+2025-05-17T01:21:31.895861818Z 
+2025-05-17T01:21:31.895884189Z    ERROR  Command "config:" is ambiguous. Did you mean one of these?  
+2025-05-17T01:21:31.895887609Z 
+2025-05-17T01:21:31.897463579Z   ⇂ config:cache  
+2025-05-17T01:21:31.89747875Z   ⇂ config:clear  
+2025-05-17T01:21:31.89748157Z   ⇂ config:show  
+2025-05-17T01:21:31.89748419Z   ⇂ config:publish  
+2025-05-17T01:21:31.89748629Z 
+2025-05-17T01:21:31.99985997Z Caching routes...
+2025-05-17T01:21:34.205871707Z [2025-05-17 01:21:34] production.ERROR: Command "route:" is ambiguous.
+2025-05-17T01:21:34.205893937Z Did you mean one of these?
+2025-05-17T01:21:34.205899217Z     route:cache Create a route cache file for faster route registration
+2025-05-17T01:21:34.205918377Z     route:clear Remove the route cache file
+2025-05-17T01:21:34.205924728Z     route:list  List all registered routes. {"exception":"[object] (Symfony\\Component\\Console\\Exception\\CommandNotFoundException(code: 0): Command \"route:\" is ambiguous.
+2025-05-17T01:21:34.205929117Z Did you mean one of these?
+2025-05-17T01:21:34.205933558Z     route:cache Create a route cache file for faster route registration
+2025-05-17T01:21:34.205937978Z     route:clear Remove the route cache file
+2025-05-17T01:21:34.205942478Z     route:list  List all registered routes. at /var/www/html/vendor/symfony/console/Application.php:767)
+2025-05-17T01:21:34.205946898Z [stacktrace]
+2025-05-17T01:21:34.205951778Z #0 /var/www/html/vendor/symfony/console/Application.php(284): Symfony\\Component\\Console\\Application->find('route:')
+2025-05-17T01:21:34.205956968Z #1 /var/www/html/vendor/symfony/console/Application.php(193): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+2025-05-17T01:21:34.205971138Z #2 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+2025-05-17T01:21:34.205973988Z #3 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+2025-05-17T01:21:34.205977329Z #4 /var/www/html/artisan(16): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+2025-05-17T01:21:34.205980049Z #5 {main}
+2025-05-17T01:21:34.205982898Z "} 
+2025-05-17T01:21:34.299268673Z 
+2025-05-17T01:21:34.299363405Z    ERROR  Command "route:" is ambiguous. Did you mean one of these?  
+2025-05-17T01:21:34.299367185Z 
+2025-05-17T01:21:34.300860374Z   ⇂ route:cache  
+2025-05-17T01:21:34.300871634Z   ⇂ route:clear  
+2025-05-17T01:21:34.300874714Z   ⇂ route:list  
+2025-05-17T01:21:34.300877044Z 
+2025-05-17T01:21:34.402450078Z Publishing cloudinary provider...
+2025-05-17T01:21:36.323374101Z 
+2025-05-17T01:21:36.323398352Z    INFO  No publishable resources for tag [].  
+2025-05-17T01:21:36.323402532Z 
+2025-05-17T01:21:38.114140267Z 2025-05-17 01:21:38,113 WARN No file matches via include "/etc/supervisor/conf.d/*.conf"
+2025-05-17T01:21:38.114158137Z 2025-05-17 01:21:38,113 INFO Set uid to user 0 succeeded
+2025-05-17T01:21:38.126956235Z 2025-05-17 01:21:38,126 INFO RPC interface 'supervisor' initialized
+2025-05-17T01:21:38.126972885Z 2025-05-17 01:21:38,126 CRIT Server 'unix_http_server' running without any HTTP authentication checking
+2025-05-17T01:21:38.12723383Z 2025-05-17 01:21:38,126 INFO supervisord started with pid 1
+2025-05-17T01:21:39.130438423Z 2025-05-17 01:21:39,129 INFO spawned: 'php-fpm' with pid 276
+2025-05-17T01:21:39.133666466Z 2025-05-17 01:21:39,133 INFO spawned: 'nginx' with pid 277
+2025-05-17T01:21:39.30038516Z 2025/05/17 01:21:39 [notice] 277#277: using the "epoll" event method
+2025-05-17T01:21:39.300404981Z 2025/05/17 01:21:39 [notice] 277#277: nginx/1.24.0
+2025-05-17T01:21:39.300409681Z 2025/05/17 01:21:39 [notice] 277#277: OS: Linux 6.8.0-1028-aws
+2025-05-17T01:21:39.300413811Z 2025/05/17 01:21:39 [notice] 277#277: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2025-05-17T01:21:39.310510536Z 2025/05/17 01:21:39 [notice] 277#277: start worker processes
+2025-05-17T01:21:39.310527656Z 2025/05/17 01:21:39 [notice] 277#277: start worker process 278
+2025-05-17T01:21:39.310532186Z 2025/05/17 01:21:39 [notice] 277#277: start worker process 279
+2025-05-17T01:21:39.310535997Z 2025/05/17 01:21:39 [notice] 277#277: start worker process 280
+2025-05-17T01:21:39.310540237Z 2025/05/17 01:21:39 [notice] 277#277: start worker process 281
+2025-05-17T01:21:39.310578477Z 2025/05/17 01:21:39 [notice] 277#277: start worker process 282
+2025-05-17T01:21:39.310583818Z 2025/05/17 01:21:39 [notice] 277#277: start worker process 283
+2025-05-17T01:21:39.310588398Z 2025/05/17 01:21:39 [notice] 277#277: start worker process 284
+2025-05-17T01:21:39.310592058Z 2025/05/17 01:21:39 [notice] 277#277: start worker process 285
+2025-05-17T01:21:39.494561696Z 2025/05/17 01:21:39 [crit] 278#278: *1 connect() to unix:/var/run/php-fpm.sock failed (2: No such file or directory) while connecting to upstream, client: 127.0.0.1, server: _, request: "HEAD / HTTP/1.1", upstream: "fastcgi://unix:/var/run/php-fpm.sock:", host: "jambangan-website-latest.onrender.com"
+2025-05-17T01:21:39.494581096Z 127.0.0.1 - - [17/May/2025:01:21:39 +0000] "HEAD / HTTP/1.1" 502 0 "-" "Go-http-client/1.1"
+2025-05-17T01:21:39.806120672Z [17-May-2025 01:21:39] NOTICE: fpm is running, pid 276
+2025-05-17T01:21:39.806137982Z [17-May-2025 01:21:39] NOTICE: ready to handle connections
+2025-05-17T01:21:40.806670034Z 2025-05-17 01:21:40,806 INFO success: php-fpm entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2025-05-17T01:21:40.806781756Z 2025-05-17 01:21:40,806 INFO success: nginx entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2025-05-17T01:21:42.260604998Z ==> New primary port detected: 80. Restarting deploy to update network configuration...
+2025-05-17T01:21:42.362874142Z ==> Docs on specifying a port: https://render.com/docs/web-services#port-binding
+2025-05-17T01:22:05.052783609Z Running composer
+2025-05-17T01:22:06.670756029Z Installing dependencies from lock file
+2025-05-17T01:22:06.678665043Z Verifying lock file contents can be installed on current platform.
+2025-05-17T01:22:06.880453815Z Package operations: 97 installs, 0 updates, 0 removals
+2025-05-17T01:22:06.966443442Z   - Downloading aws/aws-crt-php (v1.2.7)
+2025-05-17T01:22:06.966464883Z   - Downloading doctrine/inflector (2.0.10)
+2025-05-17T01:22:06.966799711Z   - Downloading doctrine/lexer (3.0.1)
+2025-05-17T01:22:06.967305254Z   - Downloading symfony/polyfill-ctype (v1.31.0)
+2025-05-17T01:22:06.967773806Z   - Downloading webmozart/assert (1.11.0)
+2025-05-17T01:22:06.968248489Z   - Downloading dragonmantank/cron-expression (v3.4.0)
+2025-05-17T01:22:06.968648009Z   - Downloading symfony/polyfill-php83 (v1.31.0)
+2025-05-17T01:22:06.969432869Z   - Downloading symfony/polyfill-mbstring (v1.31.0)
+2025-05-17T01:22:06.96944264Z   - Downloading symfony/deprecation-contracts (v3.5.1)
+2025-05-17T01:22:06.969702356Z   - Downloading symfony/http-foundation (v7.2.3)
+2025-05-17T01:22:06.970054375Z   - Downloading fruitcake/php-cors (v1.3.0)
+2025-05-17T01:22:06.970509727Z   - Downloading psr/http-message (2.0)
+2025-05-17T01:22:06.970758654Z   - Downloading psr/http-client (1.0.3)
+2025-05-17T01:22:06.971055041Z   - Downloading ralouphie/getallheaders (3.0.3)
+2025-05-17T01:22:06.971282387Z   - Downloading psr/http-factory (1.1.0)
+2025-05-17T01:22:06.971537834Z   - Downloading guzzlehttp/psr7 (2.7.0)
+2025-05-17T01:22:06.971715718Z   - Downloading guzzlehttp/promises (2.0.4)
+2025-05-17T01:22:06.971903063Z   - Downloading guzzlehttp/guzzle (7.9.2)
+2025-05-17T01:22:06.972036016Z   - Downloading symfony/polyfill-php80 (v1.31.0)
+2025-05-17T01:22:06.972231752Z   - Downloading guzzlehttp/uri-template (v1.0.4)
+2025-05-17T01:22:06.97256969Z   - Downloading symfony/polyfill-intl-normalizer (v1.31.0)
+2025-05-17T01:22:06.972898679Z   - Downloading symfony/polyfill-intl-grapheme (v1.31.0)
+2025-05-17T01:22:06.972904279Z   - Downloading symfony/string (v7.2.0)
+2025-05-17T01:22:06.972910709Z   - Downloading psr/container (2.0.2)
+2025-05-17T01:22:06.973807492Z   - Downloading symfony/service-contracts (v3.5.1)
+2025-05-17T01:22:06.973817592Z   - Downloading symfony/console (v7.2.1)
+2025-05-17T01:22:06.973820422Z   - Downloading voku/portable-ascii (2.0.3)
+2025-05-17T01:22:06.973822682Z   - Downloading phpoption/phpoption (1.9.3)
+2025-05-17T01:22:06.974039558Z   - Downloading graham-campbell/result-type (v1.1.3)
+2025-05-17T01:22:06.974435468Z   - Downloading vlucas/phpdotenv (v5.6.1)
+2025-05-17T01:22:06.974649784Z   - Downloading symfony/css-selector (v7.2.0)
+2025-05-17T01:22:06.974848039Z   - Downloading tijsverkoyen/css-to-inline-styles (v2.3.0)
+2025-05-17T01:22:06.975034654Z   - Downloading symfony/var-dumper (v7.2.3)
+2025-05-17T01:22:06.975197608Z   - Downloading symfony/polyfill-uuid (v1.31.0)
+2025-05-17T01:22:06.975374802Z   - Downloading symfony/uid (v7.2.0)
+2025-05-17T01:22:06.975570458Z   - Downloading symfony/routing (v7.2.3)
+2025-05-17T01:22:06.975770423Z   - Downloading symfony/process (v7.2.4)
+2025-05-17T01:22:06.975966718Z   - Downloading symfony/polyfill-intl-idn (v1.31.0)
+2025-05-17T01:22:06.976172263Z   - Downloading symfony/mime (v7.2.4)
+2025-05-17T01:22:06.976361088Z   - Downloading psr/event-dispatcher (1.0.0)
+2025-05-17T01:22:06.976583804Z   - Downloading symfony/event-dispatcher-contracts (v3.5.1)
+2025-05-17T01:22:06.976726397Z   - Downloading symfony/event-dispatcher (v7.2.0)
+2025-05-17T01:22:06.976916192Z   - Downloading psr/log (3.0.2)
+2025-05-17T01:22:06.977125298Z   - Downloading egulias/email-validator (4.0.3)
+2025-05-17T01:22:06.977316052Z   - Downloading symfony/mailer (v7.2.3)
+2025-05-17T01:22:06.977520038Z   - Downloading symfony/error-handler (v7.2.4)
+2025-05-17T01:22:06.977684102Z   - Downloading symfony/http-kernel (v7.2.4)
+2025-05-17T01:22:06.977873207Z   - Downloading symfony/finder (v7.2.2)
+2025-05-17T01:22:06.978087722Z   - Downloading ramsey/collection (2.1.0)
+2025-05-17T01:22:06.978407631Z   - Downloading brick/math (0.12.3)
+2025-05-17T01:22:06.97917992Z   - Downloading ramsey/uuid (4.7.6)
+2025-05-17T01:22:06.979185741Z   - Downloading psr/simple-cache (3.0.0)
+2025-05-17T01:22:06.979188041Z   - Downloading nunomaduro/termwind (v2.3.0)
+2025-05-17T01:22:06.979216361Z   - Downloading symfony/translation-contracts (v3.5.1)
+2025-05-17T01:22:07.062882578Z   - Downloading symfony/translation (v7.2.4)
+2025-05-17T01:22:07.063400442Z   - Downloading psr/clock (1.0.0)
+2025-05-17T01:22:07.063663769Z   - Downloading symfony/clock (v7.2.0)
+2025-05-17T01:22:07.063941066Z   - Downloading carbonphp/carbon-doctrine-types (3.2.0)
+2025-05-17T01:22:07.064183982Z   - Downloading nesbot/carbon (3.8.6)
+2025-05-17T01:22:07.064748417Z   - Downloading monolog/monolog (3.8.1)
+2025-05-17T01:22:07.064758617Z   - Downloading league/uri-interfaces (7.5.0)
+2025-05-17T01:22:07.064863199Z   - Downloading league/uri (7.5.1)
+2025-05-17T01:22:07.065081965Z   - Downloading league/mime-type-detection (1.16.0)
+2025-05-17T01:22:07.065438214Z   - Downloading league/flysystem-local (3.29.0)
+2025-05-17T01:22:07.066027389Z   - Downloading league/flysystem (3.29.1)
+2025-05-17T01:22:07.066035559Z   - Downloading nette/utils (v4.0.5)
+2025-05-17T01:22:07.06603876Z   - Downloading nette/schema (v1.3.2)
+2025-05-17T01:22:07.066287476Z   - Downloading dflydev/dot-access-data (v3.0.3)
+2025-05-17T01:22:07.067108647Z   - Downloading league/config (v1.2.0)
+2025-05-17T01:22:07.067119247Z   - Downloading league/commonmark (2.6.1)
+2025-05-17T01:22:07.067127698Z   - Downloading laravel/serializable-closure (v2.0.3)
+2025-05-17T01:22:07.067386174Z   - Downloading laravel/prompts (v0.3.5)
+2025-05-17T01:22:07.067640081Z   - Downloading laravel/framework (v12.1.1)
+2025-05-17T01:22:07.067840066Z   - Downloading laravel/sanctum (v4.0.8)
+2025-05-17T01:22:07.068136254Z   - Downloading nikic/php-parser (v5.4.0)
+2025-05-17T01:22:07.068439312Z   - Downloading psy/psysh (v0.12.7)
+2025-05-17T01:22:07.068674078Z   - Downloading laravel/tinker (v2.10.1)
+2025-05-17T01:22:07.068977755Z   - Downloading mtdowling/jmespath.php (2.8.0)
+2025-05-17T01:22:07.069301724Z   - Downloading aws/aws-sdk-php (3.342.2)
+2025-05-17T01:22:07.069507729Z   - Downloading league/flysystem-aws-s3-v3 (3.29.0)
+2025-05-17T01:22:07.069822227Z   - Downloading spatie/laravel-package-tools (1.19.0)
+2025-05-17T01:22:07.070113815Z   - Downloading livewire/livewire (v3.6.1)
+2025-05-17T01:22:07.070526826Z   - Downloading livewire-ui/modal (2.0.13)
+2025-05-17T01:22:07.070744911Z   - Downloading livewire/flux (v2.0.4)
+2025-05-17T01:22:07.071306915Z   - Downloading livewire/volt (v1.7.0)
+2025-05-17T01:22:07.071313726Z   - Downloading symfony/var-exporter (v7.2.5)
+2025-05-17T01:22:07.072081475Z   - Downloading psr/cache (3.0.0)
+2025-05-17T01:22:07.072091406Z   - Downloading symfony/cache-contracts (v3.5.1)
+2025-05-17T01:22:07.072094696Z   - Downloading symfony/cache (v7.2.5)
+2025-05-17T01:22:07.072369913Z   - Downloading spatie/temporary-directory (2.3.0)
+2025-05-17T01:22:07.072713032Z   - Downloading evenement/evenement (v3.0.2)
+2025-05-17T01:22:07.07303597Z   - Downloading php-ffmpeg/php-ffmpeg (v1.3.2)
+2025-05-17T01:22:07.073271606Z   - Downloading spatie/image-optimizer (1.8.0)
+2025-05-17T01:22:07.073515843Z   - Downloading spatie/image (3.8.3)
+2025-05-17T01:22:07.073829151Z   - Downloading maennchen/zipstream-php (3.1.2)
+2025-05-17T01:22:07.074062157Z   - Downloading composer/semver (3.4.3)
+2025-05-17T01:22:07.074257002Z   - Downloading spatie/laravel-medialibrary (11.12.9)
+2025-05-17T01:22:07.876457962Z   0/97 [>---------------------------]   0%
+2025-05-17T01:22:08.131832086Z  10/97 [==>-------------------------]  10%
+2025-05-17T01:22:08.238451144Z  25/97 [=======>--------------------]  25%
+2025-05-17T01:22:08.338158005Z  35/97 [==========>-----------------]  36%
+2025-05-17T01:22:08.466933514Z  40/97 [===========>----------------]  41%
+2025-05-17T01:22:08.611811999Z  52/97 [===============>------------]  53%
+2025-05-17T01:22:08.86396595Z  62/97 [=================>----------]  63%
+2025-05-17T01:22:09.276998938Z  74/97 [=====================>------]  76%
+2025-05-17T01:22:09.378750131Z  85/97 [========================>---]  87%
+2025-05-17T01:22:09.969205173Z  88/97 [=========================>--]  90%
+2025-05-17T01:22:09.969222923Z  97/97 [============================] 100%
+2025-05-17T01:22:09.969729656Z   - Installing aws/aws-crt-php (v1.2.7): Extracting archive
+2025-05-17T01:22:09.975646468Z   - Installing doctrine/inflector (2.0.10): Extracting archive
+2025-05-17T01:22:09.977221029Z   - Installing doctrine/lexer (3.0.1): Extracting archive
+2025-05-17T01:22:10.067433455Z   - Installing symfony/polyfill-ctype (v1.31.0): Extracting archive
+2025-05-17T01:22:10.0680087Z   - Installing webmozart/assert (1.11.0): Extracting archive
+2025-05-17T01:22:10.167875014Z   - Installing dragonmantank/cron-expression (v3.4.0): Extracting archive
+2025-05-17T01:22:10.170648016Z   - Installing symfony/polyfill-php83 (v1.31.0): Extracting archive
+2025-05-17T01:22:10.36474787Z   - Installing symfony/polyfill-mbstring (v1.31.0): Extracting archive
+2025-05-17T01:22:10.463920276Z   - Installing symfony/deprecation-contracts (v3.5.1): Extracting archive
+2025-05-17T01:22:10.467846427Z   - Installing symfony/http-foundation (v7.2.3): Extracting archive
+2025-05-17T01:22:10.566146102Z   - Installing fruitcake/php-cors (v1.3.0): Extracting archive
+2025-05-17T01:22:10.566814469Z   - Installing psr/http-message (2.0): Extracting archive
+2025-05-17T01:22:10.56725715Z   - Installing psr/http-client (1.0.3): Extracting archive
+2025-05-17T01:22:10.567653081Z   - Installing ralouphie/getallheaders (3.0.3): Extracting archive
+2025-05-17T01:22:10.567997239Z   - Installing psr/http-factory (1.1.0): Extracting archive
+2025-05-17T01:22:10.568356048Z   - Installing guzzlehttp/psr7 (2.7.0): Extracting archive
+2025-05-17T01:22:10.568691327Z   - Installing guzzlehttp/promises (2.0.4): Extracting archive
+2025-05-17T01:22:10.569005005Z   - Installing guzzlehttp/guzzle (7.9.2): Extracting archive
+2025-05-17T01:22:10.569342474Z   - Installing symfony/polyfill-php80 (v1.31.0): Extracting archive
+2025-05-17T01:22:10.66345357Z   - Installing guzzlehttp/uri-template (v1.0.4): Extracting archive
+2025-05-17T01:22:10.663952773Z   - Installing symfony/polyfill-intl-normalizer (v1.31.0): Extracting archive
+2025-05-17T01:22:10.664471726Z   - Installing symfony/polyfill-intl-grapheme (v1.31.0): Extracting archive
+2025-05-17T01:22:10.66501612Z   - Installing symfony/string (v7.2.0): Extracting archive
+2025-05-17T01:22:10.665430321Z   - Installing psr/container (2.0.2): Extracting archive
+2025-05-17T01:22:10.665861832Z   - Installing symfony/service-contracts (v3.5.1): Extracting archive
+2025-05-17T01:22:10.666233332Z   - Installing symfony/console (v7.2.1): Extracting archive
+2025-05-17T01:22:10.666592351Z   - Installing voku/portable-ascii (2.0.3): Extracting archive
+2025-05-17T01:22:10.66693435Z   - Installing phpoption/phpoption (1.9.3): Extracting archive
+2025-05-17T01:22:10.66730391Z   - Installing graham-campbell/result-type (v1.1.3): Extracting archive
+2025-05-17T01:22:10.66769214Z   - Installing vlucas/phpdotenv (v5.6.1): Extracting archive
+2025-05-17T01:22:10.668038358Z   - Installing symfony/css-selector (v7.2.0): Extracting archive
+2025-05-17T01:22:10.668378107Z   - Installing tijsverkoyen/css-to-inline-styles (v2.3.0): Extracting archive
+2025-05-17T01:22:10.668672745Z   - Installing symfony/var-dumper (v7.2.3): Extracting archive
+2025-05-17T01:22:10.668997553Z   - Installing symfony/polyfill-uuid (v1.31.0): Extracting archive
+2025-05-17T01:22:10.66928314Z   - Installing symfony/uid (v7.2.0): Extracting archive
+2025-05-17T01:22:10.763355316Z   - Installing symfony/routing (v7.2.3): Extracting archive
+2025-05-17T01:22:10.763730215Z   - Installing symfony/process (v7.2.4): Extracting archive
+2025-05-17T01:22:10.764077074Z   - Installing symfony/polyfill-intl-idn (v1.31.0): Extracting archive
+2025-05-17T01:22:10.764437014Z   - Installing symfony/mime (v7.2.4): Extracting archive
+2025-05-17T01:22:10.764762082Z   - Installing psr/event-dispatcher (1.0.0): Extracting archive
+2025-05-17T01:22:10.76508513Z   - Installing symfony/event-dispatcher-contracts (v3.5.1): Extracting archive
+2025-05-17T01:22:10.765438019Z   - Installing symfony/event-dispatcher (v7.2.0): Extracting archive
+2025-05-17T01:22:10.765766348Z   - Installing psr/log (3.0.2): Extracting archive
+2025-05-17T01:22:10.766074496Z   - Installing egulias/email-validator (4.0.3): Extracting archive
+2025-05-17T01:22:10.766498497Z   - Installing symfony/mailer (v7.2.3): Extracting archive
+2025-05-17T01:22:10.76701295Z   - Installing symfony/error-handler (v7.2.4): Extracting archive
+2025-05-17T01:22:10.767456511Z   - Installing symfony/http-kernel (v7.2.4): Extracting archive
+2025-05-17T01:22:10.767767899Z   - Installing symfony/finder (v7.2.2): Extracting archive
+2025-05-17T01:22:10.768094508Z   - Installing ramsey/collection (2.1.0): Extracting archive
+2025-05-17T01:22:10.768505168Z   - Installing brick/math (0.12.3): Extracting archive
+2025-05-17T01:22:10.768853607Z   - Installing ramsey/uuid (4.7.6): Extracting archive
+2025-05-17T01:22:10.769142165Z   - Installing psr/simple-cache (3.0.0): Extracting archive
+2025-05-17T01:22:10.769585516Z   - Installing nunomaduro/termwind (v2.3.0): Extracting archive
+2025-05-17T01:22:10.769809732Z   - Installing symfony/translation-contracts (v3.5.1): Extracting archive
+2025-05-17T01:22:10.770146321Z   - Installing symfony/translation (v7.2.4): Extracting archive
+2025-05-17T01:22:10.770461289Z   - Installing psr/clock (1.0.0): Extracting archive
+2025-05-17T01:22:10.770750476Z   - Installing symfony/clock (v7.2.0): Extracting archive
+2025-05-17T01:22:10.771097635Z   - Installing carbonphp/carbon-doctrine-types (3.2.0): Extracting archive
+2025-05-17T01:22:10.863032595Z   - Installing nesbot/carbon (3.8.6): Extracting archive
+2025-05-17T01:22:10.863530738Z   - Installing monolog/monolog (3.8.1): Extracting archive
+2025-05-17T01:22:10.863933388Z   - Installing league/uri-interfaces (7.5.0): Extracting archive
+2025-05-17T01:22:10.864286528Z   - Installing league/uri (7.5.1): Extracting archive
+2025-05-17T01:22:10.86475969Z   - Installing league/mime-type-detection (1.16.0): Extracting archive
+2025-05-17T01:22:10.865097309Z   - Installing league/flysystem-local (3.29.0): Extracting archive
+2025-05-17T01:22:10.865316734Z   - Installing league/flysystem (3.29.1): Extracting archive
+2025-05-17T01:22:10.865632572Z   - Installing nette/utils (v4.0.5): Extracting archive
+2025-05-17T01:22:10.865999432Z   - Installing nette/schema (v1.3.2): Extracting archive
+2025-05-17T01:22:10.86631221Z   - Installing dflydev/dot-access-data (v3.0.3): Extracting archive
+2025-05-17T01:22:10.866674829Z   - Installing league/config (v1.2.0): Extracting archive
+2025-05-17T01:22:10.866999938Z   - Installing league/commonmark (2.6.1): Extracting archive
+2025-05-17T01:22:10.867363487Z   - Installing laravel/serializable-closure (v2.0.3): Extracting archive
+2025-05-17T01:22:10.867734426Z   - Installing laravel/prompts (v0.3.5): Extracting archive
+2025-05-17T01:22:10.868736872Z   - Installing laravel/framework (v12.1.1): Extracting archive
+2025-05-17T01:22:10.86903952Z   - Installing laravel/sanctum (v4.0.8): Extracting archive
+2025-05-17T01:22:10.86940632Z   - Installing nikic/php-parser (v5.4.0): Extracting archive
+2025-05-17T01:22:10.869688957Z   - Installing psy/psysh (v0.12.7): Extracting archive
+2025-05-17T01:22:10.870013865Z   - Installing laravel/tinker (v2.10.1): Extracting archive
+2025-05-17T01:22:10.870313713Z   - Installing mtdowling/jmespath.php (2.8.0): Extracting archive
+2025-05-17T01:22:10.870679193Z   - Installing aws/aws-sdk-php (3.342.2): Extracting archive
+2025-05-17T01:22:10.87098639Z   - Installing league/flysystem-aws-s3-v3 (3.29.0): Extracting archive
+2025-05-17T01:22:10.871306009Z   - Installing spatie/laravel-package-tools (1.19.0): Extracting archive
+2025-05-17T01:22:10.871697239Z   - Installing livewire/livewire (v3.6.1): Extracting archive
+2025-05-17T01:22:10.872016797Z   - Installing livewire-ui/modal (2.0.13): Extracting archive
+2025-05-17T01:22:10.872375886Z   - Installing livewire/flux (v2.0.4): Extracting archive
+2025-05-17T01:22:10.963523536Z   - Installing livewire/volt (v1.7.0): Extracting archive
+2025-05-17T01:22:10.963894856Z   - Installing symfony/var-exporter (v7.2.5): Extracting archive
+2025-05-17T01:22:10.96445518Z   - Installing psr/cache (3.0.0): Extracting archive
+2025-05-17T01:22:10.964716857Z   - Installing symfony/cache-contracts (v3.5.1): Extracting archive
+2025-05-17T01:22:10.965067236Z   - Installing symfony/cache (v7.2.5): Extracting archive
+2025-05-17T01:22:10.965449056Z   - Installing spatie/temporary-directory (2.3.0): Extracting archive
+2025-05-17T01:22:10.965758573Z   - Installing evenement/evenement (v3.0.2): Extracting archive
+2025-05-17T01:22:10.966096652Z   - Installing php-ffmpeg/php-ffmpeg (v1.3.2): Extracting archive
+2025-05-17T01:22:10.966524653Z   - Installing spatie/image-optimizer (1.8.0): Extracting archive
+2025-05-17T01:22:10.966918163Z   - Installing spatie/image (3.8.3): Extracting archive
+2025-05-17T01:22:10.967249592Z   - Installing maennchen/zipstream-php (3.1.2): Extracting archive
+2025-05-17T01:22:10.967617331Z   - Installing composer/semver (3.4.3): Extracting archive
+2025-05-17T01:22:10.96794992Z   - Installing spatie/laravel-medialibrary (11.12.9): Extracting archive
+2025-05-17T01:22:11.673003226Z   0/97 [>---------------------------]   0%
+2025-05-17T01:22:12.973458802Z  10/97 [==>-------------------------]  10%
+2025-05-17T01:22:14.567601188Z  20/97 [=====>----------------------]  20%
+2025-05-17T01:22:15.37139496Z  27/97 [=======>--------------------]  27%
+2025-05-17T01:22:16.663796968Z  30/97 [========>-------------------]  30%
+2025-05-17T01:22:17.273551087Z  35/97 [==========>-----------------]  36%
+2025-05-17T01:22:18.573182682Z  40/97 [===========>----------------]  41%
+2025-05-17T01:22:19.669831003Z  45/97 [============>---------------]  46%
+2025-05-17T01:22:20.868834103Z  52/97 [===============>------------]  53%
+2025-05-17T01:22:21.766407912Z  57/97 [================>-----------]  58%
+2025-05-17T01:22:23.563405699Z  60/97 [=================>----------]  61%
+2025-05-17T01:22:25.066435377Z  66/97 [===================>--------]  68%
+2025-05-17T01:22:26.765759996Z  69/97 [===================>--------]  71%
+2025-05-17T01:22:28.366867512Z  75/97 [=====================>------]  77%
+2025-05-17T01:22:30.169416542Z  78/97 [======================>-----]  80%
+2025-05-17T01:22:32.265475629Z  82/97 [=======================>----]  84%
+2025-05-17T01:22:33.16429176Z  86/97 [========================>---]  88%
+2025-05-17T01:22:34.267122011Z  88/97 [=========================>--]  90%
+2025-05-17T01:22:35.366943145Z  93/97 [==========================>-]  95%
+2025-05-17T01:22:42.768417326Z  96/97 [===========================>]  98%
+2025-05-17T01:22:42.768440377Z  97/97 [============================] 100%
+2025-05-17T01:22:43.087238325Z Package livewire-ui/modal is abandoned, you should avoid using it. Use wire-elements/modal instead.
+2025-05-17T01:22:43.087264516Z Generating optimized autoload files
+2025-05-17T01:22:46.547465108Z ==> Detected a new open port HTTP:80
+2025-05-17T01:22:55.271481749Z > Illuminate\Foundation\ComposerScripts::postAutoloadDump
+2025-05-17T01:22:55.377184114Z > @php artisan package:discover --ansi
+2025-05-17T01:22:57.26994787Z 
+2025-05-17T01:22:57.269987601Z    INFO  Discovering packages.  
+2025-05-17T01:22:57.269994471Z 
+2025-05-17T01:22:57.277049743Z   laravel/sanctum ....................................................... DONE
+2025-05-17T01:22:57.364019256Z   laravel/tinker ........................................................ DONE
+2025-05-17T01:22:57.366350116Z   livewire-ui/modal ..................................................... DONE
+2025-05-17T01:22:57.368768978Z   livewire/flux ......................................................... DONE
+2025-05-17T01:22:57.371012376Z   livewire/livewire ..................................................... DONE
+2025-05-17T01:22:57.373377397Z   livewire/volt ......................................................... DONE
+2025-05-17T01:22:57.375742918Z   nesbot/carbon ......................................................... DONE
+2025-05-17T01:22:57.463517481Z   nunomaduro/termwind ................................................... DONE
+2025-05-17T01:22:57.46545041Z   spatie/laravel-medialibrary ........................................... DONE
+2025-05-17T01:22:57.465576504Z 
+2025-05-17T01:22:57.56901654Z 63 packages you are using are looking for funding.
+2025-05-17T01:22:57.569042311Z Use the `composer fund` command to find out more!
+2025-05-17T01:22:57.774060256Z Caching config...
+2025-05-17T01:22:59.777406023Z [2025-05-17 01:22:59] production.ERROR: Command "config:" is ambiguous.
+2025-05-17T01:22:59.777437124Z Did you mean one of these?
+2025-05-17T01:22:59.777440424Z     config:cache   Create a cache file for faster configuration loading
+2025-05-17T01:22:59.777443595Z     config:clear   Remove the configuration cache file
+2025-05-17T01:22:59.777446135Z     config:show    Display all of the values for a given configuration ...
+2025-05-17T01:22:59.777449455Z     config:publish Publish configuration files to your application. {"exception":"[object] (Symfony\\Component\\Console\\Exception\\CommandNotFoundException(code: 0): Command \"config:\" is ambiguous.
+2025-05-17T01:22:59.777467315Z Did you mean one of these?
+2025-05-17T01:22:59.777470425Z     config:cache   Create a cache file for faster configuration loading
+2025-05-17T01:22:59.777473155Z     config:clear   Remove the configuration cache file
+2025-05-17T01:22:59.777474955Z     config:show    Display all of the values for a given configuration ...
+2025-05-17T01:22:59.777477605Z     config:publish Publish configuration files to your application. at /var/www/html/vendor/symfony/console/Application.php:767)
+2025-05-17T01:22:59.777479285Z [stacktrace]
+2025-05-17T01:22:59.777481185Z #0 /var/www/html/vendor/symfony/console/Application.php(284): Symfony\\Component\\Console\\Application->find('config:')
+2025-05-17T01:22:59.777483645Z #1 /var/www/html/vendor/symfony/console/Application.php(193): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+2025-05-17T01:22:59.777490586Z #2 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+2025-05-17T01:22:59.777492406Z #3 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+2025-05-17T01:22:59.777494926Z #4 /var/www/html/artisan(16): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+2025-05-17T01:22:59.777496956Z #5 {main}
+2025-05-17T01:22:59.777498636Z "} 
+2025-05-17T01:22:59.871888889Z 
+2025-05-17T01:22:59.87191174Z    ERROR  Command "config:" is ambiguous. Did you mean one of these?  
+2025-05-17T01:22:59.87191475Z 
+2025-05-17T01:22:59.87384244Z   ⇂ config:cache  
+2025-05-17T01:22:59.87385456Z   ⇂ config:clear  
+2025-05-17T01:22:59.873870741Z   ⇂ config:show  
+2025-05-17T01:22:59.87387385Z   ⇂ config:publish  
+2025-05-17T01:22:59.873876321Z 
+2025-05-17T01:22:59.97394511Z Caching routes...
+2025-05-17T01:23:02.074198586Z [2025-05-17 01:23:02] production.ERROR: Command "route:" is ambiguous.
+2025-05-17T01:23:02.074229147Z Did you mean one of these?
+2025-05-17T01:23:02.074233577Z     route:cache Create a route cache file for faster route registration
+2025-05-17T01:23:02.074238447Z     route:clear Remove the route cache file
+2025-05-17T01:23:02.074243007Z     route:list  List all registered routes. {"exception":"[object] (Symfony\\Component\\Console\\Exception\\CommandNotFoundException(code: 0): Command \"route:\" is ambiguous.
+2025-05-17T01:23:02.074246737Z Did you mean one of these?
+2025-05-17T01:23:02.074251067Z     route:cache Create a route cache file for faster route registration
+2025-05-17T01:23:02.074254977Z     route:clear Remove the route cache file
+2025-05-17T01:23:02.074259217Z     route:list  List all registered routes. at /var/www/html/vendor/symfony/console/Application.php:767)
+2025-05-17T01:23:02.074262888Z [stacktrace]
+2025-05-17T01:23:02.074267278Z #0 /var/www/html/vendor/symfony/console/Application.php(284): Symfony\\Component\\Console\\Application->find('route:')
+2025-05-17T01:23:02.074271948Z #1 /var/www/html/vendor/symfony/console/Application.php(193): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+2025-05-17T01:23:02.074276518Z #2 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+2025-05-17T01:23:02.074303939Z #3 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+2025-05-17T01:23:02.074307119Z #4 /var/www/html/artisan(16): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+2025-05-17T01:23:02.074309329Z #5 {main}
+2025-05-17T01:23:02.074311379Z "} 
+2025-05-17T01:23:02.168195959Z 
+2025-05-17T01:23:02.168252051Z    ERROR  Command "route:" is ambiguous. Did you mean one of these?  
+2025-05-17T01:23:02.168256141Z 
+2025-05-17T01:23:02.16975565Z   ⇂ route:cache  
+2025-05-17T01:23:02.16977247Z   ⇂ route:clear  
+2025-05-17T01:23:02.16977541Z   ⇂ route:list  
+2025-05-17T01:23:02.16977769Z 
+2025-05-17T01:23:02.268654069Z Publishing cloudinary provider...
+2025-05-17T01:23:04.077312057Z 
+2025-05-17T01:23:04.077384439Z    INFO  No publishable resources for tag [].  
+2025-05-17T01:23:04.077391189Z 
+2025-05-17T01:23:05.673249781Z 2025-05-17 01:23:05,673 WARN No file matches via include "/etc/supervisor/conf.d/*.conf"
+2025-05-17T01:23:05.673278092Z 2025-05-17 01:23:05,673 INFO Set uid to user 0 succeeded
+2025-05-17T01:23:05.763467547Z 2025-05-17 01:23:05,763 INFO RPC interface 'supervisor' initialized
+2025-05-17T01:23:05.76354918Z 2025-05-17 01:23:05,763 CRIT Server 'unix_http_server' running without any HTTP authentication checking
+2025-05-17T01:23:05.763829637Z 2025-05-17 01:23:05,763 INFO supervisord started with pid 1
+2025-05-17T01:23:06.767070681Z 2025-05-17 01:23:06,766 INFO spawned: 'php-fpm' with pid 279
+2025-05-17T01:23:06.775866357Z 2025-05-17 01:23:06,775 INFO spawned: 'nginx' with pid 280
+2025-05-17T01:23:06.97264408Z 2025/05/17 01:23:06 [notice] 280#280: using the "epoll" event method
+2025-05-17T01:23:06.9730154Z 2025/05/17 01:23:06 [notice] 280#280: nginx/1.24.0
+2025-05-17T01:23:06.9730211Z 2025/05/17 01:23:06 [notice] 280#280: OS: Linux 6.8.0-1023-aws
+2025-05-17T01:23:06.97302419Z 2025/05/17 01:23:06 [notice] 280#280: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2025-05-17T01:23:07.065371721Z 2025/05/17 01:23:06 [notice] 280#280: start worker processes
+2025-05-17T01:23:07.065390551Z 2025/05/17 01:23:06 [notice] 280#280: start worker process 281
+2025-05-17T01:23:07.065393732Z 2025/05/17 01:23:06 [notice] 280#280: start worker process 282
+2025-05-17T01:23:07.065396422Z 2025/05/17 01:23:06 [notice] 280#280: start worker process 283
+2025-05-17T01:23:07.065399092Z 2025/05/17 01:23:06 [notice] 280#280: start worker process 284
+2025-05-17T01:23:07.065401492Z 2025/05/17 01:23:06 [notice] 280#280: start worker process 285
+2025-05-17T01:23:07.065404032Z 2025/05/17 01:23:06 [notice] 280#280: start worker process 286
+2025-05-17T01:23:07.065406362Z 2025/05/17 01:23:06 [notice] 280#280: start worker process 287
+2025-05-17T01:23:07.065408862Z 2025/05/17 01:23:06 [notice] 280#280: start worker process 288
+2025-05-17T01:23:07.465496926Z [17-May-2025 01:23:07] NOTICE: fpm is running, pid 279
+2025-05-17T01:23:07.465514977Z [17-May-2025 01:23:07] NOTICE: ready to handle connections
+2025-05-17T01:23:08.465653581Z 2025-05-17 01:23:08,465 INFO success: php-fpm entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2025-05-17T01:23:08.465701482Z 2025-05-17 01:23:08,465 INFO success: nginx entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2025-05-17T01:23:10.677031582Z 127.0.0.1 - - [17/May/2025:01:23:10 +0000] "HEAD / HTTP/1.1" 200 0 "-" "Go-http-client/1.1"
+2025-05-17T01:23:12.659527322Z 2025/05/17 01:23:12 [info] 281#281: *3 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:23:12.660601889Z 2025/05/17 01:23:12 [info] 285#285: *4 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:23:12.661359919Z 2025/05/17 01:23:12 [info] 286#286: *5 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:23:12.857736854Z ==> Your service is live 🎉
+2025-05-17T01:23:14.0764121Z ::1 - - [17/May/2025:01:23:14 +0000] "GET / HTTP/1.1" 200 29816 "-" "Go-http-client/2.0"
+2025-05-17T01:23:17.656489887Z 2025/05/17 01:23:17 [info] 288#288: *8 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:23:22.656799179Z 2025/05/17 01:23:22 [info] 287#287: *9 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:23:23.579442965Z ::1 - - [17/May/2025:01:23:23 +0000] "GET / HTTP/1.1" 200 29816 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+2025-05-17T01:23:25.273174871Z 2025/05/17 01:23:25 [error] 281#281: *10 open() "/var/www/html/public/images/logo.png" failed (2: No such file or directory), client: ::1, server: _, request: "GET /images/logo.png HTTP/1.1", host: "jambangan-website-latest.onrender.com", referrer: "https://jambangan-website-latest.onrender.com/"
+2025-05-17T01:23:25.273243953Z ::1 - - [17/May/2025:01:23:25 +0000] "GET /images/logo.png HTTP/1.1" 404 485 "https://jambangan-website-latest.onrender.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+2025-05-17T01:23:27.656439383Z 2025/05/17 01:23:27 [info] 284#284: *12 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:23:32.655965866Z 2025/05/17 01:23:32 [info] 283#283: *13 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:23:37.656205507Z 2025/05/17 01:23:37 [info] 282#282: *14 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:23:42.658619284Z 2025/05/17 01:23:42 [info] 281#281: *15 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:23:42.658645445Z 2025/05/17 01:23:42 [info] 281#281: *16 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:23:46.886873143Z ::1 - - [17/May/2025:01:23:46 +0000] "GET / HTTP/1.1" 200 29785 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+2025-05-17T01:23:47.360912543Z ==> Detected a new open port HTTP:80
+2025-05-17T01:23:47.656456074Z 2025/05/17 01:23:47 [info] 282#282: *19 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:23:52.418462154Z ::1 - - [17/May/2025:01:23:52 +0000] "GET /login HTTP/1.1" 404 485 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+2025-05-17T01:23:52.656549462Z 2025/05/17 01:23:52 [info] 282#282: *21 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:23:53.016896182Z ::1 - - [17/May/2025:01:23:53 +0000] "GET /favicon.ico HTTP/1.1" 200 0 "https://jambangan-website-latest.onrender.com/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+2025-05-17T01:23:57.658094288Z 2025/05/17 01:23:57 [info] 282#282: *22 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:23:59.555498825Z ::1 - - [17/May/2025:01:23:59 +0000] "GET /register HTTP/1.1" 404 485 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+2025-05-17T01:24:02.656185025Z 2025/05/17 01:24:02 [info] 282#282: *24 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:24:07.656446359Z 2025/05/17 01:24:07 [info] 282#282: *25 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:24:10.998362298Z ::1 - - [17/May/2025:01:24:10 +0000] "GET /admin HTTP/1.1" 404 485 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+2025-05-17T01:24:12.656944709Z 2025/05/17 01:24:12 [info] 282#282: *28 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:24:12.657047851Z 2025/05/17 01:24:12 [info] 282#282: *27 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:24:12.962663044Z 2025-05-17 01:24:12,962 WARN received SIGQUIT indicating exit request
+2025-05-17T01:24:12.96297229Z 2025/05/17 01:24:12 [notice] 277#277: signal 3 (SIGQUIT) received from 1, shutting down
+2025-05-17T01:24:12.963341487Z 2025-05-17 01:24:12,962 INFO waiting for php-fpm, nginx to die
+2025-05-17T01:24:12.963359137Z 2025/05/17 01:24:12 [notice] 281#281: gracefully shutting down
+2025-05-17T01:24:12.963366497Z 2025/05/17 01:24:12 [notice] 278#278: gracefully shutting down
+2025-05-17T01:24:12.963371238Z 2025/05/17 01:24:12 [notice] 281#281: exiting
+2025-05-17T01:24:12.963375658Z 2025/05/17 01:24:12 [notice] 278#278: exiting
+2025-05-17T01:24:12.963382888Z 2025/05/17 01:24:12 [notice] 284#284: gracefully shutting down
+2025-05-17T01:24:12.963387058Z 2025/05/17 01:24:12 [notice] 284#284: exiting
+2025-05-17T01:24:12.963391628Z 2025/05/17 01:24:12 [notice] 279#279: gracefully shutting down
+2025-05-17T01:24:12.963395738Z 2025/05/17 01:24:12 [notice] 278#278: exit
+2025-05-17T01:24:12.963400008Z 2025/05/17 01:24:12 [notice] 281#281: exit
+2025-05-17T01:24:12.9634869Z 2025/05/17 01:24:12 [notice] 279#279: exiting
+2025-05-17T01:24:12.96349418Z 2025/05/17 01:24:12 [notice] 284#284: exit
+2025-05-17T01:24:12.96349868Z 2025/05/17 01:24:12 [notice] 283#283: gracefully shutting down
+2025-05-17T01:24:12.96350245Z 2025/05/17 01:24:12 [notice] 283#283: exiting
+2025-05-17T01:24:12.96350661Z 2025/05/17 01:24:12 [notice] 279#279: exit
+2025-05-17T01:24:12.964043931Z 2025/05/17 01:24:12 [notice] 283#283: exit
+2025-05-17T01:24:12.964066361Z 2025/05/17 01:24:12 [notice] 280#280: gracefully shutting down
+2025-05-17T01:24:12.964070851Z 2025/05/17 01:24:12 [notice] 280#280: exiting
+2025-05-17T01:24:12.964074671Z 2025/05/17 01:24:12 [notice] 285#285: gracefully shutting down
+2025-05-17T01:24:12.964105582Z 2025/05/17 01:24:12 [notice] 285#285: exiting
+2025-05-17T01:24:12.964110532Z 2025/05/17 01:24:12 [notice] 282#282: gracefully shutting down
+2025-05-17T01:24:12.964114582Z 2025/05/17 01:24:12 [notice] 282#282: exiting
+2025-05-17T01:24:12.964118452Z 2025/05/17 01:24:12 [notice] 280#280: exit
+2025-05-17T01:24:12.964122312Z 2025/05/17 01:24:12 [notice] 285#285: exit
+2025-05-17T01:24:12.965254844Z 2025/05/17 01:24:12 [notice] 282#282: exit
+2025-05-17T01:24:12.983102699Z 2025/05/17 01:24:12 [notice] 277#277: signal 17 (SIGCHLD) received from 281
+2025-05-17T01:24:12.983167731Z 2025/05/17 01:24:12 [notice] 277#277: worker process 279 exited with code 0
+2025-05-17T01:24:12.983172841Z 2025/05/17 01:24:12 [notice] 277#277: worker process 280 exited with code 0
+2025-05-17T01:24:12.983177191Z 2025/05/17 01:24:12 [notice] 277#277: worker process 281 exited with code 0
+2025-05-17T01:24:12.983181701Z 2025/05/17 01:24:12 [notice] 277#277: signal 29 (SIGIO) received
+2025-05-17T01:24:12.983185321Z 2025/05/17 01:24:12 [notice] 277#277: signal 17 (SIGCHLD) received from 279
+2025-05-17T01:24:12.983188841Z 2025/05/17 01:24:12 [notice] 277#277: signal 17 (SIGCHLD) received from 278
+2025-05-17T01:24:12.983192571Z 2025/05/17 01:24:12 [notice] 277#277: worker process 278 exited with code 0
+2025-05-17T01:24:12.983196201Z 2025/05/17 01:24:12 [notice] 277#277: signal 29 (SIGIO) received
+2025-05-17T01:24:12.983208241Z 2025/05/17 01:24:12 [notice] 277#277: signal 17 (SIGCHLD) received from 282
+2025-05-17T01:24:12.983210941Z 2025/05/17 01:24:12 [notice] 277#277: worker process 282 exited with code 0
+2025-05-17T01:24:12.983213361Z 2025/05/17 01:24:12 [notice] 277#277: worker process 283 exited with code 0
+2025-05-17T01:24:12.983215872Z 2025/05/17 01:24:12 [notice] 277#277: signal 29 (SIGIO) received
+2025-05-17T01:24:12.983218322Z 2025/05/17 01:24:12 [notice] 277#277: signal 17 (SIGCHLD) received from 283
+2025-05-17T01:24:12.983220612Z 2025/05/17 01:24:12 [notice] 277#277: signal 17 (SIGCHLD) received from 284
+2025-05-17T01:24:12.983225462Z 2025/05/17 01:24:12 [notice] 277#277: worker process 284 exited with code 0
+2025-05-17T01:24:12.983227842Z 2025/05/17 01:24:12 [notice] 277#277: signal 29 (SIGIO) received
+2025-05-17T01:24:12.987716619Z 2025/05/17 01:24:12 [notice] 277#277: signal 17 (SIGCHLD) received from 285
+2025-05-17T01:24:12.987727389Z 2025/05/17 01:24:12 [notice] 277#277: worker process 285 exited with code 0
+2025-05-17T01:24:12.987730779Z 2025/05/17 01:24:12 [notice] 277#277: exit
+2025-05-17T01:24:12.988080056Z 2025-05-17 01:24:12,987 INFO stopped: nginx (exit status 0)
+2025-05-17T01:24:12.988417762Z [17-May-2025 01:24:12] NOTICE: Finishing ...
+2025-05-17T01:24:15.991634499Z 2025-05-17 01:24:15,991 INFO waiting for php-fpm to die
+2025-05-17T01:24:17.657356227Z 2025/05/17 01:24:17 [info] 282#282: *29 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:24:18.994646972Z 2025-05-17 01:24:18,994 INFO waiting for php-fpm to die
+2025-05-17T01:24:21.997593474Z 2025-05-17 01:24:21,997 INFO waiting for php-fpm to die
+2025-05-17T01:24:22.656513153Z 2025/05/17 01:24:22 [info] 282#282: *30 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:24:22.998549039Z 2025-05-17 01:24:22,998 WARN killing 'php-fpm' (276) with SIGKILL
+2025-05-17T01:24:23.999742068Z 2025-05-17 01:24:23,999 WARN stopped: php-fpm (terminated by SIGKILL)
+2025-05-17T01:24:27.655887485Z 2025/05/17 01:24:27 [info] 282#282: *31 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:24:28.773888169Z ::1 - - [17/May/2025:01:24:28 +0000] "GET / HTTP/1.1" 200 29816 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+2025-05-17T01:24:30.373187352Z ::1 - - [17/May/2025:01:24:30 +0000] "GET / HTTP/1.1" 200 29816 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+2025-05-17T01:24:32.656591802Z 2025/05/17 01:24:32 [info] 282#282: *35 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:24:37.657220448Z 2025/05/17 01:24:37 [info] 282#282: *36 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:24:42.656261742Z 2025/05/17 01:24:42 [info] 282#282: *38 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:24:42.656291663Z 2025/05/17 01:24:42 [info] 282#282: *37 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:24:47.657935555Z 2025/05/17 01:24:47 [info] 282#282: *39 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:24:48.234510836Z ==> Detected a new open port HTTP:80
+2025-05-17T01:24:52.656494148Z 2025/05/17 01:24:52 [info] 281#281: *40 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:24:57.656882268Z 2025/05/17 01:24:57 [info] 281#281: *41 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:25:02.657103254Z 2025/05/17 01:25:02 [info] 281#281: *42 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:25:07.65612274Z 2025/05/17 01:25:07 [info] 281#281: *43 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:25:12.656579663Z 2025/05/17 01:25:12 [info] 281#281: *44 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:25:12.656611114Z 2025/05/17 01:25:12 [info] 285#285: *45 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:25:17.656641526Z 2025/05/17 01:25:17 [info] 281#281: *46 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:25:22.656960396Z 2025/05/17 01:25:22 [info] 281#281: *47 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:25:27.656319692Z 2025/05/17 01:25:27 [info] 281#281: *48 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:25:32.656191531Z 2025/05/17 01:25:32 [info] 281#281: *49 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:25:37.656733278Z 2025/05/17 01:25:37 [info] 281#281: *50 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:25:42.656894915Z 2025/05/17 01:25:42 [info] 281#281: *52 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:25:42.657230754Z 2025/05/17 01:25:42 [info] 281#281: *51 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:25:47.656037717Z 2025/05/17 01:25:47 [info] 281#281: *53 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:25:49.282801408Z ==> Detected a new open port HTTP:80
+2025-05-17T01:25:52.274234407Z ::1 - - [17/May/2025:01:25:52 +0000] "GET / HTTP/1.1" 200 29816 "-" "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36"
+2025-05-17T01:25:52.600264003Z ::1 - - [17/May/2025:01:25:52 +0000] "GET /images/bookings.svg HTTP/1.1" 200 782 "https://jambangan-website-latest.onrender.com/" "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36"
+2025-05-17T01:25:52.606635647Z ::1 - - [17/May/2025:01:25:52 +0000] "GET /images/LogoColored.png HTTP/1.1" 200 74155 "https://jambangan-website-latest.onrender.com/" "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36"
+2025-05-17T01:25:52.610145308Z ::1 - - [17/May/2025:01:25:52 +0000] "GET /images/search.svg HTTP/1.1" 200 376 "https://jambangan-website-latest.onrender.com/" "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36"
+2025-05-17T01:25:52.6560143Z 2025/05/17 01:25:52 [info] 281#281: *56 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:25:53.000508802Z ::1 - - [17/May/2025:01:25:52 +0000] "GET /images/best2.png HTTP/1.1" 200 3023509 "https://jambangan-website-latest.onrender.com/" "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36"
+2025-05-17T01:25:57.657874543Z 2025/05/17 01:25:57 [info] 285#285: *57 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:26:02.659310694Z 2025/05/17 01:26:02 [info] 285#285: *58 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:26:07.656214109Z 2025/05/17 01:26:07 [info] 285#285: *59 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:26:12.656611405Z 2025/05/17 01:26:12 [info] 285#285: *60 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:26:12.657066397Z 2025/05/17 01:26:12 [info] 285#285: *61 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:26:17.656624881Z 2025/05/17 01:26:17 [info] 285#285: *62 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:26:22.657203982Z 2025/05/17 01:26:22 [info] 285#285: *63 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:26:27.656555012Z 2025/05/17 01:26:27 [info] 285#285: *64 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:26:32.65624467Z 2025/05/17 01:26:32 [info] 285#285: *65 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:26:37.656266058Z 2025/05/17 01:26:37 [info] 285#285: *66 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:26:42.656702117Z 2025/05/17 01:26:42 [info] 285#285: *67 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:26:42.656741828Z 2025/05/17 01:26:42 [info] 285#285: *68 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:26:47.656695085Z 2025/05/17 01:26:47 [info] 285#285: *69 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:26:50.196064541Z ==> Detected a new open port HTTP:80
+2025-05-17T01:26:52.656767614Z 2025/05/17 01:26:52 [info] 285#285: *70 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:26:57.656547817Z 2025/05/17 01:26:57 [info] 285#285: *71 client closed connection while waiting for request, client: 10.213.26.192, server: 0.0.0.0:80
+2025-05-17T01:27:00.544067397Z ==> Detected service running on port 80
+2025-05-17T01:27:00.680585601Z ==> Docs on specifying a port: https://render.com/docs/web-services#port-binding

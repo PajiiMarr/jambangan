@@ -17,11 +17,15 @@ return Application::configure(basePath: dirname(__DIR__))
             \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            'cors',
+            'bindings',
         ]);
 
         $middleware->alias([
             'request.accepted' => \App\Http\Middleware\EnsureRequestStatusIsAccepted::class,
             'is_superadmin' => \App\Http\Middleware\EnsureUserIsSuperAdmin::class,
+            'cors' => \Illuminate\Http\Middleware\HandleCors::class,
+            'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
 
         ]);
     })
