@@ -266,7 +266,7 @@
                             @endisset
                             <flux:menu.item icon="pen" data-edit-event>Edit</flux:menu.item>
                             <flux:menu.separator />
-                            <flux:menu.item variant="danger" icon="trash">Delete</flux:menu.item>
+                            <flux:menu.item variant="danger" icon="trash" data-delete-event>Delete</flux:menu.item>
                         </flux:menu>
                     </flux:dropdown>
                 </div>
@@ -321,34 +321,32 @@
             </div>
         </flux:modal>
 
-        <flux:modal.trigger id="publish-event-modal-trigger" name="publish-event" style="display: none;">
-            <flux:button>Publish Event</flux:button>
+        <flux:modal.trigger id="delete-event-modal-trigger" name="delete-event" style="display: none;">
+            <flux:button>Delete Event</flux:button>
         </flux:modal.trigger>
 
         <flux:modal 
-            id="publish-event" 
-            name="publish-event" 
-            data-modal-name="publish-event"
+            id="delete-event" 
+            name="delete-event" 
+            data-modal-name="delete-event"
             variant="dialog" 
             class="modal-center md:w-150"
         >
             <div class="space-y-6">
                 <div>
-                    <flux:heading size="lg">Publish Event</flux:heading>
-                    <flux:text class="mt-2">Are you sure you want to publish this event?</flux:text>
+                    <flux:heading size="lg">Delete Event</flux:heading>
+                    <flux:text class="mt-2">Are you sure you want to delete this event?</flux:text>
                 </div>
-                <input type="hidden" id="publish_event_name" />
-                <input type="hidden" id="publish_event_id" />
                 <div class="flex">
                     <flux:spacer />
                     <div class="flex justify-between w-full">
-                        <flux:button wire:click="modal_close('publish-event')" class="w-1/2 mx-1" variant="filled">Cancel</flux:button>
-                        <flux:button id="confirm-publish-event" class="w-1/2 mx-1" variant="primary">Publish</flux:button>
+                        <flux:button wire:click="modal_close('delete-event')" class="w-1/2 mx-1" variant="filled">Cancel</flux:button>
+                        <flux:button id="save-delete-event" class="w-1/2 mx-1" variant="primary">Delete</flux:button>
                     </div>
                 </div>
             </div>
         </flux:modal>
-        
+
     </div>
 
     @script
@@ -443,6 +441,12 @@
                     document.getElementById('edit-event-modal-trigger').click();
                 }
 
+                if (event.target.closest('[data-delete-event]')) {
+                    const eventData = window.selectedEventData;
+
+                    document.getElementById('delete-event-modal-trigger').click();
+                }
+
                 if (event.target.closest('[data-publish-event]')) {
                     const eventData = window.selectedEventData;
                     
@@ -480,6 +484,16 @@
                         }
                     });
                 }
+            });
+
+
+
+            document.getElementById('save-delete-event').addEventListener('click', function () {
+                Livewire.dispatch("deleteEvent", {
+                    data: {
+                        id: window.selectedEventDataId,
+                    }
+                });
             });
 
             document.getElementById('confirm-publish-event').addEventListener('click', function () {

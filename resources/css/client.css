@@ -98,3 +98,17 @@ body, p {
     font-family: Arial, Helvetica, sans-serif; /* Default system serif (Georgia, Times New Roman) */
     font-weight: normal;
 }
+
+html {
+    scroll-behavior: smooth;
+}
+
+section {
+    transition: background-color 0.3s ease-in-out;
+}
+
+section {
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+}
+

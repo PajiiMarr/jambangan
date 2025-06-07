@@ -1,26 +1,27 @@
-import { defineConfig } from 'vite';
+import {
+    defineConfig
+} from 'vite';
 import laravel from 'laravel-vite-plugin';
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
     plugins: [
         laravel({
-            input: [
-                'resources/css/app.css',
-                'resources/js/app.js'
-            ],
-            refresh: true,
+            input: ['resources/css/app.css',
+                 'resources/js/app.js',
+                 'resources/css/client.css',
+                 'resources/css/aos.css',
+                 'resources/js/aos.js',
+                 'resources/css/fullcalendar.css',
+                 'resources/js/carousel.js',
+                 'resources/js/alpine.js',
+                 'resources/js/fullcalendar.js',
+                ],
+            refresh: [`resources/views/**/*`],
         }),
+        tailwindcss(),
     ],
-    build: {
-        manifest: true,
-        outDir: 'public/build',
-        emptyOutDir: true,
-        rollupOptions: {
-            output: {
-                entryFileNames: `[name].js`,
-                chunkFileNames: `[name].js`,
-                assetFileNames: `[name].[ext]`
-            }
-        }
+    server: {
+        cors: true,
     },
 });

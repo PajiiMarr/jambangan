@@ -5,15 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $post->title }} - Jambangan Cultural Dance</title>
     
-    <!-- Stylesheets -->
-    @vite(['resources/css/landingpage.css', 'resources/js/app.js'])
-    <link rel="icon" type="image/svg+xml" href="{{ asset('images/logo.png') }}">
-    <link href="https://fonts.google.com/specimen/DM+Serif+Text?categoryFilters=Feeling:%2FExpressive%2FBusiness" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-    
-    <!-- Scripts (deferred) -->
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js" defer></script>
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/logo.svg') }}">
+    <link href="https://fonts.google.com/specimen/Lato" rel="stylesheet">
+    @vite('resources/css/client.css', 'resources/css/aos.css')
+
 </head>
 
 <body class="bg-black">
@@ -176,38 +171,8 @@
             </div>
         </div>
     </footer>
+    @vite('resources/js/aos.js', 'resources/js/carousel.js', 'resources/js/alpine.js')
 
-    <!-- Scripts -->
-    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    
-    <script>
-        // Initialize AOS
-        AOS.init({
-            once: false,
-            duration: 800,
-            easing: 'ease-in-out',
-            offset: 100,
-            delay: 100,
-        });
-    </script>
-
-    <style>
-        /* Smooth scroll behavior */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* Optional: Add animation for section backgrounds */
-        section {
-            transition: background-color 0.3s ease-in-out;
-        }
-
-        /* Improve animation performance */
-        section {
-            will-change: transform, opacity;
-            backface-visibility: hidden;
-        }
-    </style>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js" defer></script>
 </body>
 </html> 

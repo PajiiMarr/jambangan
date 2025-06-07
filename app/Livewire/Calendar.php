@@ -278,6 +278,23 @@ class Calendar extends Component
         }
     }
 
+    #[On('deleteEvent')]
+    public function deleteEvent($data = [])
+    {
+        try {
+            $event = Events::findOrFail($data['id']);
+            $event->delete();
+            
+            $this->dispatch('event-deleted', message: 'Event successfully deleted.');
+            
+            $this->events;
+            $this->modal('delete-event')->close();
+            $this->modal('view-event')->close();
+        } catch (\Exception $e) {
+            $this->dispatch('event-delete-error', message: 'Error deleting event: ' . $e->getMessage());
+        }
+    }
+
     private function getEventStatus($start, $end)
     {
         $today = now()->format('Y-m-d');

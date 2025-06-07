@@ -5,15 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jambangan Cultural Dance</title>
     
-    <!-- Stylesheets -->
-    @vite(['resources/css/landingpage.css', 'resources/js/app.js'])
-    <link rel="icon" type="image/svg+xml" href="{{ asset('images/logo.png') }}">
-    <link href="https://fonts.google.com/specimen/Lato" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/logo.svg') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+    @vite('resources/css/client.css', 'resources/css/aos.css')
     
-    <!-- Scripts (deferred) -->
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js" defer></script>
 </head>
 
 <body class="bg-black">
@@ -40,8 +35,9 @@
             });
         }
     }" 
-    :class="!isVisible ? 'opacity-0 translate-y-[-100%]' : 'opacity-100 translate-y-0'"
-    class="fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out transform">
+        :class="!isVisible ? 'opacity-0 translate-y-[-100%]' : 'opacity-100 translate-y-0'"
+        class="fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out transform"
+    >
         
         <div class="absolute inset-0 pointer-events-none"
              :class="scrolled ? 'bg-transparent' : 'bg-gradient-to-b from-black/40 to-transparent'"
@@ -71,47 +67,7 @@
                     </a></li>
                 </ul>
             </div>
-
-            <!-- Utility Buttons -->
-            <div class="flex items-center space-x-4">
-                <div x-data="{ searchOpen: false }" class="relative">
-                    <button @click="searchOpen = true" class="group relative cursor-pointer">
-                        <img src="{{ asset('images/search.svg') }}" 
-                             alt="Search" 
-                             class="h-8 w-8 transition-all duration-300 group-hover:scale-110 group-hover:rotate-12"
-                             :class="searchOpen ? 'opacity-0 scale-0' : 'opacity-100 scale-100'">
-                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-red-500 to-yellow-400 transition-all duration-300 group-hover:w-full"></span>
-                    </button>
-                    
-                    <!-- Search Box -->
-                    <div x-show="searchOpen" 
-                         @click.away="searchOpen = false"
-                         x-transition:enter="ease-out duration-300"
-                         x-transition:enter-start="opacity-0 scale-95"
-                         x-transition:enter-end="opacity-100 scale-100"
-                         x-transition:leave="ease-in duration-200"
-                         x-transition:leave-start="opacity-100 scale-100"
-                         x-transition:leave-end="opacity-0 scale-95"
-                         class="absolute right-0 -top-1 w-64">
-                        <div class="relative">
-                            <input type="text" 
-                                   class="w-full rounded-lg bg-transparent border border-white/20 px-4 py-2 pl-10 text-white placeholder-white/50 focus:outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400/50"
-                                   placeholder="Search..."
-                                   x-model="searchQuery"
-                                   @keyup.enter="performSearch">
-                            <div class="absolute left-3 top-2">
-                                <svg class="h-5 w-5 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <a href="{{ route('bookings-public') }}" class="group relative">
-                    <img src="{{ asset('images/bookings.svg') }}" alt="Booking" class="h-8 w-8 transition-all duration-300 group-hover:scale-110 group-hover:-rotate-12">
-                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-yellow-400 to-red-500 transition-all duration-300 group-hover:w-full"></span>
-                </a>
-            </div>
+            <x-search-booking-icons />
         </div>
     </nav>
 
@@ -474,178 +430,8 @@
     <!-- ==================== -->
     <!-- SCRIPTS -->
     <!-- ==================== -->
-    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    
-    <script>
-        // Carousel functionality
-        let currentSlide = 0;
-        const slides = @json($cover_medias);
-        const captions = slides.map(slide => `${slide.title ?? ''} - ${slide.subtitle ?? ''}`);
-        const slideElements = document.querySelectorAll('.bg-cover');
-        const progressBar = document.getElementById('progress-bar');
-        let progressInterval;
-        let progress = 0;
-        const SLIDE_DURATION = 12000; // 12 seconds in milliseconds
-        const PROGRESS_STEPS = 200;
-        const PROGRESS_INTERVAL = SLIDE_DURATION / PROGRESS_STEPS; // 60ms per step
-    
-        function updateSlide() {
-            // First fade out current slide
-            slideElements[currentSlide].style.opacity = '0';
-            
-            // After fade out, update display and fade in new slide
-            setTimeout(() => {
-                slideElements.forEach((slide, index) => {
-                    slide.style.display = index === currentSlide ? 'block' : 'none';
-                });
-                document.getElementById('slide-caption').textContent = captions[currentSlide];
-                slideElements[currentSlide].style.opacity = '1';
-            }, 300); // Match the CSS transition duration
-        }
-    
-        function resetProgress() {
-            progress = 0;
-            progressBar.style.transition = 'none';
-            progressBar.style.width = '0%';
-            // Force a reflow
-            progressBar.offsetHeight;
-            progressBar.style.transition = 'width 100ms linear';
-            clearInterval(progressInterval);
-            startProgress();
-        }
-    
-        function startProgress() {
-            progressInterval = setInterval(() => {
-                progress += 0.5; // Adjusted for 200 steps
-                progressBar.style.width = `${progress}%`;
-                if (progress >= 100) {
-                    clearInterval(progressInterval);
-                    nextSlide();
-                }
-            }, PROGRESS_INTERVAL);
-        }
-    
-        function nextSlide() {
-            currentSlide = (currentSlide + 1) % slides.length;
-            updateSlide();
-            // Wait for the slide transition to complete before resetting progress
-            setTimeout(resetProgress, 50);
-        }
-    
-        function prevSlide() {
-            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-            updateSlide();
-            // Wait for the slide transition to complete before resetting progress
-            setTimeout(resetProgress, 50);
-        }
-    
-        // Initialize
-        updateSlide();
-        startProgress();
-        
-        // New AOS initialization
-        AOS.init({
-            once: false,
-            duration: 800,
-            easing: 'ease-in-out',
-            offset: 100,
-            delay: 100,
-        });
+    @vite('resources/js/aos.js', 'resources/js/carousel.js', 'resources/js/alpine.js')
 
-        // Performance Carousel Navigation
-        function scrollPerformances(direction) {
-            const container = document.querySelector('.flex.overflow-x-auto');
-            const scrollAmount = 400; // Adjust this value to control scroll distance
-            
-            if (direction === 'left') {
-                container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-            } else {
-                container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-            }
-        }
-    </script>
-
-    <style>
-        @keyframes gradient-shift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        @keyframes text-gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        .animate-gradient-shift {
-            animation: gradient-shift 8s ease infinite;
-        }
-        .animate-text-gradient {
-            background-size: 200% 200%;
-            animation: text-gradient 4s ease infinite;
-        }
-        .animate-bounce {
-            animation: bounce 2s infinite;
-        }
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
-            40% { transform: translateY(-20px) translateX(-50%); }
-            60% { transform: translateY(-10px) translateX(-50%); }
-        }
-
-        /* Smooth scroll behavior */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* Optional: Add animation for section backgrounds */
-        section {
-            transition: background-color 0.3s ease-in-out;
-        }
-
-        /* Improve animation performance */
-        section {
-            will-change: transform, opacity;
-            backface-visibility: hidden;
-        }
-    </style>
-
-    <script>
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('search', () => ({
-                searchOpen: false,
-                searchQuery: '',
-                searchResults: [],
-                
-                performSearch() {
-                    // This is a placeholder for actual search functionality
-                    // You would typically make an API call here
-                    this.searchResults = [
-                        {
-                            id: 1,
-                            type: 'Performance',
-                            title: 'Sample Performance',
-                            description: 'A beautiful cultural dance performance',
-                            url: '#performances'
-                        },
-                        {
-                            id: 2,
-                            type: 'Event',
-                            title: 'Upcoming Event',
-                            description: 'Join us for an amazing cultural showcase',
-                            url: '#upcoming-events'
-                        },
-                        {
-                            id: 3,
-                            type: 'Post',
-                            title: 'Latest News',
-                            description: 'Read about our latest achievements',
-                            url: '#posts'
-                        }
-                    ];
-                }
-            }));
-        });
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js" defer></script>
 </body>
 </html>

@@ -62,3 +62,7 @@ select:focus[data-flux-control] {
 [data-flux-label] {
     @apply text-gray-900 dark:text-white;
 }
+
+body {
+    font-family: 'Lato', sans-serif;
+}

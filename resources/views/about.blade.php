@@ -6,14 +6,8 @@
     <title>About Us - Jambangan Cultural Dance</title>
     
     <!-- Stylesheets -->
-    @vite(['resources/css/landingpage.css', 'resources/js/app.js'])
-    <link rel="icon" type="image/svg+xml" href="{{ asset('images/logo.png') }}">
-    <link href="https://fonts.google.com/specimen/DM+Serif+Text?categoryFilters=Feeling:%2FExpressive%2FBusiness" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-    
-    <!-- Scripts (deferred) -->
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js" defer></script>
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/logo.svg') }}">
+    @vite('resources/css/client.css', 'resources/css/aos.css')
 </head>
 
 <body class="bg-black">
@@ -85,7 +79,7 @@
         data-aos-easing="ease-in-back"
         data-aos-duration="1000">
         <div class="absolute inset-0 bg-gradient-to-b from-black/40 to-transparent z-10"></div>
-        <div class="absolute inset-0 bg-[url('images/best2.png')] bg-cover bg-center transform scale-110"></div>
+        <div class="absolute inset-0 bg-[asset('images/best2.png')] bg-cover bg-center transform scale-110"></div>
         <div class="relative z-20 text-center px-4">
             <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white mb-4">
                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-red-500 to-yellow-400 animate-text-gradient">
@@ -270,36 +264,8 @@
     <!-- ==================== -->
     <!-- SCRIPTS -->
     <!-- ==================== -->
-    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    @vite('resources/js/aos.js', 'resources/js/alpine.js')
     
-    <script>
-        // Initialize AOS
-        AOS.init({
-            once: false,
-            duration: 800,
-            easing: 'ease-in-out',
-            offset: 100,
-            delay: 100,
-        });
-    </script>
-
-    <style>
-        /* Smooth scroll behavior */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* Optional: Add animation for section backgrounds */
-        section {
-            transition: background-color 0.3s ease-in-out;
-        }
-
-        /* Improve animation performance */
-        section {
-            will-change: transform, opacity;
-            backface-visibility: hidden;
-        }
-    </style>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js" defer></script>
 </body>
 </html> 

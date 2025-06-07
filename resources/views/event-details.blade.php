@@ -6,14 +6,9 @@
     <title>{{ $event->title }} - Jambangan Cultural Dance</title>
     
     <!-- Stylesheets -->
-    @vite(['resources/css/landingpage.css', 'resources/js/app.js'])
-    <link rel="icon" type="image/svg+xml" href="{{ asset('images/logo.png') }}">
-    <link href="https://fonts.google.com/specimen/DM+Serif+Text?categoryFilters=Feeling:%2FExpressive%2FBusiness" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-    
-    <!-- Scripts (deferred) -->
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js" defer></script>
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/logo.svg') }}">
+    @vite('resources/css/client.css', 'resources/css/aos.css')
+
 </head>
 
 <body class="bg-black">
@@ -80,7 +75,7 @@
             <div class="absolute inset-0 bg-cover bg-center transform scale-110" 
                  style="background-image: url('{{ 'http://localhost:9000/my-bucket/' . $event->media->file_data }}');"></div>
         @else
-            <div class="absolute inset-0 bg-[url('images/best2.png')] bg-cover bg-center transform scale-110"></div>
+            <div class="absolute inset-0 bg-[asset('images/best2.png')] bg-cover bg-center transform scale-110"></div>
         @endif
         <div class="relative z-20 text-center px-4">
             <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white mb-4">
@@ -191,36 +186,8 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    
-    <script>
-        // Initialize AOS
-        AOS.init({
-            once: false,
-            duration: 800,
-            easing: 'ease-in-out',
-            offset: 100,
-            delay: 100,
-        });
-    </script>
+    @vite('resources/js/aos.js', 'resources/js/carousel.js', 'resources/js/alpine.js')
 
-    <style>
-        /* Smooth scroll behavior */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* Optional: Add animation for section backgrounds */
-        section {
-            transition: background-color 0.3s ease-in-out;
-        }
-
-        /* Improve animation performance */
-        section {
-            will-change: transform, opacity;
-            backface-visibility: hidden;
-        }
-    </style>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js" defer></script>
 </body>
 </html> 

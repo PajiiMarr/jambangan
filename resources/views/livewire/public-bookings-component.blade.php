@@ -27,15 +27,15 @@
                                     class="
                                         bg-[#1a1a1a] 
                                         border-red-900/30 
-                                        text-white 
+                                        text-black 
                                         placeholder-gray-500 
                                         focus:border-yellow-500 
                                         focus:ring-yellow-500
                                         [&_.flux-input-label]:text-yellow-400
                                         [&_.flux-input-label]:dark:text-yellow-300
-                                        [&_input]:text-white
+                                        [&_input]:text-black
                                         [&_input]:placeholder:text-gray-500
-                                        [&_[data-flux-label]]:text-white
+                                        [&_[data-flux-label]]:text-black
                                     "
                                 />
                                 @error('name') <span class="text-red-400 text-sm">{{ $message }}</span> @enderror
@@ -49,13 +49,13 @@
                                     class="
                                         bg-[#1a1a1a] 
                                         border-red-900/30 
-                                        text-white 
+                                        text-black 
                                         placeholder-gray-500 
                                         focus:border-yellow-500 
                                         focus:ring-yellow-500
                                         [&_.flux-input-label]:text-yellow-400
                                         [&_.flux-input-label]:dark:text-yellow-300
-                                        [&_input]:text-white
+                                        [&_input]:text-black
                                         [&_input]:placeholder:text-gray-500
                                     "
                                 />
@@ -70,13 +70,13 @@
                                     class="
                                         bg-[#1a1a1a] 
                                         border-red-900/30 
-                                        text-white 
+                                        text-black 
                                         placeholder-gray-500 
                                         focus:border-yellow-500 
                                         focus:ring-yellow-500
                                         [&_.flux-input-label]:text-yellow-400
                                         [&_.flux-input-label]:dark:text-yellow-300
-                                        [&_input]:text-white
+                                        [&_input]:text-black
                                         [&_input]:placeholder:text-gray-500
                                     "
                                 />
@@ -91,13 +91,13 @@
                                     class="
                                         bg-[#1a1a1a] 
                                         border-red-900/30 
-                                        text-white 
+                                        text-black 
                                         placeholder-gray-500 
                                         focus:border-yellow-500 
                                         focus:ring-yellow-500
                                         [&_.flux-input-label]:text-yellow-400
                                         [&_.flux-input-label]:dark:text-yellow-300
-                                        [&_input]:text-white
+                                        [&_input]:text-black
                                         [&_input]:placeholder:text-gray-500
                                     "
                                 />
@@ -112,7 +112,7 @@
                                     class="
                                         bg-[#1a1a1a] 
                                         border-red-900/30 
-                                        text-white 
+                                        text-black 
                                         placeholder-gray-500 
                                         focus:border-yellow-500 
                                         focus:ring-yellow-500
@@ -121,7 +121,7 @@
                                         [&::-webkit-calendar-picker-indicator]:opacity-50
                                         [&_.flux-input-label]:text-yellow-400
                                         [&_.flux-input-label]:dark:text-yellow-300
-                                        [&_input]:text-white
+                                        [&_input]:text-black
                                         [&_input]:placeholder:text-gray-500
                                     "
                                 />
@@ -136,7 +136,7 @@
                                     class="
                                         bg-[#1a1a1a] 
                                         border-red-900/30 
-                                        text-white 
+                                        text-black 
                                         placeholder-gray-500 
                                         focus:border-yellow-500 
                                         focus:ring-yellow-500
@@ -145,7 +145,7 @@
                                         [&::-webkit-calendar-picker-indicator]:opacity-50
                                         [&_.flux-input-label]:text-yellow-400
                                         [&_.flux-input-label]:dark:text-yellow-300
-                                        [&_input]:text-white
+                                        [&_input]:text-black
                                         [&_input]:placeholder:text-gray-500
                                     "
                                 />
@@ -162,13 +162,13 @@
                                 class="
                                     bg-[#1a1a1a] 
                                     border-red-900/30 
-                                    text-white 
+                                    text-black 
                                     placeholder-gray-500 
                                     focus:border-yellow-500 
                                     focus:ring-yellow-500
                                     [&_.flux-input-label]:text-yellow-400
                                     [&_.flux-input-label]:dark:text-yellow-300
-                                    [&_textarea]:text-white
+                                    [&_textarea]:text-black
                                     [&_textarea]:placeholder:text-gray-500
                                 "
                             />
@@ -200,155 +200,6 @@
     </div>
 
     @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            let bookedRanges = @json($bookedRanges);
-            var calendarEl = document.getElementById('public-bookings-calendar');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                selectable: true,
-                headerToolbar: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'dayGridMonth'
-                },
-                height: 'auto',
-                selectAllow: function(selectInfo) {
-                    const today = new Date();
-                    today.setHours(0,0,0,0);
-                    if (new Date(selectInfo.startStr) < today) {
-                        return false;
-                    }
-                    function toDateString(date) {
-                        return date.toISOString().slice(0, 10);
-                    }
-                    let selStart = new Date(selectInfo.startStr);
-                    let selEnd = new Date(selectInfo.endStr);
-                    selEnd.setDate(selEnd.getDate() - 1);
-                    let selectedDays = [];
-                    let d = new Date(selStart);
-                    while (d <= selEnd) {
-                        selectedDays.push(toDateString(d));
-                        d.setDate(d.getDate() + 1);
-                    }
-                    for (let range of bookedRanges) {
-                        let bookedStart = new Date(range.start);
-                        let bookedEnd = new Date(range.end);
-                        let currentDay = new Date(bookedStart);
-                        while (currentDay <= bookedEnd) {
-                            if (selectedDays.includes(toDateString(currentDay))) {
-                                return false;
-                            }
-                            currentDay.setDate(currentDay.getDate() + 1);
-                        }
-                    }
-                    return true;
-                },
-                dayCellDidMount: function(info) {
-                    const cellDate = new Date(info.date);
-                    cellDate.setHours(0, 0, 0, 0);
-                    const today = new Date();
-                    today.setHours(0, 0, 0, 0);
-                    const dayNumberEl = info.el.querySelector('.fc-daygrid-day-number');
-                    
-                    // Base styling for calendar cells
-                    info.el.classList.add(
-                        'transition-all', 
-                        'duration-200', 
-                        'ease-in-out',
-                        'dark:bg-[#1a1a1a]',
-                        'bg-white'
-                    );
-
-                    if (cellDate < today) {
-                        info.el.classList.add(
-                            'bg-gray-100', 
-                            'dark:bg-gray-900', 
-                            'cursor-not-allowed',
-                            'opacity-50'
-                        );
-                        if (dayNumberEl) dayNumberEl.classList.add(
-                            'text-gray-400', 
-                            'dark:text-gray-600'
-                        );
-                        return;
-                    }
-                    let isBooked = false;
-                    for (const range of bookedRanges) {
-                        const startDate = new Date(range.start);
-                        startDate.setHours(0,0,0,0);
-                        const endDate = new Date(range.end);
-                        endDate.setHours(0,0,0,0);
-                        if (cellDate >= startDate && cellDate <= endDate) {
-                            isBooked = true;
-                            break;
-                        }
-                    }
-                    if (isBooked) {
-                        info.el.classList.add(
-                            'bg-red-100', 
-                            'dark:bg-red-900/30', 
-                            'cursor-not-allowed', 
-                            'opacity-75'
-                        );
-                        if (dayNumberEl) dayNumberEl.classList.add(
-                            'text-red-500', 
-                            'dark:text-red-300'
-                        );
-                    } else {
-                        info.el.classList.add(
-                            'hover:bg-yellow-50', 
-                            'dark:hover:bg-yellow-900/20', 
-                            'cursor-pointer'
-                        );
-                    }
-                },
-                select: function(info) {
-                    // Always set start date to the first selected date
-                    document.getElementById('modal_booking_start_date').value = info.startStr;
-                    
-                    // If the selection spans multiple days, set end date to the last day of selection
-                    let endDate = new Date(info.endStr);
-                    endDate.setDate(endDate.getDate() - 1); // Subtract one day to make it inclusive
-                    document.getElementById('modal_booking_end_date').value = endDate.toISOString().slice(0, 10);
-                    
-                    // Dispatch input events to trigger Livewire updates
-                    document.getElementById('modal_booking_start_date').dispatchEvent(new Event('input'));
-                    document.getElementById('modal_booking_end_date').dispatchEvent(new Event('input'));
-                },
-                // Custom styling for calendar
-                viewClassNames: function(view) {
-                    return [
-                        'dark:bg-[#121212]',
-                        'dark:text-gray-200',
-                        'text-gray-900'
-                    ];
-                },
-                // Custom styling for header
-                headerClassNames: function() {
-                    return [
-                        'dark:bg-[#1a1a1a]',
-                        'bg-gray-50',
-                        'dark:text-yellow-400',
-                        'text-red-800'
-                    ];
-                }
-            });
-            calendar.render();
-
-            // Auto-set end date to start date if not set or if start date changes
-            document.addEventListener('input', function(e) {
-                if (e.target && e.target.id === 'modal_booking_start_date') {
-                    var startDate = e.target.value;
-                    var endDateInput = document.getElementById('modal_booking_end_date');
-                    if (!endDateInput.value || endDateInput.value < startDate) {
-                        endDateInput.value = startDate;
-                        endDateInput.dispatchEvent(new Event('input'));
-                    }
-                }
-            });
-        });
-    </script>
+        @vite('resources/js/fullcalendar.js')
     @endpush
 </div> 
