@@ -21,13 +21,12 @@
                 </flux:navlist.group>
                 
                 <flux:navlist.group class="grid">
-                    <flux:navlist.item icon="event-calendar" :href="route('events')" :current="request()->routeIs('events')" wire:navigate>{{ __('Events') }}</flux:navlist.item>
-                </flux:navlist.group>
-
-                <flux:navlist.group class="grid">
                     <flux:navlist.item icon="paper" :href="route('posts')" :current="request()->routeIs('posts')" wire:navigate>{{ __('Posts') }}</flux:navlist.item>
                 </flux:navlist.group>
 
+                <flux:navlist.group class="grid">
+                    <flux:navlist.item icon="event-calendar" :href="route('events')" :current="request()->routeIs('events')" wire:navigate>{{ __('Events') }}</flux:navlist.item>
+                </flux:navlist.group>
 
                 <flux:navlist.group class="grid">
                     <flux:navlist.item icon="manage" :href="route('manage')" :current="request()->routeIs('manage')" wire:navigate>{{ __('Manage Site') }}</flux:navlist.item>
@@ -153,9 +152,7 @@
 
         {{ $slot }}
 
+        @vite(['resources/js/app.js'])
         @fluxScripts
-        <script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
-        <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     </body>
 </html>

@@ -16,27 +16,12 @@
 <link rel="icon" type="image/svg+xml" href="{{ url('/favicon.svg') }}">
 <link rel="preconnect" href="https://fonts.bunny.net">
 <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-<link href="https://unpkg.com/filepond/dist/filepond.min.css" rel="stylesheet">
-<link
-    href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
-    rel="stylesheet"
-/>
-<link rel="stylesheet" href="https://balkangraph.com/js/latest/OrgChart.css" />
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
-/>
-<link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
 
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales-all.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/timegrid/main.min.js"></script>
 <!-- OrgChart core and plugin (both from the same domain) -->
+<link rel="stylesheet" href="https://balkangraph.com/js/latest/OrgChart.css" />
 <script src="https://balkan.app/js/OrgChart.js"></script>
-<script src="https://balkan.app/js/OrgChart.editUI.js"></script>
+{{-- <script src="https://balkan.app/js/OrgChart.editUI.js"></script> --}}
 
-
-@vite(['resources/css/app.css', 'resources/js/app.js'])
+@vite(['resources/css/app.css'])
 {{--@livewireStyles--}}
 @fluxAppearance

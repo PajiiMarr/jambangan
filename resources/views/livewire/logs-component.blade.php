@@ -17,8 +17,8 @@ $isMobile = request()->header('User-Agent') && preg_match('/Mobile|Android|iPhon
     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 mb-6">
         <div class="flex flex-col md:flex-row gap-4">
             <!-- Search -->
-            <div class="flex-1">
-                <div class="relative">
+            <div class="w-full md:w-[20%] flex-1">
+                <div class="w-full relative">
                     <input 
                         type="text" 
                         wire:model.live.debounce.300ms="search" 
@@ -32,11 +32,11 @@ $isMobile = request()->header('User-Agent') && preg_match('/Mobile|Android|iPhon
             </div>
 
             <!-- Navigation Filter -->
-            <div class="flex gap-3">
-                <div class="relative">
+            <div class="w-full md:w-[20%] flex gap-3">
+                <div class="w-full relative">
                     <select 
                         wire:model.live="navigationFilter" 
-                        class="appearance-none rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 pl-4 pr-10 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
+                        class="w-full appearance-none rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 pl-4 pr-10 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
                     >
                         <option value="">All Sections</option>
                         @foreach($navigationTypes as $navType)
@@ -52,11 +52,11 @@ $isMobile = request()->header('User-Agent') && preg_match('/Mobile|Android|iPhon
             </div>
 
             <!-- Action Filter -->
-            <div class="flex gap-3">
-                <div class="relative">
+            <div class="w-full md:w-[20%] flex gap-3">
+                <div class="w-full relative">
                     <select 
                         wire:model.live="actionFilter" 
-                        class="appearance-none rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 pl-4 pr-10 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
+                        class="w-full appearance-none rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 pl-4 pr-10 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
                     >
                         <option value="">All Actions</option>
                         @foreach($commonActions as $action)
@@ -72,11 +72,11 @@ $isMobile = request()->header('User-Agent') && preg_match('/Mobile|Android|iPhon
             </div>
 
             <!-- User Filter -->
-            <div class="flex gap-3">
-                <div class="relative">
+            <div class="w-full md:w-[20%] flex gap-3">
+                <div class="w-full relative">
                     <select 
                         wire:model.live="userFilter" 
-                        class="appearance-none rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 pl-4 pr-10 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
+                        class="w-full appearance-none rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 pl-4 pr-10 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
                     >
                         <option value="">All Users</option>
                         @foreach($users as $user)
@@ -92,11 +92,11 @@ $isMobile = request()->header('User-Agent') && preg_match('/Mobile|Android|iPhon
             </div>
 
             <!-- Sort and Per Page -->
-            <div class="flex gap-3">
-                <div class="relative">
+            <div class="w-full md:w-[20%] flex gap-3">
+                <div class="w-1/2 relative">
                     <select 
                         wire:model.live="sortBy" 
-                        class="appearance-none rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 pl-4 pr-10 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
+                        class="w-full appearance-none rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 pl-4 pr-10 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
                     >
                         <option value="created_at">Date</option>
                         <option value="navigation">Section</option>
@@ -109,10 +109,10 @@ $isMobile = request()->header('User-Agent') && preg_match('/Mobile|Android|iPhon
                     </div>
                 </div>
 
-                <div class="relative">
+                <div class="w-1/2 relative">
                     <select 
                         wire:model.live="perPage" 
-                        class="appearance-none rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 pl-4 pr-10 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
+                        class="w-full appearance-none rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 pl-4 pr-10 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
                     >
                         <option value="10">10 per page</option>
                         <option value="20">20 per page</option>

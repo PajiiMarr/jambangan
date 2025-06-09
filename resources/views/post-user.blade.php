@@ -11,7 +11,7 @@
 </head>
 
 <body class="bg-black">
-    <!-- Navigation Section -->
+
     <nav x-data="{ 
         scrolled: false,
         lastScroll: 0,
@@ -67,8 +67,8 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="relative h-[40vh] flex items-center justify-center overflow-hidden"
+
+    <section class="relative h-[60vh] flex items-center justify-center overflow-hidden"
         data-aos="fade-zoom-in"
         data-aos-easing="ease-in-back"
         data-aos-duration="1000">
@@ -84,7 +84,6 @@
         </div>
     </section>
 
-    <!-- Posts Section -->
     <section class="py-12 sm:py-24 bg-black relative overflow-hidden"
         data-aos="fade-up"
         data-aos-duration="1000">
@@ -97,8 +96,8 @@
                         @if($post->media->isNotEmpty())
                             <div class="relative h-64 overflow-hidden">
                                 <img src="{{ 'http://localhost:9000/my-bucket/' . $post->media->first()->file_data }}" 
-                                     alt="{{ $post->title }}"
-                                     class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                                        alt="{{ $post->title }}"
+                                        class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                             </div>
                         @endif
@@ -126,7 +125,7 @@
                             <!-- Post Actions -->
                             <div class="flex items-center justify-between">
                                 <a href="{{ route('post.details', $post->post_id) }}" 
-                                   class="text-yellow-400 hover:text-yellow-300 transition-colors duration-300">
+                                    class="text-yellow-400 hover:text-yellow-300 transition-colors duration-300">
                                     Read More
                                 </a>
                                 <button class="flex items-center gap-2 text-gray-400 hover:text-yellow-400 transition-colors duration-300">
@@ -142,6 +141,33 @@
             </div>
         </div>
     </section>
+
+    <section id="contact" 
+        class="py-12 sm:py-20 bg-[#121212] text-white shadow-inner relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Red gradient glow at top and bottom for style -->
+            <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-yellow-400 via-red-600 to-yellow-400 opacity-25 animate-pulse"></div>
+            <div class="absolute bottom-0 left-0 w-full h-2 bg-gradient-to-r from-yellow-400 via-red-600 to-yellow-400 opacity-25 animate-pulse"></div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- First Column: Text Content (Left Aligned) -->
+                    <div class="flex flex-col justify-center space-y-4 text-left">
+                        <x-contact-info title="BOOK US" :general_contents="$general_contents" />
+                    </div>
+                    
+                    <!-- Second Column: Button -->
+                    <div class="flex justify-center items-center">
+                        <a href="{{ route('bookings-public') }}"
+                           class="inline-block bg-gradient-to-r from-red-500 to-yellow-400 hover:opacity-90 text-white font-semibold py-4 sm:py-6 px-10 sm:px-12 rounded-lg shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 text-xl sm:text-2xl">
+                            Go to Bookings →
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+      
 
     <!-- Footer Section -->
     <footer class="p-4 sm:p-6 shadow-inner text-white bg-[#121212] text-sm sm:text-base">

@@ -18,7 +18,7 @@ class Calendar extends Component
     use WithFileUploads;
     use WithPagination;
     
-    public $tab = 'Completed'; 
+    public $tab; 
     public $statusCounts = [
         'Completed' => 0,
         'Ongoing' => 0,
@@ -33,6 +33,7 @@ class Calendar extends Component
     public $dateFilter;
     public $perPage = 10;
     public $lastSavedEventId;
+    public $editFileUpload; // Add this property
 
     public function mount()
     {
@@ -42,14 +43,38 @@ class Calendar extends Component
     public function updatedTab()
     {
         $this->resetPage(); // resets to page 1 when switching tabs
+        $this->loadEvents(); // Reload events when tab changes
+    }
+
+    // Add these methods to reload events when filters change
+    public function updatedSearch()
+    {
+        $this->resetPage();
+        $this->loadEvents();
+    }
+
+    public function updatedSortBy()
+    {
+        $this->loadEvents();
+    }
+
+    public function updatedSortSppStatus()
+    {
+        $this->resetPage();
+        $this->loadEvents();
     }
 
     public function getSortedEventsProperty()
     {
-        return Events::with(['media' => function($query) {
+        $query = Events::with(['media' => function($query) {
                 $query->where('type', 'image');
-            }])
-            ->where('status', $this->tab)
+            }]);
+        
+        if ($this->tab) {
+            $query->where('status', $this->tab);
+        }
+        
+        return $query
             ->when($this->search, function ($query) {
                 $query->where(function($q) {
                     $q->where('event_name', 'like', '%'.$this->search.'%')
@@ -80,28 +105,42 @@ class Calendar extends Component
     public function loadEvents()
     {
         try {
-            // Simplify the query to avoid confusion with column names
-            $events = Events::with(['media' => function($query) {
+            // Get all events or filtered events based on current filters
+            $eventsQuery = Events::with(['media' => function($query) {
                 $query->where('type', 'image');
-            }])->get();
+            }]);
+
+            // Apply the same filters as getSortedEventsProperty for consistency
+            if ($this->search) {
+                $eventsQuery->where(function($q) {
+                    $q->where('event_name', 'like', '%'.$this->search.'%')
+                      ->orWhere('location', 'like', '%'.$this->search.'%');
+                });
+            }
+
+            if ($this->sortSppStatus) {
+                $eventsQuery->where('spp_status', $this->sortSppStatus);
+            }
+
+            $events = $eventsQuery->get();
             
             $this->events = $events->map(function($event) {
-                // Get the first media item if it exists
                 $media = $event->media;
                 
-                // Create a standardized event object for FullCalendar
                 return [
                     'id' => $event->event_id,
-                    'title' => $event->event_name, // Make sure to use event_name consistently
+                    'title' => $event->event_name,
                     'start' => $event->start_date,
                     'end' => $event->end_date,
                     'location' => $event->location,
                     'status' => $event->status,
                     'file_data' => $media ? Storage::url($media->file_data) : null,
+                    'allDay' => true, // Add this line to ensure all events are treated as all-day
                     'extendedProps' => [
                         'status' => $event->status,
                         'location' => $event->location,
                         'file_data' => $media ? Storage::url($media->file_data) : null,
+                        'spp_status' => $event->spp_status,
                     ],
                     'spp_status' => $event->spp_status
                 ];
@@ -112,6 +151,8 @@ class Calendar extends Component
                 'Ongoing' => Events::where('status', 'Ongoing')->count(),
                 'Upcoming' => Events::where('status', 'Upcoming')->count(),
             ];
+
+            $this->dispatch('eventsLoaded', events: $this->events);
             
             Log::info('Events loaded successfully', ['count' => count($this->events)]);
         } catch (Exception $e) {
@@ -119,7 +160,7 @@ class Calendar extends Component
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
-            $this->events = []; // Ensure events is always an array even on failure
+            $this->events = [];
         }
     }
 
@@ -139,7 +180,7 @@ class Calendar extends Component
             $status = $this->getEventStatus($start, $end);
 
             $event = Events::create([
-                    'event_name' => $title, // Use event_name consistently
+                    'event_name' => $title,
                     'start_date' => $start,
                     'end_date' => $end,
                     'location' => $location,
@@ -163,6 +204,8 @@ class Calendar extends Component
             DB::commit();
 
             $this->loadEvents();
+
+            $this->dispatch('eventsLoaded', events: $this->events);
 
             Logs::create([
                 'action' => 'Created an event',
@@ -228,27 +271,51 @@ class Calendar extends Component
         }
     }
 
+
     #[On('updateEvent')]
     public function updateEvent($data = [])
     {
         try {
             $event = Events::find($data['id']);
-
+    
             if (!$event) {
                 throw new Exception('Event not found.');
             }
-
+    
             $status = $this->getEventStatus($data['start'] ?? $event->start_date, $data['end'] ?? $event->end_date);
-
+    
+            DB::beginTransaction();
+    
             $event->update([
-                'event_name' => $data['title'] ?? $event->event_name, // Use event_name consistently
+                'event_name' => $data['title'] ?? $event->event_name,
                 'location' => $data['location'] ?? $event->location,
                 'start_date' => $data['start'] ?? $event->start_date,
                 'end_date' => $data['end'] ?? $event->end_date,
                 'status' => $status,
                 'user_id' => Auth::user()->id,
             ]);
-
+    
+            // Handle file upload if a new file was provided
+            if ($this->editFileUpload) {
+                // Delete old media if it exists
+                $oldMedia = Media::where('event_id', $event->event_id)->first();
+                if ($oldMedia) {
+                    Storage::disk('s3')->delete($oldMedia->file_data);
+                    $oldMedia->delete();
+                }
+    
+                // Store new file
+                $path = $this->editFileUpload->store('uploads', 's3');
+    
+                Media::create([
+                    'event_id' => $event->event_id,
+                    'file_data' => $path,
+                    'type' => 'image',
+                ]);
+            }
+    
+            DB::commit();
+    
             Logs::create([
                 'action' => 'Updated an event',
                 'navigation' => 'events',
@@ -257,20 +324,14 @@ class Calendar extends Component
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
-
+    
             $this->loadEvents();
-            $this->dispatch('eventLoaded', events: $this->events);
-            $this->dispatch('eventUpdated', [
-                'id' => $event->event_id,
-                'title' => $event->event_name, // Use event_name consistently
-                'location' => $event->location,
-                'start' => $event->start_date,
-                'end' => $event->end_date,
-                'status' => $event->status,
-            ]);
+            $this->dispatch('eventsLoaded', events: $this->events);
+            $this->modal('view-event')->close();
+            $this->modal_close('edit-event');
             
-            $this->dispatch('close-flux-modal', ['name' => 'edit-event']);
         } catch (Exception $e) {
+            DB::rollBack();
             Log::error('Event update failed: ' . $e->getMessage());
             $this->dispatch('event-update-failed', [
                 'message' => 'Failed to update event: ' . $e->getMessage()
@@ -290,6 +351,10 @@ class Calendar extends Component
             $this->events;
             $this->modal('delete-event')->close();
             $this->modal('view-event')->close();
+
+            $this->loadEvents();
+
+            $this->dispatch('eventsLoaded', events: $this->events);
         } catch (\Exception $e) {
             $this->dispatch('event-delete-error', message: 'Error deleting event: ' . $e->getMessage());
         }
@@ -320,12 +385,16 @@ class Calendar extends Component
         }
     }
 
-    public function modal_close($modal_name){
+    public function modal_close($modal_name)
+    {
         $this->modal($modal_name)->close();
+        $this->dispatch('modalClosed', modalName: $modal_name);
     }
 
     public function render()
     {
+        $this->loadEvents();
+        
         return view('livewire.calendar',[
             'events' => $this->events,
             'sortedEvents' => $this->getSortedEventsProperty(),

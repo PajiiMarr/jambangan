@@ -36,7 +36,7 @@
                 <h2 class="text-lg font-semibold text-zinc-800 dark:text-zinc-100 mb-6">{{ __('About Page Content') }}</h2>
                 
                 <!-- Our Story -->
-                <form wire:submit.prevent="saveSiteIdentity" class="mb-8">
+                <form wire:submit.prevent="saveSiteIdentity" class="mb-8 border-t pt-4">
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="text-md font-semibold text-zinc-700 dark:text-zinc-200">{{ __('Our Story') }}</h3>
                         <flux:button type="submit" variant="primary" size="sm">
@@ -52,7 +52,7 @@
                 </form>
 
                 <!-- Mission and Vision -->
-                <form wire:submit.prevent="saveMissionVision" class="mb-8">
+                <form wire:submit.prevent="saveMissionVision" class="mb-8 border-t pt-4">
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="text-md font-semibold text-zinc-700 dark:text-zinc-200">{{ __('Mission and Vision') }}</h3>
                         <flux:button type="submit" variant="primary" size="sm">
@@ -78,7 +78,7 @@
                 </form>
 
                 <!-- Core Values -->
-                <form wire:submit.prevent="saveCoreValue" class="mb-8">
+                <form wire:submit.prevent="saveCoreValue" class="mb-8 border-t pt-4">
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="text-md font-semibold text-zinc-700 dark:text-zinc-200">{{ __('Core Values') }}</h3>
                         <flux:button type="submit" variant="primary" size="sm">
@@ -221,8 +221,8 @@
                     </flux:button>
                 </div>
                 @forelse ($cover_medias as $medias)
-                <div wire:key="cover-media-{{ $medias->id }}" class="w-full flex flex-col border-b pb-3 md:flex-row gap-4 mb-4">
-                    <div class="w-1/2">
+                <div wire:key="cover-media-{{ $medias->id }}" class="w-full rounded-lg border p-3 md:border-none flex flex-col border-b pb-3 md:flex-row gap-4 mb-4">
+                    <div class="w-full border-b md:border-none md:w-1/2">
                         @if ($medias->type == 'image')
                             <img src="{{ config('filesystems.disks.s3.url') }}/{{ $medias->file_data }}" alt="Cover Image" class="w-full h-48 object-cover rounded-lg mb-4">
                         @elseif ($medias->type == 'video')
@@ -233,7 +233,7 @@
                         @endif
                     </div>
             
-                    <div class="w-1/2 flex flex-col justify-between">
+                    <div class="w-full md:w-1/2 flex flex-col justify-between">
                         <div>
                             <h3 class="text-lg font-semibold text-zinc-800 dark:text-zinc-100 mb-2">{{ $medias->title }}</h3>
                             <p class="text-sm text-zinc-500 dark:text-zinc-400">{{ $medias->subtitle }}</p>
@@ -421,15 +421,16 @@
                     </flux:button>
                 </div>
                 <div class="grid gap-6">
-                    <div class="w-full flex flex-col md:flex-row gap-4">
-                        <div class="md:w-1/2">
-                            <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">{{ __('Input Logo') }}</label>
-                            <x-inputs.filepond wire:model="logo_path"/>
-                        </div>
+                    <div class="w-full flex flex-col md:flex-row-reverse md:flex-row gap-4">
 
                         <div class="md:w-1/2">
                             <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">{{ __('Logo Preview') }}</label>
-                            <img src="{{ $general_contents && $general_contents->logo_path ? $general_contents->logo_path : asset('images/LogoColored.png') }}" alt="Logo" class="w-full h-48 object-cover rounded-lg mb-4">
+                            <img src="{{ $general_contents && $general_contents->logo_path ? $general_contents->logo_path : asset('images/LogoColored.png') }}" alt="Logo" class="w-full h-full max-h-48 object-cover rounded-lg mb-4">
+                        </div>
+
+                        <div class="md:w-1/2 border-t pt-4">
+                            <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">{{ __('Input Logo') }}</label>
+                            <x-inputs.filepond wire:model="logo_path"/>
                         </div>
                     </div>
                 </div>

@@ -67,13 +67,16 @@
         updateChart(data) {
             if (!this.chart) this.initChart();
             
-            // Convert data to regular array if it's a Proxy
+            // Convert Livewire Proxy to a plain array
             const chartData = Array.isArray(data) ? [...data] : Array(12).fill(0);
             
-            this.chart.data.datasets[0].data = chartData;
+            // Ensure we have exactly 12 data points (one for each month)
+            const paddedData = [...chartData].concat(Array(12 - chartData.length).fill(0)).slice(0, 12);
+            
+            this.chart.data.datasets[0].data = paddedData;
             this.chart.update();
             
-            console.log('Chart data updated:', chartData);
+            console.log('Chart data updated:', paddedData);
         }
     }"
 >
@@ -84,7 +87,6 @@
 </div>
 
 @assets
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
     .chart-container {
         position: relative;

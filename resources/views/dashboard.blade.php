@@ -5,7 +5,7 @@
             @foreach ($mockDashboardData as $key => $data)
                 <div class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700 p-6 bg-white dark:bg-zinc-900 shadow-md flex flex-col justify-between">
                     <!-- Background Decorative Element -->
-                    <div class="absolute inset-0 opacity-10 bg-cover bg-center" style="background-image: url('/images/dashboard-pattern.svg');"></div>
+                    <div class="absolute inset-0 opacity-10 bg-cover bg-center"></div>
 
                     <div class="relative z-10 flex justify-between items-center">
                         <h2 class="text-lg font-semibold text-neutral-700 dark:text-neutral-200">
@@ -34,8 +34,8 @@
         </div>
 
         <!-- Live Chart -->
-        <div class="relative h-full flex-1 overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-zinc-900 shadow-md p-6">
-        <livewire:live-chart/>
+        <div class="relative w-full h-full flex-1 overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-zinc-900 shadow-md p-6">
+            <livewire:live-chart/>
         </div>
     </div>
 </x-layouts.app>

@@ -1,16 +1,7 @@
 #!/usr/bin/env bash
-echo "Installing composer dependencies..."
-composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+echo "Running composer"
 
-echo "Installing npm dependencies..."
-npm ci
-
-echo "Building assets..."
-npm run build
-
-# Clear any previxous caches
-echo "Clearing caches..."
-php artisan optimize:clear
+composer install --no-dev --working-dir=/var/www/html
 
 echo "Caching config..."
 php artisan config:cache
@@ -18,13 +9,8 @@ php artisan config:cache
 echo "Caching routes..."
 php artisan route:cache
 
+echo "Publishing cloudinary provider..."
+php artisan vendor:publish --provider="CloudinaryLabs\CloudinaryLaravel\CloudinaryServiceProvider" --tag="cloudinary-laravel-config"
+
 echo "Running migrations..."
-php artisan migrate --force
-
-# Fix permissions
-echo "Setting permissions..."
-chown -R www-data:www-data /var/www/html/storage
-chmod -R 775 /var/www/html/storage
-
-# Create symbolic link for storage if needed
-php artisan storage:link
+php artisan migrate --force-

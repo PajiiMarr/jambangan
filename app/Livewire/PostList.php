@@ -174,11 +174,14 @@ class PostList extends Component
             
             Log::debug('Found media to delete', ['media' => $media->toArray()]);
             
+            // Store post_id before deletion
+            $postId = $media->post_id;
+            
             // Soft delete the media record
             $media->delete();
             
             // Get the post's remaining media count
-            $remainingMedia = \App\Models\Media::where('post_id', $media->post_id)
+            $remainingMedia = \App\Models\Media::where('post_id', $postId)
                 ->whereNull('deleted_at')
                 ->count();
             
@@ -187,8 +190,7 @@ class PostList extends Component
                 'remainingCount' => $remainingMedia
             ]);
 
-
-
+            // Close the modal
             $this->modal('delete-media-confirmation')->close();
             
             // Dispatch the media-deleted event with the media ID
@@ -196,14 +198,18 @@ class PostList extends Component
                 'mediaId' => $mediaId
             ]);
 
+            // Log the action
             Logs::create([
                 'action' => 'Deleted a media',
                 'navigation' => 'posts',
                 'user_id' => Auth::user()->user_id,
-                'post_id' => $media->post_id,
+                'post_id' => $postId,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
+            
+            // Force refresh the component to update the media arrays
+            $this->dispatch('$refresh');
             
             session()->flash('message', 'Media deleted successfully!');
         } catch (\Exception $e) {

@@ -1,19 +1,11 @@
-<!-- Root element -->
+@php
+    $isMobile = request()->header('User-Agent') && preg_match('/Mobile|Android|iPhone|iPad/', request()->header('User-Agent'));
+@endphp
 <div>
-    <div class="w-full space-y-4" > 
-        <!-- Header with sorting/filtering controls -->
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 p-4 bg-white dark:bg-zinc-800 rounded-xl shadow-sm">
-            <div>
-                <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Posts</h2>
-                <p class="text-sm text-gray-500 dark:text-zinc-400">{{ $posts->total() }} total posts</p>
-            </div>
-        </div>
-
-        <!-- Filters and Search Section -->
+    <div class="w-full" > 
         <div class="bg-white dark:bg-red-900/20 rounded-xl shadow-sm border border-gray-200 dark:border-red-800/30 p-4 mb-6 w-full">
             <div class="flex flex-col md:flex-row gap-4 w-full">
-                <!-- Search -->
-                <div class="w-full md:w-1/3">
+                <div class="w-full md:w-[25%]">
                     <div class="relative">
                         <input 
                             type="text" 
@@ -28,8 +20,8 @@
                 </div>
 
                 <!-- Sort -->
-                <div class="flex gap-3 w-full md:w-auto">
-                    <div class="relative w-full md:w-40">
+                <div class=" flex gap-3 w-full md:w-[25%]">
+                    <div class="relative w-[50%]">
                         <select 
                             wire:model.live="sortBy" 
                             class="w-full appearance-none rounded-lg border border-gray-200 dark:border-red-800/30 bg-white dark:bg-red-900/10 text-gray-900 dark:text-gray-100 pl-4 pr-10 py-2 focus:border-red-800/50 focus:ring-1 focus:ring-red-800/30 cursor-pointer hover:bg-gray-50 dark:hover:bg-red-900/20 transition-colors duration-200"
@@ -44,7 +36,7 @@
                         </div>
                     </div>
 
-                    <div class="relative w-full md:w-40">
+                    <div class="relative w-[50%]">
                         <select 
                             wire:model.live="sortDirection" 
                             class="w-full appearance-none rounded-lg border border-gray-200 dark:border-red-800/30 bg-white dark:bg-red-900/10 text-gray-900 dark:text-gray-100 pl-4 pr-10 py-2 focus:border-red-800/50 focus:ring-1 focus:ring-red-800/30 cursor-pointer hover:bg-gray-50 dark:hover:bg-red-900/20 transition-colors duration-200"
@@ -60,10 +52,10 @@
                     </div>
                 </div>
 
-                <div class="relative">
+                <div class="relative w-full md:w-[15%]">
                     <select 
                         wire:model.live="sortSppStatus" 
-                        class="appearance-none rounded-lg border border-gray-200 dark:border-red-800/30 bg-white dark:bg-red-900/10 text-gray-900 dark:text-gray-100 pl-4 pr-10 py-2 focus:border-red-800/50 focus:ring-1 focus:ring-red-800/30 cursor-pointer hover:bg-gray-50 dark:hover:bg-red-900/20 transition-colors duration-200"
+                        class="w-full relative appearance-none rounded-lg border border-gray-200 dark:border-red-800/30 bg-white dark:bg-red-900/10 text-gray-900 dark:text-gray-100 pl-4 pr-10 py-2 focus:border-red-800/50 focus:ring-1 focus:ring-red-800/30 cursor-pointer hover:bg-gray-50 dark:hover:bg-red-900/20 transition-colors duration-200"
                     >
                         <option value="preview">Preview</option>
                         <option value="publish">Publish</option>
@@ -76,8 +68,8 @@
                 </div>
 
                 <!-- Filter -->
-                <div class="flex gap-3 w-full md:w-auto">
-                    <div class="relative w-full md:w-40">
+                <div class="flex gap-3 w-full md:w-[35%]">
+                    <div class="relative w-[33.33%]">
                         <select 
                             wire:model.live="filter" 
                             class="w-full appearance-none rounded-lg border border-gray-200 dark:border-red-800/30 bg-white dark:bg-red-900/10 text-gray-900 dark:text-gray-100 pl-4 pr-10 py-2 focus:border-red-800/50 focus:ring-1 focus:ring-red-800/30 cursor-pointer hover:bg-gray-50 dark:hover:bg-red-900/20 transition-colors duration-200"
@@ -93,7 +85,7 @@
                         </div>
                     </div>
 
-                    <div class="relative w-full md:w-48">
+                    <div class="relative w-[33.33%]">
                         <select 
                             wire:model.live="selectedEvent" 
                             class="w-full appearance-none rounded-lg border border-gray-200 dark:border-red-800/30 bg-white dark:bg-red-900/10 text-gray-900 dark:text-gray-100 pl-4 pr-10 py-2 focus:border-red-800/50 focus:ring-1 focus:ring-red-800/30 cursor-pointer hover:bg-gray-50 dark:hover:bg-red-900/20 transition-colors duration-200"
@@ -110,7 +102,7 @@
                         </div>
                     </div>
 
-                    <div class="relative w-full md:w-48">
+                    <div class="relative w-[33.33%]">
                         <select 
                             wire:model.live="selectedPerformance" 
                             class="w-full appearance-none rounded-lg border border-gray-200 dark:border-red-800/30 bg-white dark:bg-red-900/10 text-gray-900 dark:text-gray-100 pl-4 pr-10 py-2 focus:border-red-800/50 focus:ring-1 focus:ring-red-800/30 cursor-pointer hover:bg-gray-50 dark:hover:bg-red-900/20 transition-colors duration-200"
@@ -130,7 +122,6 @@
             </div>
         </div>
 
-        <!-- Stats Section -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             <div class="bg-white dark:bg-red-900/20 rounded-xl shadow-sm border border-gray-200 dark:border-red-800/30 p-4">
                 <div class="flex items-center justify-between">
@@ -175,11 +166,10 @@
             </div>
         </div>
 
-        <!-- Posts list -->
         <div class="max-w-4xl mx-auto">
             <div class="grid grid-cols-1 gap-4">
                 @forelse ($posts as $post)
-                    <div class="bg-white dark:bg-zinc-800 rounded-lg shadow-sm overflow-hidden transition-all duration-200 hover:shadow-md">
+                    <div class="bg-white dark:hover:bg-red-900/50 dark:bg-zinc-800 rounded-lg shadow-sm overflow-hidden transition-all duration-200 hover:shadow-md">
                         <div class="px-6 py-3 border-b border-gray-200 dark:border-zinc-700 flex items-center justify-between">
                             <div class="flex items-center space-x-3">
                                 <div>
@@ -235,7 +225,6 @@
                             <p class="text-base text-gray-700 dark:text-zinc-300 line-clamp-3">{{ $post->content }}</p>
                         </div>
                         
-                        <!-- Media gallery -->
                         @if($post->media->isNotEmpty())
                             <div class="px-6 pb-4" data-post-id="{{ $post->post_id }}">
                                 <div class="grid grid-cols-3 gap-4">
@@ -250,12 +239,12 @@
                                                     @click="$dispatch('open-gallery', { 
                                                         postId: '{{ $post->post_id }}',
                                                         initialIndex: {{ $loop->index }},
-                                                        mediaUrls: {{ json_encode($post->media->pluck('file_url')) }},
-                                                        mediaIds: {{ json_encode($post->media->pluck('media_id')) }},
-                                                        mediaTypes: {{ json_encode($post->media->pluck('type')) }},
-                                                        thumbnailUrls: {{ json_encode($post->media->map(function($m) { 
+                                                        mediaUrls: @js($post->media->pluck('file_url')),
+                                                        mediaIds: @js($post->media->pluck('media_id')),
+                                                        mediaTypes: @js($post->media->pluck('type')),
+                                                        thumbnailUrls: @js($post->media->map(function($m) { 
                                                             return $m->type === 'video' ? ($m->thumbnail_url ?? asset('images/video-thumbnail.jpg')) : $m->file_url; 
-                                                        })) }}
+                                                        }))
                                                     })">
                                             @elseif ($media->type === 'video')
                                                 <div 
@@ -263,12 +252,12 @@
                                                     @click="$dispatch('open-gallery', { 
                                                         postId: '{{ $post->post_id }}',
                                                         initialIndex: {{ $loop->index }},
-                                                        mediaUrls: {{ json_encode($post->media->pluck('file_url')) }},
-                                                        mediaIds: {{ json_encode($post->media->pluck('media_id')) }},
-                                                        mediaTypes: {{ json_encode($post->media->pluck('type')) }},
-                                                        thumbnailUrls: {{ json_encode($post->media->map(function($m) { 
+                                                        mediaUrls: @js($post->media->pluck('file_url')),
+                                                        mediaIds: @js($post->media->pluck('media_id')),
+                                                        mediaTypes: @js($post->media->pluck('type')),
+                                                        thumbnailUrls: @js($post->media->map(function($m) { 
                                                             return $m->type === 'video' ? ($m->thumbnail_url ?? asset('images/video-thumbnail.jpg')) : $m->file_url; 
-                                                        })) }}
+                                                        }))
                                                     })">
                                                     <img 
                                                         src="{{ $media->thumbnail_url ?? asset('images/video-thumbnail.jpg') }}" 
@@ -288,16 +277,16 @@
                                     @endforeach
                                     @if($post->media->count() > 3)
                                         <div class="rounded-lg overflow-hidden border border-gray-200 dark:border-zinc-700 bg-gray-100 dark:bg-zinc-700 flex items-center justify-center cursor-pointer"
-                                             @click="$dispatch('open-gallery', { 
-                                                 postId: '{{ $post->post_id }}',
-                                                 initialIndex: 0,
-                                                 mediaUrls: {{ json_encode($post->media->pluck('file_url')) }},
-                                                 mediaIds: {{ json_encode($post->media->pluck('media_id')) }},
-                                                 mediaTypes: {{ json_encode($post->media->pluck('type')) }},
-                                                 thumbnailUrls: {{ json_encode($post->media->map(function($m) { 
-                                                     return $m->type === 'video' ? ($m->thumbnail_url ?? asset('images/video-thumbnail.jpg')) : $m->file_url; 
-                                                 })) }}
-                                             })">
+                                            @click="$dispatch('open-gallery', { 
+                                                postId: '{{ $post->post_id }}',
+                                                initialIndex: 0,
+                                                mediaUrls: @js($post->media->pluck('file_url')),
+                                                mediaIds: @js($post->media->pluck('media_id')),
+                                                mediaTypes: @js($post->media->pluck('type')),
+                                                thumbnailUrls: @js($post->media->map(function($m) { 
+                                                    return $m->type === 'video' ? ($m->thumbnail_url ?? asset('images/video-thumbnail.jpg')) : $m->file_url; 
+                                                }))
+                                            })">
                                             <span class="text-sm text-gray-600 dark:text-gray-300">+{{ $post->media->count() - 3 }} more</span>
                                         </div>
                                     @endif
@@ -308,9 +297,11 @@
                         
                         <flux:modal 
                             name="edit-post-{{ $post->post_id }}" 
-                            class="md:w-123"
-                            variant="dialog"
-                            data-modal-name="edit-post-{{ $post->post_id }}">
+                            data-modal-name="edit-post-{{ $post->post_id }}"
+                            class="w-full md:w-123"
+                            :variant="$isMobile ? 'flyout' : null"
+                            :position="$isMobile ? 'bottom' : null"
+                        >
                             <div class="space-y-6">
                                 <div>
                                     <flux:heading size="lg">Edit Post</flux:heading>
@@ -336,46 +327,37 @@
                                         @error('edit_content') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                                     </div>
 
-                                    <div class="flex mt-6">
+                                    <div class="flex w-full justify-between mt-3">
                                         <flux:spacer />
-                                        <flux:button type="submit" variant="primary">Save Changes</flux:button>
+                                        <flux:button 
+                                            wire:click="modal_close('edit-post-{{ $post->post_id }}')" 
+                                            variant="filled"
+                                            class="w-1/2 mx-1"
+                                        >
+                                            Cancel
+                                        </flux:button>
+                                        <flux:button 
+                                            type="submit"
+                                            wire:click="publish_post({{ $post->post_id }})" 
+                                            variant="primary"
+                                            class="w-1/2 mx-1"
+                                        >
+                                            Save Changes
+                                        </flux:button>
                                     </div>
                                 </form>
                             </div>
                         </flux:modal>
 
-                        <!-- Delete Post Modal -->
-                        <flux:modal 
-                            name="delete-post-{{ $post->post_id }}" 
-                            class="max-w-md"
-                            variant="dialog"
-                            data-modal-name="delete-post-{{ $post->post_id }}">
-                            <div class="space-y-6">
-                                <div>
-                                    <flux:heading size="lg">Delete Post</flux:heading>
-                                    <flux:text class="mt-2">Are you sure you want to delete this post? This action cannot be undone.</flux:text>
-                                </div>
-
-                                <div class="flex">
-                                    <flux:spacer />
-                                    <flux:button 
-                                        wire:click="deletePost({{ $post->post_id }})" 
-                                        variant="danger"
-                                    >
-                                        Delete Post
-                                    </flux:button>
-                                </div>
-                            </div>
-                        </flux:modal>
-
                         <flux:modal 
                             name="publish-{{ $post->post_id }}" 
-                            class="max-w-md"
-                            variant="dialog"
-                            >
+                            class="w-full md:w-123"
+                            :variant="$isMobile ? 'flyout' : null"
+                            :position="$isMobile ? 'bottom' : null"
+                        >
                             <div class="space-y-6">
                                 <div>
-                                    <flux:heading size="lg">Publish Post</flux:heading>
+                                <flux:heading size="lg">Publish Post</flux:heading>
                                     <flux:text class="mt-2">Are you sure you want to publish this post?</flux:text>
                                 </div>
 
@@ -400,20 +382,31 @@
                         
                         <flux:modal 
                             name="delete-post-{{ $post->post_id }}" 
-                            class="max-w-md"
-                            variant="dialog"
-                            data-modal-name="delete-post-{{ $post->post_id }}">
+                            data-modal-name="delete-post-{{ $post->post_id }}"
+                            class="w-full md:w-123"
+                            :variant="$isMobile ? 'flyout' : null"
+                            :position="$isMobile ? 'bottom' : null"
+                        >
                             <div class="space-y-6">
                                 <div>
                                     <flux:heading size="lg">Delete Post</flux:heading>
                                     <flux:text class="mt-2">Are you sure you want to delete this post? This action cannot be undone.</flux:text>
                                 </div>
 
-                                <div class="flex">
+                                <div class="flex w-full justify-between mt-3">
                                     <flux:spacer />
+                                    <flux:button 
+                                        wire:click="modal_close('edit-post-{{ $post->post_id }}')" 
+                                        variant="filled"
+                                        class="w-1/2 mx-1"
+                                    >
+                                        Cancel
+                                    </flux:button>
+
                                     <flux:button 
                                         wire:click="deletePost({{ $post->post_id }})" 
                                         variant="danger"
+                                        class="w-1/2 mx-1"
                                     >
                                         Delete Post
                                     </flux:button>
@@ -424,9 +417,11 @@
                         <!-- View Post Modal -->
                         <flux:modal 
                             name="view-post-{{ $post->post_id }}" 
-                            class="max-w-4xl"
-                            variant="dialog"
-                            data-modal-name="view-post-{{ $post->post_id }}">
+                            data-modal-name="view-post-{{ $post->post_id }}"
+                            class="w-full md:w-123"
+                            :variant="$isMobile ? 'flyout' : null"
+                            :position="$isMobile ? 'bottom' : null"
+                        >
                             <div class="space-y-6">
                                 <div>
                                     <flux:heading size="lg">{{ $post->title }}</flux:heading>
@@ -472,7 +467,6 @@
                 @endforelse
             </div>
 
-            <!-- Pagination -->
             @if($posts->hasPages())
                 <div class="mt-6">
                     {{ $posts->onEachSide(1)->links() }}
@@ -481,38 +475,37 @@
         </div>
     </div>
 
-    <!-- Gallery Modal -->
     <div x-data="{ 
-        open: false,
-        postId: null,
-        currentIndex: 0,
-        media: [],
-        init() {
-            this.$wire.on('media-deleted', ({ mediaId }) => {
-                // Find the index of the deleted media
-                const deletedIndex = this.media.findIndex(item => item.media_id === mediaId);
-                
-                // Remove the deleted media from the array
-                this.media = this.media.filter(item => item.media_id !== mediaId);
-                
-                if (this.media.length === 0) {
-                    // If no media left, close the gallery
-                    this.open = false;
-                } else {
-                    // If we deleted the current image, show the next one
-                    if (deletedIndex === this.currentIndex) {
-                        // If we're at the end, go to the previous image
-                        if (this.currentIndex >= this.media.length) {
-                            this.currentIndex = this.media.length - 1;
+            open: false,
+            postId: null,
+            currentIndex: 0,
+            media: [],
+            init() {
+                this.$wire.on('media-deleted', ({ mediaId }) => {
+                    // Find the index of the deleted media
+                    const deletedIndex = this.media.findIndex(item => item.media_id === mediaId);
+                    
+                    // Remove the deleted media from the array
+                    this.media = this.media.filter(item => item.media_id !== mediaId);
+                    
+                    if (this.media.length === 0) {
+                        // If no media left, close the gallery
+                        this.open = false;
+                    } else {
+                        // If we deleted the current image, show the next one
+                        if (deletedIndex === this.currentIndex) {
+                            // If we're at the end, go to the previous image
+                            if (this.currentIndex >= this.media.length) {
+                                this.currentIndex = this.media.length - 1;
+                            }
+                        } else if (deletedIndex < this.currentIndex) {
+                            // If we deleted an image before the current one, adjust the index
+                            this.currentIndex--;
                         }
-                    } else if (deletedIndex < this.currentIndex) {
-                        // If we deleted an image before the current one, adjust the index
-                        this.currentIndex--;
                     }
-                }
-            });
-        }
-    }" 
+                });
+            }
+        }" 
         x-show="open" 
         class="fixed inset-0 z-50 overflow-y-auto" 
         style="display: none;"
@@ -538,9 +531,10 @@
             x-transition:leave-end="opacity-0" 
             class="fixed inset-0 bg-black transition-opacity" 
             aria-hidden="true"
-            @click="open = false"></div>
+            @click="open = false"
+        >
+        </div>
 
-        <!-- Modal panel -->
         <div x-show="open" 
             x-transition:enter="ease-out duration-300" 
             x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" 
@@ -549,11 +543,10 @@
             x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" 
             x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" 
             class="fixed inset-0 overflow-hidden"
-            @click.stop>
+            @click.stop
+        >
             
-            <!-- Main content -->
             <div class="absolute inset-0 flex flex-col">
-                <!-- Header -->
                 <div class="flex items-center justify-between px-4 py-2 bg-black/50 text-white">
                     <div class="text-sm">
                         <span x-text="currentIndex + 1"></span> / <span x-text="media.length"></span>
@@ -579,7 +572,6 @@
                     </div>
                 </div>
 
-                <!-- Media container -->
                 <div class="flex-1 relative">
                     <template x-for="(item, index) in media" :key="index">
                         <div x-show="currentIndex === index"
@@ -605,7 +597,6 @@
                         </div>
                     </template>
 
-                    <!-- Navigation arrows -->
                     <template x-if="media.length > 1">
                         <div>
                             <button 
@@ -628,7 +619,6 @@
                     </template>
                 </div>
 
-                <!-- Thumbnail strip -->
                 <div class="bg-black/50 p-2" x-show="media.length > 1">
                     <div class="flex space-x-2 overflow-x-auto pb-2">
                         <template x-for="(item, index) in media" :key="index">
@@ -659,17 +649,22 @@
         </div>
     </div>
 
-    <!-- Delete Media Confirmation Modal -->
-    <flux:modal name="delete-media-confirmation" class="max-w-md">
+    <flux:modal 
+        name="delete-media-confirmation" 
+        class="w-full md:w-123"
+        :variant="$isMobile ? 'flyout' : null"
+        :position="$isMobile ? 'bottom' : null"
+    >
         <div class="space-y-6">
             <div>
                 <flux:heading size="lg">Delete Media</flux:heading>
                 <flux:text class="mt-2">Are you sure you want to delete this media? This action cannot be undone.</flux:text>
             </div>
 
-            <div class="flex">
-                <flux:spacer />
+            <div class="flex justify-between">
+                <flux:button variant="filled" class="w-1/2 mx-1" wire:click="modal_close('add-performance')">Cancel</flux:button>
                 <flux:button 
+                    class="w-1/2 mx-1"
                     variant="danger"
                     x-data
                     @click="
@@ -679,10 +674,10 @@
                     Delete Media
                 </flux:button>
             </div>
+
         </div>
     </flux:modal>
 
-    <!-- Add the store for media ID -->
     <div x-data
         x-init="$store.deleteMediaId = null"
         x-on:set-delete-media-id.window="$store.deleteMediaId = $event.detail.mediaId">

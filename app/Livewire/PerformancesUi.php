@@ -24,6 +24,7 @@ class PerformancesUi extends Component
     public $add_performance_file;
     public $publish_peformance_id;
 
+
     // Edit performance variables
     public $edit_title;
     public $edit_description;
@@ -124,6 +125,7 @@ class PerformancesUi extends Component
     public function editPerformance($id)
     {
         $this->editingPerformance = Performances::with('media')->find($id);
+        // dd($this->editingPerformance);
         
         if ($this->editingPerformance) {
             $this->edit_title = $this->editingPerformance->title;
@@ -217,8 +219,7 @@ class PerformancesUi extends Component
             // Reset the properties
             $this->reset(['edit_title', 'edit_description', 'edit_performance_file', 'isEditing', 'editingPerformance']);
             
-            // Close the modal using the stored ID
-            $this->modal('edit-performance-' . $performanceId)->close();
+            $this->modal('edit-performance')->close();
             
             $this->dispatch('performance-updated');
             session()->flash('message', 'Performance updated successfully!');
@@ -328,21 +329,21 @@ class PerformancesUi extends Component
     public function render()
     {
         $query = Performances::with('media')
-            ->when($this->search, function ($query) {
-                $query->where(function ($q) {
-                    $q->where('title', 'like', '%' . $this->search . '%')
-                      ->orWhere('description', 'like', '%' . $this->search . '%');
-                });
-            })
-            ->when($this->statusFilter, function ($query) {
-                $query->where('status', $this->statusFilter);
-            })
-            ->when($this->sortSppStatus, function ($query) {
-                $query->where('spp_status', $this->sortSppStatus);
-            })
-            ->orderBy($this->sortBy, $this->sortDirection);
+        ->when($this->search, function ($query) {
+            $query->where(function ($q) {
+                $q->where('title', 'like', '%' . $this->search . '%')
+                  ->orWhere('description', 'like', '%' . $this->search . '%');
+            });
+        })
+        ->when($this->statusFilter, function ($query) {
+            $query->where('status', $this->statusFilter);
+        })
+        ->when($this->sortSppStatus, function ($query) {
+            $query->where('spp_status', $this->sortSppStatus);
+        })
+        ->orderBy($this->sortBy, $this->sortDirection);
 
-            $this->selectedPerformance;
+        $this->selectedPerformance;
 
         $performances = $query->paginate($this->perPage);
 

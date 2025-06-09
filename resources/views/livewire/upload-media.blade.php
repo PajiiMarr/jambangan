@@ -3,12 +3,13 @@
     // dd($isMobile);
 @endphp
 
-<div class="h-25 w-full rounded-xl border-neutral-200">
-    <flux:modal.trigger name="create-post" class="w-full h-full flex rounded-xl p-1.5 cursor-pointer border-2 border-neutral-200 dark:hover:bg-gray-600 hover:bg-gray-100 duration-100 ease-in-out">
-        Write a post...
-    </flux:modal.trigger>
-
-    <flux:modal name="create-post" class="w-full md:w-123">
+<div class="w-full rounded-xl border-neutral-200">
+    <flux:modal 
+        name="create-post" 
+        class="w-full md:w-123"
+        :variant="$isMobile ? 'flyout' : null"
+        :position="$isMobile ? 'bottom' : null"
+    >
         <div class="text-center space-x-3">
             <flux:heading size="lg">
                 Create Post
@@ -74,8 +75,9 @@
                 </div>
             </div>
 
-            <div class="pt-4">
-                <flux:button class="w-full" type="submit">Post</flux:button>
+            <div class="flex">
+                <flux:button variant="filled" class="w-1/2 mx-1" wire:click="modal_close('create-post')">Close</flux:button>
+                <flux:button variant="primary" class="w-1/2 mx-1" type="submit">Post</flux:button>
             </div>
         </form>
     </flux:modal>

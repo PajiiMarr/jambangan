@@ -9,13 +9,14 @@ export default defineConfig({
         laravel({
             input: ['resources/css/app.css',
                  'resources/js/app.js',
-                 'resources/css/client.css',
+                'resources/css/client.css',
                  'resources/css/aos.css',
                  'resources/js/aos.js',
                  'resources/css/fullcalendar.css',
                  'resources/js/carousel.js',
                  'resources/js/alpine.js',
                  'resources/js/fullcalendar.js',
+                 'resources/js/officers.js'
                 ],
             refresh: [`resources/views/**/*`],
         }),

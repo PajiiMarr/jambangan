@@ -1,3 +1,8 @@
+@php
+    $isMobile = request()->header('User-Agent') && preg_match('/Mobile|Android|iPhone|iPad/', request()->header('User-Agent'));
+    // dd($isMobile);
+@endphp
+
 <div x-data="{ chartInitialized: false }" x-init="
     if (!chartInitialized) {
         initializeChart();
@@ -13,7 +18,12 @@
         <flux:button id="hidden-trigger">Edit profile</flux:button>
     </flux:modal.trigger>
 
-    <flux:modal name="edit-officer" class="md:w-123">
+    <flux:modal 
+        name="edit-officer" 
+        class="w-full md:w-123"
+        :variant="$isMobile ? 'flyout' : null"
+        :position="$isMobile ? 'bottom' : null"
+    >
         <div class="space-y-6">
             <div>
                 <flux:heading size="lg">Edit Officer</flux:heading>
